@@ -1,0 +1,18 @@
+.chatUser{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 13px 13px 21px;
+}
+.chatUser:hover{
+    background-color: #00aaff0d;
+    cursor: pointer;
+}
+
+.chatUserDetails h3{
+    font-size: 16px;
+}
+.chatUserDetails p{
+    font-size: 12px;
+    color: rgb(91, 91, 91);
+}
