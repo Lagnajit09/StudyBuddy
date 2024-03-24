@@ -8,7 +8,7 @@ const SearchBar = (props) => {
         <input
           className={`nosubmit ${props.className}`}
           type="text"
-          placeholder="Search Chat Room"
+          placeholder={props.placeholder}
         />
       </form>
     </div>
