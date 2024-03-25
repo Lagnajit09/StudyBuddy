@@ -1,10 +1,13 @@
 import React from "react";
 import Chatroom from "./Chatroom/Chatroom";
+import { RecoilRoot } from "recoil";
 
 const App = () => {
   return (
     <div>
-      <Chatroom />
+      <RecoilRoot>
+        <Chatroom />
+      </RecoilRoot>
     </div>
   );
 };
