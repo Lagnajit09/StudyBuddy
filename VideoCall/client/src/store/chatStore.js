@@ -9,3 +9,8 @@ export const chatMessageAtom = atom({
   key: "chatMessageAtom",
   default: [],
 });
+
+export const currentChatAtom = atom({
+  key: "currentChatAtom",
+  default: {},
+});

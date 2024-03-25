@@ -35,6 +35,7 @@ chatRouter.get("/", async (req, res) => {
       console.log(user.profile_pic);
       return {
         chatUser: {
+          id: user._id,
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
