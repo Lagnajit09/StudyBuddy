@@ -3,3 +3,9 @@
     height: 80%;
     margin-bottom: 10px;
 }
+.chat-message-container{
+    width: 800px;
+    height: 100%;
+    margin: auto;
+    background-color: lightgrey;
+}

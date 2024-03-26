@@ -8,8 +8,6 @@ const ChatUsers = () => {
   const chatUsers = useRecoilValue(chatUsersAtom);
   const [currentChat, setCurrentChat] = useRecoilState(currentChatAtom);
 
-  console.log(currentChat.firstName ? "true" : "false");
-
   const chatUserClickHandler = (chatWithUser) => {
     setCurrentChat(chatWithUser);
   };
