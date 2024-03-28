@@ -7,36 +7,20 @@ import Password_icon from '../../assets/Password_icon.svg'
 import './LoginModal.css'
 import { Link } from "react-router-dom";
 import { useState } from 'react';
+import {emailHandler,passwordHandler} from '../../validation';
+
 const LoginModal=()=>{
 
-    // const[enteredEmail,setEnteredEmail]=useState('');
-    // const[enteredPassword,setEnteredPassword]=useState('');
-    // const[isValid,setIsValid]=useState(false);
+    const[enteredEmail,setEnteredEmail]=useState('');
+    const[enteredPassword,setEnteredPassword]=useState('');
+ 
+    const loginHandler=(event)=>{
+        event.preventDefault();
+    }
 
-    // const loginHandler=(event)=>{
-    //     event.preventDefault();
-    //     if(enteredEmail.includes('@') && enteredEmail.includes('.') && enteredPassword.length>6){
-    //         setIsValid(true);
-    //     }
-    //     else{
-    //         alert('Invalid');
-    //     }
-
-    //     if(isValid){
-
-    //     }
-        
-    // }
-
-    // const emailHandler=(event)=>{
-    //     setEnteredEmail(event.target.value);
-    // }
-
-    // const passwordHandler=(event)=>{
-    //     setEnteredPassword(event.target.value);
-    // }
     return(
         <div className='Login-Modal-container'>
+            
             <div className='login'>
                 <span id='login-span'>Log in</span>
                 <div className='login-socials'>
@@ -46,18 +30,21 @@ const LoginModal=()=>{
                 </div>
                 <span id='option-span'>or use your email account:</span>
                 <form>
-                    <div className='email-input'>
+                    <div className='email-input '>
                         <img src={Email_icon}/>
-                        <input type='text' placeholder='Email'  />
+                        <input type='text' placeholder='Email' value={enteredEmail} onBlur={()=>{emailHandler(enteredEmail,'email-input',"email-invalid","input-error")}} onChange={(e)=>{setEnteredEmail(e.target.value)}} />
                     </div>
-                    <div className='pwd-input'>
+                    <span className="email-invalid">Email must contain a '@' and a '.' </span>
+                    <div className='pwd-input '>
                         <img src={Password_icon}/>
-                        <input type='password' placeholder='Password'  />
-                    </div>                    
+                        <input type='password' placeholder='Password' value={enteredPassword} onBlur={()=>{passwordHandler(enteredPassword,'pwd-input',"pass-invalid","input-error")}} onChange={(e)=>{setEnteredPassword(e.target.value)}}/>
+                    </div>   
+                    <span className="pass-invalid">Password should have atleast 6 characters.</span>                 
                 </form>
                 <span id='forgot-pwd'>Forgot your password?</span>
-                <button type="submit" className='login-btn' >Login</button>
+                <button type="submit" className='login-btn' onClick={loginHandler}>Login</button>
             </div>
+            
             <div className='to-signup'>
                 <div className='welcome-1'>
                     <span>Welcome back To</span>
