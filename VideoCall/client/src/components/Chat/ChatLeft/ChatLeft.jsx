@@ -1,5 +1,7 @@
 import React from "react";
 import "./ChatLeft.css";
+import { useRecoilValue } from "recoil";
+import { authUserAtom } from "../../../store/authUser";
 import { Avatar } from "@mui/material";
 import { cyan } from "@mui/material/colors";
 import community from "../../../assets/Group 55.svg";
@@ -9,16 +11,21 @@ import SearchBar from "../../NavBar/SearchBar/SearchBar";
 import ChatUsers from "../../ChatUsers/ChatUsers";
 
 const ChatLeft = () => {
+  const authUser = useRecoilValue(authUserAtom);
   return (
     <div className="chatleft">
       <div className="chatleft-header">
         <div className="userDetials">
           <Avatar
-            sx={{ bgcolor: cyan[500], width: "39px", height: "39px" }}
-            alt="John Doe"
+            sx={{
+              bgcolor: authUser.profile_pic,
+              width: "39px",
+              height: "39px",
+            }}
+            alt={authUser.firstName}
             src="/broken-image.jpg"
           />
-          <h3>John Doe</h3>
+          <h3>{`${authUser.firstName}`}</h3>
         </div>
         <div className="navigateIcons">
           <img src={community} alt="community" />

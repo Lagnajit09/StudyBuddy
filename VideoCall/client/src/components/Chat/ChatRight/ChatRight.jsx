@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./ChatRight.css";
+import { useRecoilValue } from "recoil";
+import { currentChatAtom } from "../../../store/chatStore";
 import Search from "@mui/icons-material/Search";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
@@ -12,6 +14,7 @@ import ChatMessage from "../ChatMessage/ChatMessage";
 import ChatUserDetails from "../ChatUserDetails/ChatUserDetails";
 
 const ChatRight = () => {
+  const currentChat = useRecoilValue(currentChatAtom);
   const [detailsBtnClicked, setDetailsBtnClicked] = useState(false);
   return (
     <div className="chatright">
@@ -22,11 +25,15 @@ const ChatRight = () => {
         <div className="chat-header">
           <div className="header-left">
             <Avatar
-              sx={{ bgcolor: deepOrange[500], width: "39px", height: "39px" }}
-              alt="Sketchify09"
+              sx={{
+                bgcolor: currentChat.profile_pic,
+                width: "39px",
+                height: "39px",
+              }}
+              alt={currentChat.firstName}
               src="/broken-image.jpg"
-            />{" "}
-            <h3>Sketchify09</h3>
+            />
+            <h3>{`${currentChat.firstName} ${currentChat.lastName}`}</h3>
           </div>
           <div className="header-right">
             <span>

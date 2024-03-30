@@ -7,7 +7,8 @@
 
 .chatleft-header{
     display: flex;
-    align-items: center;justify-content: space-around;
+    align-items: center;
+    justify-content: space-around;
     padding: 8.5px 0;
     border-bottom: 2px solid rgba(217, 217, 217, 0.773);
 }
@@ -35,7 +36,7 @@
 .chatleftSearch{
     border-radius: 8px;
     width: 100%;
-    margin-left: 25px;
+    margin-left: 22px;
     border: 2px solid rgba(217, 217, 217, 0.773);
     outline: none;
 }
