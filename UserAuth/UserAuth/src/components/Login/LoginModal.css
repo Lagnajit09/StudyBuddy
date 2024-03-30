@@ -1,0 +1,199 @@
+*{
+    background-color: grey;
+}
+
+.Login-Modal-container{
+    display: flex;
+    height: 506px;
+    width: 60%;
+    position: relative;
+    left: 300px;
+    border-radius: 10px;
+    margin-top: 53px;
+}
+
+.login{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: white;
+    flex-direction: column;
+    max-height: 100%;
+    width: 60%;
+    border-right:none ;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 30px 0;
+}
+
+#login-span{
+
+    font-size: 28px;
+    background-color: white;
+}
+
+.login-socials{
+    display: flex;
+    justify-content: space-between;
+    width: 40%;
+    cursor: pointer;
+    background-color: white;  
+}
+
+#option-span{
+    margin-top: 5px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.493);
+    background-color: white;
+}
+
+.login form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 70%;
+    height: 23%;
+    background-color:white;
+}
+
+.email-invalid{
+    display: flex;
+    visibility: hidden;
+    font-size: 0.7rem;
+    color: red;
+    background-color: white;
+    align-items: flex-start;
+    width: 100%;
+    padding-left: 35px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.input-error{
+    background-color:#fbdada !important;
+    border: red solid 1px !important;
+}
+
+.pass-invalid{
+    display: flex;
+    visibility:hidden;
+    font-size: 0.7rem;
+    color: rgb(255, 0, 0);
+    background-color: white;
+    align-items: flex-start;
+    width: 100%;
+    padding-left: 35px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.email-input,
+.pwd-input{
+    display: flex;
+    width:90%;
+    border: none;
+    background-color:rgba(0, 0, 0, 0.06);
+}
+
+.email-input input,
+.pwd-input input {
+    width: 100%;
+    border: none;
+    padding: 4%;
+    background-color:transparent;
+    outline: none;
+}
+
+.email-input img,
+.pwd-input img{
+    padding-left:10px;
+    padding-right: 5px;
+    background-color:transparent;
+}
+
+#forgot-pwd{
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.493);
+    cursor: pointer;
+    margin-top: 15px;
+    background-color: transparent;
+}
+
+.login-btn{
+    background-color: #00A9FF;
+    padding: 13px 0;
+    width: 31%;
+    border: #00A9FF solid 1px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+.login .login-btn:hover{
+    transition: all 0.3s ease;
+    background-color:white ;
+    color: #00A9FF;  
+    border: solid 1px;
+} 
+
+.to-signup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #00A9FF;
+    flex-direction: column;
+    height: 100%;
+    width: 40%;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.welcome-1{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 20%;
+    font-size: 28px;
+    margin-bottom: 8%;
+    padding: 20px;
+    background-color: #00A9FF;
+}
+.welcome-1 span{
+    background-color: #00A9FF;
+}
+
+#welcome-2{
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    margin-bottom: 15%;
+    padding-bottom: 25px;
+    padding-top: 9px;
+    background-color: #00A9FF;
+}
+
+#welcome-2:hover,#forgot-pwd:hover{
+    text-decoration: underline;
+}
+
+.signup-btn{
+    padding: 13px 48px;
+    border: white solid 1px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    background-color: #00A9FF;
+    /* margin-bottom: 18%;
+    margin-top:5%; */
+    outline: none;
+}
+
+.signup-btn:hover{
+    background-color: white;
+    color: #00A9FF;
+    transition: all 0.3s ease;
+}
