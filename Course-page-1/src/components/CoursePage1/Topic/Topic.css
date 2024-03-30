@@ -1,0 +1,28 @@
+.topic-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+#headt-span {
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 1);
+  margin: 0 0 30px 127px;
+}
+
+.child-topic-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.sub-child-topic-container {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  justify-content: space-evenly;
+}
