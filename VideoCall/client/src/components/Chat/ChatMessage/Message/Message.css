@@ -1,0 +1,28 @@
+.message{
+    max-width: 65%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+}
+.message-left{
+    display: flex;
+    flex-direction: column;
+}
+.msg-bot{
+    display: flex;
+    align-items: center;
+}
+.message-text{
+    padding: 10px;
+    border-radius: 10px;
+}
+.message-time{
+    color: rgba(0, 0, 0, 0.7);
+    padding: 0 10px 5px 10px;
+}
+.moreIcon{
+    right: -20px;
+    color: #D9D9D9;
+    cursor: pointer;
+}

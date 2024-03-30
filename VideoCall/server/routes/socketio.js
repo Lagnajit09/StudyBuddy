@@ -7,13 +7,7 @@ const chatRouter = express.Router();
 chatRouter.get("/", async (req, res) => {
   const senderId = new ObjectId("660128e020c0f0ac18fda708");
   const receiverIds = await Message.distinct("receiverId", { senderId });
-  const chatUsers = await User.find({ _id: { $in: receiverIds } });
-  const messages = await Message.find({
-    $or: [
-      { senderId, receiverId: { $in: receiverIds } },
-      { senderId: { $in: receiverIds }, receiverId: senderId },
-    ],
-  }).sort({ timestamp: 1 });
+  // const chatUsers = await User.find({ _id: { $in: receiverIds } });
 
   // Find last message for each receiverId
   const lastMessages = await Promise.all(
@@ -42,17 +36,38 @@ chatRouter.get("/", async (req, res) => {
           profile_pic: user.profile_pic,
         },
         lastMessage: item.lastMessage.content,
+        lastMsgTime: item.lastMessage.timestamp,
       };
     })
   );
 
-  const chatMessages = messages.map((message) => ({
-    senderId: message.senderId,
-    receiverId: message.receiverId,
-    message: message.content,
-  }));
+  const sortedData = usersWithLastMessages.sort(
+    (a, b) => b.lastMsgTime - a.lastMsgTime
+  );
+  console.log(sortedData);
+  console.log(usersWithLastMessages);
 
-  res.json({ usersWithLastMessages, chatMessages });
+  console.log(sortedData);
+
+  res.json({ sortedData });
+});
+
+chatRouter.post("/current-chat", async (req, res) => {
+  const { currentChatId, loggedInUserId } = req.body;
+  const currentChatMessages = await Message.find({
+    $or: [
+      { senderId: loggedInUserId, receiverId: currentChatId },
+      { senderId: currentChatId, receiverId: loggedInUserId },
+    ],
+  }).sort({ timestamp: 1 });
+  res.json(
+    currentChatMessages.map((current) => ({
+      senderId: current.senderId,
+      receiverId: current.receiverId,
+      message: current.content,
+      timestamp: current.timestamp,
+    }))
+  );
 });
 
 chatRouter.post("/", async (req, res) => {
@@ -72,47 +87,13 @@ chatRouter.post("/", async (req, res) => {
   }
 });
 
-chatRouter.get("/last-messages", async (req, res) => {
-  const senderId = new ObjectId("660128e020c0f0ac18fda708"); // User A's ObjectId
-
+chatRouter.delete("/delete", async (req, res) => {
+  const { content } = req.body;
   try {
-    // Find distinct receiverIds for the given senderId
-    const receiverIds = await Message.distinct("receiverId", {
-      senderId,
-    });
-
-    // Find last message for each receiverId
-    const lastMessages = await Promise.all(
-      receiverIds.map(async (receiverId) => {
-        const lastMessage = await Message.findOne({
-          senderId,
-          receiverId,
-        })
-          .sort({ timestamp: -1 })
-          .limit(1);
-        return { receiverId, lastMessage };
-      })
-    );
-
-    // Retrieve user details for each receiverId
-    const usersWithLastMessages = await Promise.all(
-      lastMessages.map(async (item) => {
-        const user = await User.findById(item.receiverId);
-        return {
-          chatUser: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-          },
-          lastMessage: item.lastMessage.content,
-        };
-      })
-    );
-
-    res.json(usersWithLastMessages);
+    await Message.deleteMany({ content });
+    res.json({ message: "Deleted successfully!" });
   } catch (error) {
-    // Handle error
-    res.status(500).json({ error: "Internal Server Error" });
+    res.json({ error });
   }
 });
 

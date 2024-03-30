@@ -9,8 +9,11 @@ import UserImg2 from "../../../assets/user-image-2.svg";
 import UserImg3 from "../../../assets/user-image-3.svg";
 import UserImg4 from "../../../assets/user-image-4.svg";
 import DescriptionIcon from "@mui/icons-material/Description";
+import { currentChatAtom } from "../../../store/chatStore";
+import { useRecoilValue } from "recoil";
 
 const ChatUserDetails = (props) => {
+  const currentChat = useRecoilValue(currentChatAtom);
   return (
     <div
       className="chatUser-details"
@@ -29,16 +32,16 @@ const ChatUserDetails = (props) => {
       </div>
       <div className="chatUser-name">
         <Avatar
-          src="abc.com"
-          alt="Sketchify09"
+          src={currentChat.firstName}
+          alt={currentChat.firstName}
           sx={{
             width: "75px",
             height: "75px",
-            backgroundColor: deepOrange[500],
+            backgroundColor: currentChat.profile_pic,
             fontSize: "40px",
           }}
         />
-        <h3>Sketchify09</h3>
+        <h3>{`${currentChat.firstName} ${currentChat.lastName}`}</h3>
       </div>
       <div className="chatUser-about">
         <h4>About</h4>
