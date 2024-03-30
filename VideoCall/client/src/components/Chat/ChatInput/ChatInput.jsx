@@ -1,13 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ChatInput.css";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { authUserAtom } from "../../../store/authUser";
+import {
+  currentChatAtom,
+  sendMessageAtom,
+  chatMessageAtom,
+} from "../../../store/chatStore";
 import EmojiPicker from "emoji-picker-react";
 import smileyEmoji from "../../../assets/emojiPicker.svg";
 import attachment from "../../../assets/attachment.svg";
 import { FiSend } from "react-icons/fi";
 
 const ChatInput = (props) => {
+  const sender = useRecoilValue(authUserAtom);
+  const receiver = useRecoilValue(currentChatAtom);
+  const [messageSend, setMessageSend] = useRecoilState(sendMessageAtom);
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [sendClicked, setSendClicked] = useState(false);
   const wrapperRef = useRef(null);
 
   useEffect(() => {
@@ -16,13 +27,47 @@ const ChatInput = (props) => {
         setIsEmojiOpen(false);
       }
     }
-    // Bind the event listener
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      // Unbind the event listener on clean up
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [wrapperRef]);
+
+  useEffect(() => {
+    const apiUrl = "http://localhost:3000/chatroom/chat";
+    const data = {
+      sender: sender.id,
+      receiver: receiver.id,
+      content: message,
+    };
+
+    if (sendClicked) {
+      fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Success:", data);
+          setMessageSend(!messageSend);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      sendMessage();
+      setSendClicked(false);
+      setMessage("");
+    }
+  }, [sendClicked]);
 
   const handleEmojiPicker = () => {
     setIsEmojiOpen(!isEmojiOpen);
@@ -32,13 +77,21 @@ const ChatInput = (props) => {
     setMessage((prev) => prev + emoji.emoji);
   };
 
+  const handleKeyPress = (e) => {
+    e.key === "Enter" ? sendMessage() : null;
+  };
+
+  const sendMessage = () => {
+    setSendClicked(true);
+  };
+
   const handleAttachFiles = () => {};
   return (
     <div>
       <div className="send-message">
         <div
           className="msg-input"
-          style={props.open ? { width: "80%" } : { width: "60%" }}
+          style={props.open ? { width: "83%" } : { width: "60%" }}
         >
           <span ref={wrapperRef}>
             <EmojiPicker
@@ -71,6 +124,7 @@ const ChatInput = (props) => {
             onChange={(e) => {
               setMessage(e.target.value);
             }}
+            onKeyUp={handleKeyPress}
             placeholder="Write a message"
             autoFocus
           />
@@ -92,7 +146,7 @@ const ChatInput = (props) => {
           </div>
         </div>
         <button>
-          <div className="send-btn">
+          <div className="send-btn" onClick={sendMessage}>
             {/* <img src={SendBtn} alt="Send" /> */}
             <FiSend style={{ fontSize: "17px" }} />
           </div>

@@ -36,11 +36,20 @@ chatRouter.get("/", async (req, res) => {
           profile_pic: user.profile_pic,
         },
         lastMessage: item.lastMessage.content,
+        lastMsgTime: item.lastMessage.timestamp,
       };
     })
   );
 
-  res.json({ usersWithLastMessages });
+  const sortedData = usersWithLastMessages.sort(
+    (a, b) => b.lastMsgTime - a.lastMsgTime
+  );
+  console.log(sortedData);
+  console.log(usersWithLastMessages);
+
+  console.log(sortedData);
+
+  res.json({ sortedData });
 });
 
 chatRouter.post("/current-chat", async (req, res) => {
@@ -75,6 +84,16 @@ chatRouter.post("/", async (req, res) => {
     res.json(sentMessage);
   } catch (error) {
     console.log("Error:" + error);
+  }
+});
+
+chatRouter.delete("/delete", async (req, res) => {
+  const { content } = req.body;
+  try {
+    await Message.deleteMany({ content });
+    res.json({ message: "Deleted successfully!" });
+  } catch (error) {
+    res.json({ error });
   }
 });
 

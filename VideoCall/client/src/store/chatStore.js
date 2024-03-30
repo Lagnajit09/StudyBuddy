@@ -14,3 +14,8 @@ export const currentChatAtom = atom({
   key: "currentChatAtom",
   default: {},
 });
+
+export const sendMessageAtom = atom({
+  key: "sendMessageAtom",
+  default: false,
+});

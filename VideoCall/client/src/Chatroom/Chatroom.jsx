@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { chatUsersAtom, chatMessageAtom } from "../store/chatStore";
+import { chatUsersAtom, sendMessageAtom } from "../store/chatStore";
 import { authUserAtom } from "../store/authUser";
 import NavBar from "../components/NavBar/NavBar";
 import SearchBar from "../components/NavBar/SearchBar/SearchBar";
@@ -11,8 +11,9 @@ import { cyan } from "@mui/material/colors";
 
 const Chatroom = () => {
   const setChatUsers = useSetRecoilState(chatUsersAtom);
-  const setChatMessages = useSetRecoilState(chatMessageAtom);
   const authUser = useRecoilValue(authUserAtom);
+  const newMessageSend = useRecoilValue(sendMessageAtom);
+  const [updateState, setUpdateState] = useState(false);
 
   let fetchedData;
 
@@ -26,8 +27,7 @@ const Chatroom = () => {
         throw new Error("Request failed");
       }
       fetchedData = await response.json();
-      setChatUsers(fetchedData.usersWithLastMessages);
-      setChatMessages(fetchedData.chatMessages);
+      setChatUsers(fetchedData.sortedData);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -35,7 +35,8 @@ const Chatroom = () => {
 
   useEffect(() => {
     fetchChatroomData();
-  }, []);
+    setUpdateState(newMessageSend);
+  }, [newMessageSend]);
 
   return (
     <div className="chatroom">

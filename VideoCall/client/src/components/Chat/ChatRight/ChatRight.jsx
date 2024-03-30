@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./ChatRight.css";
-import { useRecoilValue } from "recoil";
-import { currentChatAtom } from "../../../store/chatStore";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  currentChatAtom,
+  chatMessageAtom,
+  sendMessageAtom,
+} from "../../../store/chatStore";
 import { authUserAtom } from "../../../store/authUser";
 import Search from "@mui/icons-material/Search";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
@@ -15,6 +19,8 @@ import ChatUserDetails from "../ChatUserDetails/ChatUserDetails";
 const ChatRight = () => {
   const currentChat = useRecoilValue(currentChatAtom);
   const authUser = useRecoilValue(authUserAtom);
+  const newMsgSend = useRecoilValue(sendMessageAtom);
+  const setChatMessages = useSetRecoilState(chatMessageAtom);
   const [detailsBtnClicked, setDetailsBtnClicked] = useState(false);
 
   let fetchedCurrentChatMessage;
@@ -36,7 +42,7 @@ const ChatRight = () => {
         throw new Error("Request failed");
       }
       fetchedCurrentChatMessage = await response.json();
-      console.log(fetchedCurrentChatMessage);
+      setChatMessages(fetchedCurrentChatMessage);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -44,7 +50,7 @@ const ChatRight = () => {
 
   useEffect(() => {
     fetchCurrentChatMessages();
-  }, [currentChat, authUser]);
+  }, [currentChat, authUser, newMsgSend]);
 
   return (
     <div className="chatright">

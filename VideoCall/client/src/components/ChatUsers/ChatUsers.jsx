@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import "./ChatUsers.css";
 import { Avatar } from "@mui/material";
 import { useRecoilValue, useRecoilState } from "recoil";
@@ -12,6 +12,14 @@ const ChatUsers = () => {
     setCurrentChat(chatWithUser);
   };
 
+  function truncateString(str, maxLength) {
+    if (str.length <= maxLength) {
+      return str;
+    } else {
+      return str.slice(0, maxLength) + "...";
+    }
+  }
+
   return (
     <>
       {chatUsers.map((user) => (
@@ -19,11 +27,15 @@ const ChatUsers = () => {
           className="chatUser"
           key={user.chatUser.id}
           id={user.chatUser.id}
-          onClick={() => chatUserClickHandler(user.chatUser)}
+          onClick={() => {
+            chatUserClickHandler(user.chatUser);
+          }}
           style={{
             backgroundColor:
               currentChat.id === user.chatUser.id ? "#00aaff0d" : "white",
             transition: "all 0.3s ease",
+            borderRight:
+              currentChat.id === user.chatUser.id ? "3px solid #00A9FF" : null,
           }}
         >
           <Avatar
@@ -37,7 +49,7 @@ const ChatUsers = () => {
           />
           <div className="chatUserDetails">
             <h3>{`${user.chatUser.firstName} ${user.chatUser.lastName}`}</h3>
-            <p>{user.lastMessage}</p>
+            <p>{truncateString(user.lastMessage, 30)}</p>
           </div>
         </div>
       ))}
