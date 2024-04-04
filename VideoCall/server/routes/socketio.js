@@ -4,8 +4,10 @@ const express = require("express");
 const { ObjectId } = require("mongodb");
 const chatRouter = express.Router();
 
-chatRouter.get("/", async (req, res) => {
-  const senderId = new ObjectId("660128e020c0f0ac18fda708");
+chatRouter.get("/:id", async (req, res) => {
+  const sender = req.params.id;
+  console.log(sender);
+  const senderId = new ObjectId(sender);
   const receiverIds = await Message.distinct("receiverId", { senderId });
   // const chatUsers = await User.find({ _id: { $in: receiverIds } });
 

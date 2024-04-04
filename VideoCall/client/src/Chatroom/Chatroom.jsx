@@ -17,12 +17,17 @@ const Chatroom = () => {
 
   let fetchedData;
 
+  console.log(authUser);
+
   async function fetchChatroomData() {
     try {
-      const response = await fetch(`http://localhost:3000/chatroom/chat`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch(
+        `http://localhost:3000/chatroom/chat/${authUser.id}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       if (!response.ok) {
         throw new Error("Request failed");
       }

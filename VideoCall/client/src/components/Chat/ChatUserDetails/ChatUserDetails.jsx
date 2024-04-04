@@ -3,7 +3,6 @@ import "./ChatUserDetails.css";
 import CloseIcon from "@mui/icons-material/Close";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { Avatar } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
 import UserImg1 from "../../../assets/user-image-1.svg";
 import UserImg2 from "../../../assets/user-image-2.svg";
 import UserImg3 from "../../../assets/user-image-3.svg";

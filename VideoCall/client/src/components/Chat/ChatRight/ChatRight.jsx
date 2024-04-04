@@ -93,6 +93,7 @@ const ChatRight = () => {
         <ChatMessage />
         <ChatInput open={detailsBtnClicked} />
       </div>
+
       <ChatUserDetails
         open={detailsBtnClicked}
         setOpen={setDetailsBtnClicked}
