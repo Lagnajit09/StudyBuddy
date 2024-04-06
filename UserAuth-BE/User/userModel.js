@@ -3,8 +3,9 @@
 const mongoose =  require("mongoose")
 const bcrypt= require("bcryptjs")
 const jwt =require("jsonwebtoken")
+const Topic = require(".././Topic/topicModel")
 
-
+const Schema=mongoose.Schema
 //User Model Schema
 const userSchema = new mongoose.Schema({
     firstname:{
@@ -32,9 +33,14 @@ const userSchema = new mongoose.Schema({
     profile_picture:{
         type: Array //[name of collection whose object ]
     },
-    folders:{
-        type: Array
-    },
+    folders:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Folder'
+    }],
+    notes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Note' // Assuming you have a Note model
+    }],
     communities:{
         type: Array
     },
@@ -49,28 +55,54 @@ const userSchema = new mongoose.Schema({
     },
     recommendations:{
         type: Array
+    },
+    topics: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Topic'
+        }],
+        validate: {
+            validator: function(val) {
+                return val.length <= 12;    //one can create max 6 topics as 6 are already provided
+            },
+            message: 'Topics array cannot exceed 12 elements'
+        }
     }
 })
 
 //Securing User Password by Bcrypt
-userSchema.pre("save", async function(next){
+userSchema.pre("save", async function(next){    //On creating user
     
     const user = this
-
-        if(!user.isModified("password")){
+    if(!user.isModified("password")){
         next()
-        }
-        try{
+    }
+    try {
         const saltRound = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(user.password, saltRound)
-        user.password=hashPassword
+        user.password = hashPassword
+
+        if (this.isNew) {   //only runs for the first time when user is created
+            const defaultTopics = ["Biology", "Physics", "Chemistry", "IT and Software", "Mathematics", "Cloud Computing"];
+            const userId = this._id;
+        
+            // Create default topics for the new user
+            await Promise.all(defaultTopics.map(async topicName => {    //Make 6 default topics
+                const topic = new Topic({
+                    name: topicName,
+                    created_by: userId
+                });
+                await topic.save();
+                user.topics.push(topic._id);
+            }));
         }
+    }
         catch(error){
         console.log(error)
             //next(error)
-        }
-    
-})
+    }
+}   
+)
 
 
 //Generat JWT(json web token)
@@ -86,7 +118,6 @@ userSchema.methods.generateToken = async function(){
                 expiresIn: "30d"
             }
         )
-
     }
     catch(error){
         console.error(error)

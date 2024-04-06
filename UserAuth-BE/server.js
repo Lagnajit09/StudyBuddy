@@ -3,7 +3,7 @@
 const express=require('express')
 const app=express()
 const connectDb=require('./connect-db')
-const router=require('./User/router')
+const router=require('./router')
 app.use(express.json())
 
 

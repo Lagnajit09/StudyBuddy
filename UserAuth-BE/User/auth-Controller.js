@@ -4,6 +4,8 @@ const User=require('./userModel')
 const bcrypt = require('bcryptjs')
 
 
+
+
 //SIGNUP FUNCTION
 exports.signup =async(req,res) => {
     try{
@@ -68,3 +70,4 @@ exports.login =async(req, res) => {
         res.status(500).json('Error Bro')
     }
 }
+
