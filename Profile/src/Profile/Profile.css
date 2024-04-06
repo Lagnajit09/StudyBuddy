@@ -1,0 +1,14 @@
+.searchWidth{
+    width: 700px;
+    border-radius: 18px;
+    justify-content: center;
+    border: 1px solid #555;
+}
+
+body{
+    background-color: #FBFCFE;
+}
+
+.profile-container{
+    display: flex;
+}

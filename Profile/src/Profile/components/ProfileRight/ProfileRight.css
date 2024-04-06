@@ -1,0 +1,158 @@
+.profileRight-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+}
+
+.profileRight-left {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 12%;
+  height: 90.5vh;
+}
+
+.profileRight-left img {
+  cursor: pointer;
+  transition: rotate 0.6s ease;
+}
+
+.profileRight-right {
+  display: flex;
+  flex-direction: column;
+  width: 88%;
+  height: 90.5vh;  
+}
+
+.icons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  align-items: center;
+  width: 90%;
+  overflow: hidden;
+  padding-top: 10%;
+}
+
+.icons img {
+  cursor: pointer;
+}
+
+.calender-div {
+  display: flex;
+  border: rgba(0, 0, 0, 0.171) 1px solid;
+  border-radius: 20px;
+  height: 40%;
+  width: 80%;
+  padding: 5%;
+  background-color: white;
+  overflow: hidden;
+  transition: all 0.6s ease;
+}
+
+.modi-calender-div{
+    height: 0%;
+    width: 0%;
+    padding: 0%;
+    overflow: hidden;
+    border: none;
+}
+
+.schedule-div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 5%;
+
+}
+
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.schedule-span {
+  display: flex;
+  font-size: 18px;
+}
+
+.s-arrow{
+    display: block;
+    rotate: 180deg;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.schedule-item1,
+.schedule-item2 {
+  display: flex;
+  align-items: center;
+  width: 88%;
+  border-radius: 15px;
+  gap: 20px;
+  padding: 4% 2% 4% 3%;
+}
+
+.schedule-item1 {
+    background: rgb(99,180,184);
+background: linear-gradient(90deg, rgba(99,180,184,1) 35%, rgba(213,247,249,1) 100%);
+}
+
+.schedule-item2 {
+    background: rgb(161,151,252);
+background: linear-gradient(90deg, rgba(161,151,252,1) 35%, rgba(234,233,250,1) 100%);
+}
+
+.topic-icon {
+  display: flex;
+  align-items: center;
+  height: 50%;
+  width: 6%;
+  padding: 2%;
+  border-radius: 20px;
+  background-color: #e7f1fb;
+}
+
+.schedule-detail {
+  display: flex;
+  flex-direction: column;
+  margin-right: 12%;
+}
+
+.s-name,
+.s-time{
+    font-size: 12px;
+}
+
+.s-time{
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.arrow {
+  display: flex;
+  height: 70%;
+  width: 9%;
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #ffffff;
+}
+
+.more-schedule{
+    display: flex;
+    align-items: center;
+    gap:10px;
+    padding: 5% 17.8%;
+}
+
+.m-schedule-span{
+    font-size: 13px;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.ms-arrow{
+    cursor: pointer;
+    
+}
