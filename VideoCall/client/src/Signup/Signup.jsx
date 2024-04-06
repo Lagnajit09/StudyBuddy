@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Signup.css";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { authUserAtom } from "../store/authUser";
 
 const Signup = () => {

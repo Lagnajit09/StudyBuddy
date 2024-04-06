@@ -1,9 +1,9 @@
 import React from "react";
 import "./Message.css";
-import { Avatar } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const Message = ({ message, styleMessage, styleMsgL, msgText, showIcon }) => {
+  console.log(message.content, message.senderId);
   function getTimeWithAMPM(timestamp) {
     // Convert MongoDB timestamp to JavaScript Date object
     const date = new Date(timestamp);
@@ -36,7 +36,7 @@ const Message = ({ message, styleMessage, styleMsgL, msgText, showIcon }) => {
               </span>
               <div className="msg-bot">
                 <span className="message-text" style={msgText}>
-                  {message.message}
+                  {message.content}
                 </span>
                 <div className="moreIcon">{showIcon && <MoreVertIcon />}</div>
               </div>

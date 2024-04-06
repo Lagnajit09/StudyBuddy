@@ -1,15 +1,12 @@
 const { User, Message } = require("../db");
-const mongoose = require("mongoose");
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const chatRouter = express.Router();
 
 chatRouter.get("/:id", async (req, res) => {
   const sender = req.params.id;
-  console.log(sender);
   const senderId = new ObjectId(sender);
   const receiverIds = await Message.distinct("receiverId", { senderId });
-  // const chatUsers = await User.find({ _id: { $in: receiverIds } });
 
   // Find last message for each receiverId
   const lastMessages = await Promise.all(
@@ -28,7 +25,6 @@ chatRouter.get("/:id", async (req, res) => {
   const usersWithLastMessages = await Promise.all(
     lastMessages.map(async (item) => {
       const user = await User.findById(item.receiverId);
-      console.log(user.profile_pic);
       return {
         chatUser: {
           id: user._id,
@@ -46,10 +42,6 @@ chatRouter.get("/:id", async (req, res) => {
   const sortedData = usersWithLastMessages.sort(
     (a, b) => b.lastMsgTime - a.lastMsgTime
   );
-  console.log(sortedData);
-  console.log(usersWithLastMessages);
-
-  console.log(sortedData);
 
   res.json({ sortedData });
 });
@@ -66,20 +58,20 @@ chatRouter.post("/current-chat", async (req, res) => {
     currentChatMessages.map((current) => ({
       senderId: current.senderId,
       receiverId: current.receiverId,
-      message: current.content,
+      content: current.content,
       timestamp: current.timestamp,
     }))
   );
 });
 
 chatRouter.post("/", async (req, res) => {
-  const { sender, receiver, content } = req.body;
-  const senderId = new ObjectId(sender);
-  const receiverId = new ObjectId(receiver);
+  const { senderId, receiverId, content } = req.body;
+  const sender = new ObjectId(senderId);
+  const receiver = new ObjectId(receiverId);
   try {
     const sentMessage = await new Message({
-      senderId,
-      receiverId,
+      senderId: sender,
+      receiverId: receiver,
       content,
     });
     await sentMessage.save();

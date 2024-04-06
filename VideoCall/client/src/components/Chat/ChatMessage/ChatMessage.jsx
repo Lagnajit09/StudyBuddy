@@ -1,14 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { authUserAtom } from "../../../store/authUser";
-import { chatMessageAtom } from "../../../store/chatStore";
+import { chatMessageAtom, newMessageAtom } from "../../../store/chatStore";
 import "./ChatMessage.css";
 import Message from "./Message/Message";
 
 const ChatMessage = () => {
   const authUser = useRecoilValue(authUserAtom);
   const chatMessages = useRecoilValue(chatMessageAtom);
+  const newMessages = useRecoilValue(newMessageAtom);
 
+  console.log(newMessages);
   const msgWrapper = useRef();
 
   const height = msgWrapper.current?.scrollHeight;
@@ -21,6 +23,27 @@ const ChatMessage = () => {
     <div ref={msgWrapper} className="chat-message">
       <div className="chat-message-container">
         {chatMessages?.map((message, index) =>
+          message?.senderId === authUser?.id ? (
+            <Message
+              key={index}
+              message={message}
+              styleMessage={{ flexDirection: "row-reverse", float: "right" }}
+              styleMsgL={{ alignItems: "flex-end" }}
+              msgText={{ backgroundColor: "#00A9FF", color: "white" }}
+              showIcon={false}
+            />
+          ) : (
+            <Message
+              key={index}
+              message={message}
+              styleMessage={{ flexDirection: "row", float: "left" }}
+              styleMsgL={{ alignItems: "flex-start" }}
+              msgText={{ backgroundColor: "white", color: "black" }}
+              showIcon={true}
+            />
+          )
+        )}
+        {newMessages?.map((message, index) =>
           message?.senderId === authUser?.id ? (
             <Message
               key={index}

@@ -4,7 +4,8 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { authUserAtom } from "../../../store/authUser";
 import {
   currentChatAtom,
-  sendMessageAtom,
+  newMessageAtom,
+  socket,
   chatMessageAtom,
 } from "../../../store/chatStore";
 import EmojiPicker from "emoji-picker-react";
@@ -15,11 +16,21 @@ import { FiSend } from "react-icons/fi";
 const ChatInput = (props) => {
   const sender = useRecoilValue(authUserAtom);
   const receiver = useRecoilValue(currentChatAtom);
-  const [messageSend, setMessageSend] = useRecoilState(sendMessageAtom);
+  const [newMessages, setNewMessages] = useRecoilState(newMessageAtom);
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [sendClicked, setSendClicked] = useState(false);
   const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    socket.on("message", (data) => {
+      console.log(data);
+      setNewMessages((prev) => [...prev, data.data]);
+    });
+    return () => {
+      socket.off("Turning the socket off.");
+    };
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -34,40 +45,44 @@ const ChatInput = (props) => {
   }, [wrapperRef]);
 
   useEffect(() => {
-    const apiUrl = "http://localhost:3000/chatroom/chat";
-    const data = {
-      sender: sender.id,
-      receiver: receiver.id,
-      content: message,
-    };
-
     if (sendClicked) {
-      fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Success:", data);
-          setMessageSend(!messageSend);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-
-      sendMessage();
-      setSendClicked(false);
-      setMessage("");
+      fetchMessages();
     }
   }, [sendClicked]);
+
+  const fetchMessages = () => {
+    const apiUrl = "http://localhost:3000/chatroom/chat";
+    const data = {
+      senderId: sender.id,
+      receiverId: receiver.id,
+      content: message,
+      timestamp: Date.now(),
+    };
+    socket.emit("message", {
+      data,
+    });
+    fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    setSendClicked(false);
+    setMessage("");
+  };
 
   const handleEmojiPicker = () => {
     setIsEmojiOpen(!isEmojiOpen);
@@ -86,6 +101,9 @@ const ChatInput = (props) => {
   };
 
   const handleAttachFiles = () => {};
+
+  // console.log(chatMessages);
+
   return (
     <div>
       <div className="send-message">

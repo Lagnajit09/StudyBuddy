@@ -1,4 +1,8 @@
 import { atom } from "recoil";
+import io from "socket.io-client";
+export const socket = io("http://localhost:3000", {
+  withCredentials: true,
+});
 
 export const chatUsersAtom = atom({
   key: "chatUsersAtom",
@@ -15,7 +19,7 @@ export const currentChatAtom = atom({
   default: {},
 });
 
-export const sendMessageAtom = atom({
-  key: "sendMessageAtom",
-  default: false,
+export const newMessageAtom = atom({
+  key: "newMessageAtom",
+  default: [],
 });

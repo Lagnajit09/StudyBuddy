@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ChatRight.css";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  currentChatAtom,
-  chatMessageAtom,
-  sendMessageAtom,
-} from "../../../store/chatStore";
+import { currentChatAtom, chatMessageAtom } from "../../../store/chatStore";
 import { authUserAtom } from "../../../store/authUser";
 import Search from "@mui/icons-material/Search";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
@@ -19,7 +15,6 @@ import ChatUserDetails from "../ChatUserDetails/ChatUserDetails";
 const ChatRight = () => {
   const currentChat = useRecoilValue(currentChatAtom);
   const authUser = useRecoilValue(authUserAtom);
-  const newMsgSend = useRecoilValue(sendMessageAtom);
   const setChatMessages = useSetRecoilState(chatMessageAtom);
   const [detailsBtnClicked, setDetailsBtnClicked] = useState(false);
 
@@ -50,7 +45,7 @@ const ChatRight = () => {
 
   useEffect(() => {
     fetchCurrentChatMessages();
-  }, [currentChat, authUser, newMsgSend]);
+  }, [currentChat, authUser]);
 
   return (
     <div className="chatright">
