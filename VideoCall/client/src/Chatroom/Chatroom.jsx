@@ -1,16 +1,32 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { chatUsersAtom } from "../store/chatStore";
-import { authUserAtom } from "../store/authUser";
-import NavBar from "../components/NavBar/NavBar";
-import SearchBar from "../components/NavBar/SearchBar/SearchBar";
-import Chat from "../components/Chat/Chat";
+import { chatUsersAtom } from "./store/chatStore";
+import { authUserAtom } from "./store/authUser";
+import NavBar from "./components/NavBar/NavBar";
+import SearchBar from "./components/NavBar/SearchBar/SearchBar";
+import Chat from "./components/Chat/Chat";
+import Community from "./components/Community/Community";
 import "./Chatroom.css";
 import { Avatar } from "@mui/material";
 
 const Chatroom = () => {
   const setChatUsers = useSetRecoilState(chatUsersAtom);
   const authUser = useRecoilValue(authUserAtom);
+  const [openChat, setOpenChat] = useState(false);
+  const [openCommunity, setOpenCommunity] = useState(false);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.includes("/community")) {
+      setOpenChat(false);
+      setOpenCommunity(true);
+    } else if (location.pathname.includes("/chat")) {
+      setOpenChat(true);
+      setOpenCommunity(false);
+    }
+  }, [location]);
 
   let fetchedData;
 
@@ -53,7 +69,8 @@ const Chatroom = () => {
           sx={{ bgcolor: authUser.profile_pic, width: "30px", height: "30px" }}
         />
       </NavBar>
-      <Chat />
+      {openChat && !openCommunity && <Chat />}
+      {!openChat && openCommunity && <Community />}
     </div>
   );
 };

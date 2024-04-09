@@ -29,7 +29,58 @@ const userSchema = new mongoose.Schema({
   profile_pic: { type: String },
 });
 
+const communitySchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  members: {
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+    default: [],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+  },
+});
+
+const communityMsgSchema = new mongoose.Schema({
+  content: {
+    type: String,
+    required: true,
+  },
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+    required: true,
+  },
+  community: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "community",
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 const User = mongoose.model("user", userSchema);
 const Message = mongoose.model("message", messageSchema);
+const Community = mongoose.model("community", communitySchema);
+const CommunityMsg = mongoose.model("communityMessage", communityMsgSchema);
 
-module.exports = { User, Message };
+module.exports = { User, Message, Community, CommunityMsg };

@@ -3,6 +3,28 @@ const express = require("express");
 const { ObjectId } = require("mongodb");
 const chatRouter = express.Router();
 
+chatRouter.post("/addUser", async (req, res) => {
+  // const { firstName, lastName, email, profile_pic } = req.body;
+  // try {
+  //   const newUser = new User({
+  //     firstName,
+  //     lastName,
+  //     email,
+  //     password: "1234",
+  //     profile_pic,
+  //   });
+  //   await newUser.save();
+  //   res.json(newUser);
+  // } catch (error) {
+  //   console.log("Error:" + error);
+  // }
+});
+
+chatRouter.get("/allUsers", async (req, res) => {
+  const users = await User.find();
+  res.json({ id: users.map((user) => user._id) });
+});
+
 chatRouter.get("/:id", async (req, res) => {
   const sender = req.params.id;
   const senderId = new ObjectId(sender);
@@ -64,12 +86,13 @@ chatRouter.post("/current-chat", async (req, res) => {
   );
 });
 
+//Send a message to an user
 chatRouter.post("/", async (req, res) => {
   const { senderId, receiverId, content } = req.body;
   const sender = new ObjectId(senderId);
   const receiver = new ObjectId(receiverId);
   try {
-    const sentMessage = await new Message({
+    const sentMessage = new Message({
       senderId: sender,
       receiverId: receiver,
       content,
@@ -81,10 +104,13 @@ chatRouter.post("/", async (req, res) => {
   }
 });
 
+//Delete an user
 chatRouter.delete("/delete", async (req, res) => {
-  const { content } = req.body;
+  const { id } = req.body;
   try {
-    await Message.deleteMany({ content });
+    await Message.deleteMany({
+      $or: [{ senderId: id }, { receiverId: id }],
+    });
     res.json({ message: "Deleted successfully!" });
   } catch (error) {
     res.json({ error });

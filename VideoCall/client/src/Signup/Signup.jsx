@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Signup.css";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { authUserAtom } from "../store/authUser";
+import { authUserAtom } from "../Chatroom/store/authUser";
 
 const Signup = () => {
   const [id, setID] = useState("");
@@ -21,7 +21,7 @@ const Signup = () => {
       console.log(err);
     }
 
-    navigate("/chatroom");
+    navigate("/chatroom/chat");
   };
 
   return (

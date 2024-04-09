@@ -1,0 +1,19 @@
+.joined-community{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 13px 13px 21px;
+}
+
+.joined-community:hover{
+    background-color: #00aaff0d;
+    cursor: pointer;
+}
+
+.joined-community h3{
+    font-size: 16px;
+}
+.joined-community p{
+    font-size: 12px;
+    color: rgb(91, 91, 91);
+}

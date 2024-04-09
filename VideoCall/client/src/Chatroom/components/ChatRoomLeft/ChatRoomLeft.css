@@ -1,0 +1,71 @@
+.chatleft{
+    width: 21%;
+    height: 100%;
+    background-color: white;
+    border-right: 2px solid rgba(217, 217, 217, 0.773);
+}
+
+.chatleft-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 8.5px 0;
+    border-bottom: 2px solid rgba(217, 217, 217, 0.773);
+}
+
+.userDetials{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navigateIcons{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chatleft-middle{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 0 0;
+}
+
+.chatleftSearch{
+    border-radius: 8px;
+    width: 100%;
+    margin-left: 22px;
+    border: 2px solid rgba(217, 217, 217, 0.773);
+    outline: none;
+}
+
+.chatleft-middle .middle-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 23px 5px;
+    border-bottom: 2px solid rgba(217, 217, 217, 0.773);
+}
+.chatleft-bottom{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    scrollbar-width: none;
+}
+.chatleft-bottom::-webkit-scrollbar {
+    width: 3px;
+    background-color: lightgray;
+  }
+  .chatleft-bottom::-webkit-scrollbar-thumb {
+    background: rgb(139, 139, 139); 
+    border-radius: 10px;
+  }
+.chatleft-bottom .no-chat{
+    width: 80px;
+    font-size: 80px;
+    color: lightgray;
+    margin: 60% 38.5%;
+}

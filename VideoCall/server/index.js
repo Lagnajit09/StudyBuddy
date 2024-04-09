@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const chatRouter = require("./routes/chat");
+const communityRouter = require("./routes/community");
 const mongoose = require("mongoose");
 const http = require("http");
 
@@ -22,6 +23,7 @@ const io = require("socket.io")(server, {
 });
 
 app.use("/chatroom/chat", chatRouter);
+app.use("/chatroom/community", communityRouter);
 
 mongoose.connect(mongoUrl);
 
