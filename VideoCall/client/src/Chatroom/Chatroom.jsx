@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { chatUsersAtom } from "./store/chatStore";
 import { authUserAtom } from "./store/authUser";
+import socket from "./store/socket";
 import NavBar from "./components/NavBar/NavBar";
 import SearchBar from "./components/NavBar/SearchBar/SearchBar";
 import Chat from "./components/Chat/Chat";
@@ -19,6 +20,15 @@ const Chatroom = () => {
   const location = useLocation();
 
   useEffect(() => {
+    const userId = authUser.id;
+    socket.emit("userId", userId);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
     if (location.pathname.includes("/community")) {
       setOpenChat(false);
       setOpenCommunity(true);
@@ -29,8 +39,6 @@ const Chatroom = () => {
   }, [location]);
 
   let fetchedData;
-
-  console.log(authUser);
 
   async function fetchChatroomData() {
     try {
@@ -45,7 +53,8 @@ const Chatroom = () => {
         throw new Error("Request failed");
       }
       fetchedData = await response.json();
-      setChatUsers(fetchedData.sortedData);
+      console.log(fetchedData);
+      setChatUsers(fetchedData);
     } catch (error) {
       console.error("Error:", error);
     }

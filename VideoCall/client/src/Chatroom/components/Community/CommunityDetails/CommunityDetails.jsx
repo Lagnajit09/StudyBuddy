@@ -1,26 +1,38 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CommunityDetails.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { Avatar } from "@mui/material";
 import CommunityMembers from "../../../../assets/CommunityMembers.svg";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { currentCommunityAtom } from "../../../store/communityStore";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import { currentChatAtom } from "../../../store/chatStore";
+import { chatUsersAtom, currentChatAtom } from "../../../store/chatStore";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 const CommunityDetails = (props) => {
   const navigate = useNavigate();
   const currentCommunity = useRecoilValue(currentCommunityAtom);
-  const setCurrentChat = useSetRecoilState(currentChatAtom);
   const [showMembers, setShowMembers] = useState(false);
   const [cMember, setCMember] = useState({});
+  const [copiedVisible, setCopiedVisible] = useState(false);
 
   const style = {
     height: "0",
     padding: "0 15px",
     border: "none",
+  };
+
+  const inviteLink = useMemo(() => {
+    return `http://localhost:5173/chatroom/community/${currentCommunity._id}`;
+  }, [currentCommunity]);
+
+  const handleCopy = () => {
+    setCopiedVisible(true);
+    setTimeout(() => {
+      setCopiedVisible(false);
+    }, 300);
   };
 
   return (
@@ -72,20 +84,36 @@ const CommunityDetails = (props) => {
               cursor: "pointer",
             }}
             onClick={() => {
-              setCurrentChat(cMember);
-              navigate("/chatroom/chat");
+              navigate(`/chatroom/chat/${cMember._id}`, {
+                state: {
+                  chatUser: {
+                    id: cMember._id,
+                    firstName: cMember.firstName,
+                    lastName: cMember.lastName,
+                    email: cMember.email,
+                    profile_pic: cMember.profile_pic,
+                  },
+                },
+              });
             }}
           />
         )}
       </div>
+
       <div className="communityD-about" style={showMembers ? style : {}}>
         <h4>Description</h4>
         <p>{currentCommunity.description}</p>
       </div>
       <div className="community-link" style={showMembers ? style : {}}>
         <h4>Invite link</h4>
-        <span>{"https://www.abc.com/codecrafters".slice(0, 15) + "..."}</span>
+        <CopyToClipboard text={inviteLink}>
+          <span className="link" onClick={handleCopy}>
+            {inviteLink.slice(0, 15) + "..."}
+          </span>
+        </CopyToClipboard>
+        {copiedVisible && <span className="copied">Copied!</span>}
       </div>
+
       {!cMember.firstName && (
         <div className="communityD-members">
           <div

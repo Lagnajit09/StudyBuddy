@@ -363,7 +363,7 @@ const communityMessages = [
 ];
 
 communityRouter.post("/create", async (req, res) => {
-  const { name, description, members, createdBy } = req.body;
+  const { name, description, members, createdBy, image } = req.body;
 
   try {
     const newCommunity = await Community.create({
@@ -371,11 +371,18 @@ communityRouter.post("/create", async (req, res) => {
       description,
       members,
       createdBy,
+      image,
     });
+    console.log(newCommunity);
+    const communityWithmembers = await Community.find({
+      _id: newCommunity._id,
+    })
+      .populate("members", "firstName lastName email profile_pic")
+      .exec();
 
     res.json({
       message: "New community created successfully!",
-      newCommunity,
+      communityWithmembers,
     });
   } catch (err) {
     res.status(400).json({
@@ -394,6 +401,22 @@ communityRouter.get("/user-communities/:userId", async (req, res) => {
       .populate("members", "firstName lastName email profile_pic")
       .exec();
     res.json(members);
+  } catch (error) {
+    res.status(400).json({
+      error,
+    });
+  }
+});
+
+communityRouter.get("/searchCommunity/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const community = await Community.find({
+      _id: new ObjectId(id),
+    })
+      .populate("members", "firstName lastName email profile_pic")
+      .exec();
+    res.json(community);
   } catch (error) {
     res.status(400).json({
       error,

@@ -5,7 +5,7 @@
     padding: 13px 13px 13px 21px;
 }
 .chatUser:hover{
-    background-color: #00aaff0d;
+    background-color: #00aaff0d !important;
     cursor: pointer;
 }
 

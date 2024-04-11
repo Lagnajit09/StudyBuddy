@@ -25,6 +25,18 @@ chatRouter.get("/allUsers", async (req, res) => {
   res.json({ id: users.map((user) => user._id) });
 });
 
+chatRouter.get("/one-user/:id", async (req, res) => {
+  const _id = new ObjectId(req.params.id);
+  const user = await User.findOne({ _id });
+  res.json({
+    id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    profile_pic: user.profile_pic,
+  });
+});
+
 chatRouter.get("/:id", async (req, res) => {
   const sender = req.params.id;
   const senderId = new ObjectId(sender);
@@ -55,7 +67,6 @@ chatRouter.get("/:id", async (req, res) => {
           email: user.email,
           profile_pic: user.profile_pic,
         },
-        lastMessage: item.lastMessage.content,
         lastMsgTime: item.lastMessage.timestamp,
       };
     })
@@ -65,7 +76,7 @@ chatRouter.get("/:id", async (req, res) => {
     (a, b) => b.lastMsgTime - a.lastMsgTime
   );
 
-  res.json({ sortedData });
+  res.json(sortedData);
 });
 
 chatRouter.post("/current-chat", async (req, res) => {
@@ -106,11 +117,12 @@ chatRouter.post("/", async (req, res) => {
 
 //Delete an user
 chatRouter.delete("/delete", async (req, res) => {
-  const { id } = req.body;
+  const { content } = req.body;
   try {
-    await Message.deleteMany({
-      $or: [{ senderId: id }, { receiverId: id }],
-    });
+    await Message.deleteMany({ content });
+    // {
+    //   $or: [{ senderId: id }, { receiverId: id }],
+    // }
     res.json({ message: "Deleted successfully!" });
   } catch (error) {
     res.json({ error });

@@ -78,11 +78,22 @@
     border-bottom: 2px solid rgba(217, 217, 217, 0.773);
     overflow: hidden;
     transition: all 0.2s ease;
+    position: relative;
 }
-.community-link span{
+.community-link .link{
     color: #00A9FF;
     cursor: pointer;
     font-size: 12px;
+}
+.community-link .copied{
+    font-size: 12px;
+    background-color: rgba(211, 211, 211, 0.736);
+    color: rgba(0, 0, 0, 0.723);
+    padding: 5px;
+    border-radius: 5px;
+    position: absolute;
+    right: 12%;
+    bottom: 20%;
 }
 .communityD-members .members-header{
     display: flex;

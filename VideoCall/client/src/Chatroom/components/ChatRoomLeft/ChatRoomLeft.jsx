@@ -10,11 +10,12 @@ import JoinedCommunity from "../Community/JoinedCommunity/JoinedCommunity";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { PiUsersThree } from "react-icons/pi";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { currentCommunityAtom } from "../../store/communityStore";
 
 const ChatRoomLeft = (props) => {
   const authUser = useRecoilValue(authUserAtom);
+  const currentCommunity = useRecoilValue(currentCommunityAtom);
   const navigate = useNavigate();
-  console.log(props);
   return (
     <div className="chatleft">
       <div className="chatleft-header">
@@ -44,7 +45,7 @@ const ChatRoomLeft = (props) => {
               cursor: "pointer",
             }}
             onClick={() => {
-              navigate("/chatroom/community");
+              navigate(`/chatroom/community/${currentCommunity._id}`);
             }}
           />
           <IoChatbubbleEllipsesOutline

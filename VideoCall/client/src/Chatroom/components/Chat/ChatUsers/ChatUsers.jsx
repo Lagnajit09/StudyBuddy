@@ -1,18 +1,75 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import "./ChatUsers.css";
 import { Avatar } from "@mui/material";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import {
   chatUsersAtom,
   currentChatAtom,
   newMessageAtom,
 } from "../../../store/chatStore";
+import socket from "../../../store/socket";
 import { IoMdAddCircleOutline } from "react-icons/io";
 
 const ChatUsers = () => {
-  const chatUsers = useRecoilValue(chatUsersAtom);
+  const params = useParams();
+  const navigate = useNavigate();
+  const [chatUsers, setChatUsers] = useRecoilState(chatUsersAtom);
   const [newMessages, setNewMessages] = useRecoilState(newMessageAtom);
   const [currentChat, setCurrentChat] = useRecoilState(currentChatAtom);
+
+  useEffect(() => {
+    socket.on("chatUsersUpdated", (receiverId) => {
+      // Update chat users list for recipient
+      const fetchSenderDetails = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/chatroom/chat/one-user/${receiverId}`
+          );
+          if (!response.ok) {
+            console.log("Error while fetching!");
+          }
+          const data = await response.json();
+          const dataChatUser = { chatUser: data };
+          const exists = chatUsers.some(
+            (user) => user.chatUser.email === dataChatUser.chatUser.email
+          );
+          !exists ? setChatUsers((prev) => [dataChatUser, ...prev]) : null;
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchSenderDetails();
+    });
+
+    return () => {
+      socket.off("chatUsersUpdated");
+    };
+  }, [chatUsers, setChatUsers]);
+
+  const userId = useMemo(() => {
+    return params.userId;
+  }, [params]);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      if (userId) {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/chatroom/chat/one-user/${userId}`
+          );
+          if (!response.ok) {
+            console.log("Error while fetching!");
+          }
+          const data = await response.json();
+          setCurrentChat(data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    fetchCurrentUser();
+  }, [params?.userId]);
 
   const chatUserClickHandler = (chatWithUser) => {
     setCurrentChat(chatWithUser);
@@ -28,7 +85,7 @@ const ChatUsers = () => {
 
   return (
     <>
-      {chatUsers.length ? (
+      {chatUsers?.length ? (
         <div>
           {chatUsers.map((user, index) => (
             <div
@@ -38,6 +95,7 @@ const ChatUsers = () => {
               onClick={() => {
                 chatUserClickHandler(user.chatUser);
                 setNewMessages([]);
+                navigate(`/chatroom/chat/${user.chatUser.id}`);
               }}
               style={{
                 backgroundColor:
@@ -60,7 +118,7 @@ const ChatUsers = () => {
               />
               <div className="chatUserDetails">
                 <h3>{`${user.chatUser.firstName} ${user.chatUser.lastName}`}</h3>
-                <p>{truncateString(user.lastMessage, 30)}</p>
+                {/* <p>{truncateString(user.lastMessage, 30)}</p> */}
               </div>
             </div>
           ))}

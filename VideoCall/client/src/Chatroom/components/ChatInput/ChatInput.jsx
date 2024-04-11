@@ -1,30 +1,56 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./ChatInput.css";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { authUserAtom } from "../../store/authUser";
-import { currentChatAtom, newMessageAtom, socket } from "../../store/chatStore";
+import {
+  chatUsersAtom,
+  currentChatAtom,
+  newMessageAtom,
+} from "../../store/chatStore";
+import socket from "../../store/socket";
 import EmojiPicker from "emoji-picker-react";
 import smileyEmoji from "../../../assets/emojiPicker.svg";
 import attachment from "../../../assets/attachment.svg";
 import { FiSend } from "react-icons/fi";
 
 const ChatInput = (props) => {
+  const { state } = useLocation();
   const sender = useRecoilValue(authUserAtom);
   const receiver = useRecoilValue(currentChatAtom);
-  const setNewMessages = useSetRecoilState(newMessageAtom);
+  const [newMessages, setNewMessages] = useRecoilState(newMessageAtom);
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [sendClicked, setSendClicked] = useState(false);
   const wrapperRef = useRef(null);
+  const [chatUsers, setChatUsers] = useRecoilState(chatUsersAtom);
 
   useEffect(() => {
-    socket.on("message", (data) => {
+    const handleIncomingMessage = (data) => {
       setNewMessages((prev) => [...prev, data.data]);
-    });
-    return () => {
-      socket.off("Turning the socket off.");
+
+      const exists = chatUsers.some(
+        (user) => user.chatUser.email === state.chatUser.email
+      );
+      if (!exists && state) {
+        setChatUsers((prev) => [state, ...prev]);
+      }
     };
-  }, []);
+
+    socket.on("message", handleIncomingMessage);
+
+    return () => {
+      socket.off("message", handleIncomingMessage);
+    };
+  }, [setNewMessages, chatUsers, state]);
+
+  // useEffect(() => {
+  //   setNewMessages([]);
+  // }, [receiver.id, setNewMessages]);
+
+  useEffect(() => {
+    setNewMessages([]);
+  }, [receiver.id]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -40,11 +66,11 @@ const ChatInput = (props) => {
 
   useEffect(() => {
     if (sendClicked) {
-      fetchMessages();
+      postMessages();
     }
   }, [sendClicked]);
 
-  const fetchMessages = () => {
+  const postMessages = () => {
     const apiUrl = "http://localhost:3000/chatroom/chat";
     const data = {
       senderId: sender.id,
@@ -52,8 +78,13 @@ const ChatInput = (props) => {
       content: message,
       timestamp: Date.now(),
     };
+    console.log(data);
     socket.emit("message", {
       data,
+    });
+    socket.emit("updateChatUsers", {
+      recipientId: receiver.id,
+      senderId: sender.id,
     });
     fetch(apiUrl, {
       method: "POST",

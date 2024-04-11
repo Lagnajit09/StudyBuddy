@@ -12,7 +12,9 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Signup />} />
             <Route path="/chatroom/chat" element={<Chatroom />} />
+            <Route path="/chatroom/chat/:userId" element={<Chatroom />} />
             <Route path="/chatroom/community" element={<Chatroom />} />
+            <Route path="/chatroom/community/:id" element={<Chatroom />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>

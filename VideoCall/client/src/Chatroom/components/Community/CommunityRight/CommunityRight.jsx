@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./CommunityRight.css";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
@@ -7,9 +7,10 @@ import {
 } from "../../../store/communityStore";
 import { authUserAtom } from "../../../store/authUser";
 import ChatInput from "../../ChatInput/ChatInput";
-import ChatHeader from "../../ChatHeader/ChatHeader";
 import CommunityChat from "../CommunityChat/CommunityChat";
 import CommunityDetails from "../CommunityDetails/CommunityDetails";
+import JoinCommunity from "../JoinCommunity/JoinCommunity";
+import CommunityHeader from "../CommunityHeader/CommunityHeader";
 
 const CommunityRight = () => {
   const currentCommunity = useRecoilValue(currentCommunityAtom);
@@ -17,7 +18,12 @@ const CommunityRight = () => {
   const setCommunityMessages = useSetRecoilState(communityMessagesAtom);
   const [detailsBtnClicked, setDetailsBtnClicked] = useState(false);
 
-  console.log(currentCommunity._id);
+  const isAMember = useMemo(() => {
+    const arr = currentCommunity.members.map(
+      (member) => authUser.id === member._id
+    );
+    return arr.includes(true);
+  }, [currentCommunity]);
 
   let currentCommunityMessage;
 
@@ -47,14 +53,14 @@ const CommunityRight = () => {
         className="selected-community"
         style={detailsBtnClicked ? { width: "73%" } : { width: "100%" }}
       >
-        <ChatHeader
+        <CommunityHeader
           from="community"
           setDetailsBtnClicked={setDetailsBtnClicked}
           detailsBtnClicked={detailsBtnClicked}
           current={currentCommunity}
         />
         <CommunityChat />
-        <ChatInput open={detailsBtnClicked} />
+        {isAMember ? <ChatInput open={detailsBtnClicked} /> : <JoinCommunity />}
       </div>
 
       <CommunityDetails

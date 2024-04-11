@@ -10,7 +10,6 @@ import NewCommunity from "./NewCommunity/NewCommunity";
 const Community = () => {
   const currentCommunity = useRecoilValue(currentCommunityAtom);
   const [newCommunityForm, setNewCommunityForm] = useState(false);
-
   return (
     <div className="community">
       <ChatRoomLeft

@@ -14,7 +14,6 @@ const ChatMessage = () => {
   const chatMessages = useRecoilValue(chatMessageAtom);
   const newMessages = useRecoilValue(newMessageAtom);
   const currentChat = useRecoilValue(currentChatAtom);
-
   const msgWrapper = useRef();
 
   const height = msgWrapper.current?.scrollHeight;

@@ -1,10 +1,57 @@
 import React, { useState } from "react";
 import "./NewCommunity.css";
 import { FaArrowLeft } from "react-icons/fa";
+import { authUserAtom } from "../../../store/authUser";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  currentCommunityAtom,
+  joinedCommunitiesAtom,
+} from "../../../store/communityStore";
 
 const NewCommunity = (props) => {
+  const authUser = useRecoilValue(authUserAtom);
+  const setCurrentCommunity = useSetRecoilState(currentCommunityAtom);
+  const [joinedCommunities, setJoinedCommunities] = useRecoilState(
+    joinedCommunitiesAtom
+  );
   const [communityName, setCommunityName] = useState("");
   const [communityDesc, setCommunityDesc] = useState("");
+
+  const newCommunityHandler = async (event) => {
+    event.preventDefault();
+    const data = {
+      name: communityName,
+      description: communityDesc,
+      members: [authUser.id],
+      created_by: authUser.id,
+      image: "#A197FC",
+    };
+    try {
+      const response = await fetch(
+        "http://localhost:3000/chatroom/community/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      const json = await response.json();
+      console.log(json.communityWithmembers[0]);
+      setJoinedCommunities([
+        ...joinedCommunities,
+        json.communityWithmembers[0],
+      ]);
+      setCurrentCommunity(json.communityWithmembers[0]);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setCommunityDesc("");
+    setCommunityName("");
+    props.setOpen(!props.open);
+  };
 
   return (
     <div
@@ -22,7 +69,7 @@ const NewCommunity = (props) => {
         />
         <p>New Community</p>
       </div>
-      <form>
+      <form onSubmit={newCommunityHandler}>
         <div className="newCommunity-image">
           <div></div>
         </div>

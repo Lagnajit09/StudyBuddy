@@ -23,7 +23,7 @@ const ChatRight = () => {
         {
           method: "POST",
           body: JSON.stringify({
-            currentChatId: currentChat.id,
+            currentChatId: currentChat.id || currentChat._id,
             loggedInUserId: authUser.id,
           }),
           headers: { "Content-Type": "application/json" },
@@ -34,6 +34,7 @@ const ChatRight = () => {
       }
       fetchedCurrentChatMessage = await response.json();
       setChatMessages(fetchedCurrentChatMessage);
+      console.log(fetchedCurrentChatMessage);
     } catch (error) {
       console.error("Error:", error);
     }

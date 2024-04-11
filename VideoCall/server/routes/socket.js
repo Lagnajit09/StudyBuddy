@@ -5,13 +5,15 @@ const initializeSocket = (server) => {
     cors: {
       origin: "http://localhost:5173",
       methods: ["GET", "POST"],
-      allowedHeaders: ["Access-Control-Allow-Origin"],
       credentials: true,
     },
   });
 
   io.on("connection", (socket) => {
     console.log("A user connected");
+    socket.on("userId", ({ userId }) => {
+      console.log(userId);
+    });
 
     // Handle incoming messages
     socket.on("message", (data) => {
