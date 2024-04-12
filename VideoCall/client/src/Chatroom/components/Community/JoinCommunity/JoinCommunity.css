@@ -1,0 +1,18 @@
+.joinCommunity{
+    width: 100%;
+    background-color: #00A9FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 20.5px 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.847);
+    font-size: 16px;
+}
+
+.joinCommunity:hover{
+    background-color: #00aaffe1;
+}

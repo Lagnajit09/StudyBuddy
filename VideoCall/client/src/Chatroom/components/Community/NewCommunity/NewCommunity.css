@@ -1,0 +1,89 @@
+.newCommunity{
+    width: 21%;
+    background-color: white;
+    border-right: 2px solid rgba(217, 217, 217, 0.773);
+    position: absolute;
+    z-index: 2;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.newCommunity-header{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 17px 15px;
+    background-color: #00A9FF;
+    color: white;
+    font-size: 18px;
+}
+
+.newCommunity-image{
+    padding: 70px 70px 50px;
+}
+
+.newCommunity-image div{
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    background-color: rgb(232, 232, 232);
+    margin: auto;
+}
+
+.newCommunity-name{
+    padding: 0 25px;
+}
+
+.newCommunity-name p{
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.newCommunity-name input{
+    padding: 7px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    width: 93%;
+    margin: 7px 0 20px;
+}
+
+.newCommunity-name input::placeholder{
+    font-size: 12px;
+}
+
+.newCommunity-desc{
+    padding: 0 25px;
+}
+
+.newCommunity-desc p{
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.newCommunity-desc textarea{
+    width: 93%;
+    height: 100px;
+    padding: 7px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    margin-top: 7px;
+    text-wrap:wrap;
+    word-break: break-all;
+    resize: none;
+}
+
+.newCommunity button{
+    width: 21%;
+    height: 8.6%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00A9FF;
+    border: none;
+    outline: none;
+    position: fixed;
+    bottom: 0;
+    cursor: pointer;
+}

@@ -1,0 +1,44 @@
+.recommended-communities{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 30px;
+    grid-row-gap: 15px;
+}
+    
+.community1 { grid-area: 1 / 1 / 2 / 2; }
+.community2 { grid-area: 1 / 2 / 2 / 3; }
+.community3 { grid-area: 2 / 2 / 3 / 3; }
+.community4 { grid-area: 2 / 1 / 3 / 2; }
+
+.com-extra{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    border: 1px solid rgb(195, 195, 195);
+    border-radius: 5px;
+    height: 70%;
+    padding: 5px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.com-extra:hover{
+    background-color: white;
+    transform: scale(1.02);
+}
+
+.recom-left{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.recommended-communities .recom-btn{
+    width: 20px;
+    height: 20px;
+    color: gray;
+}

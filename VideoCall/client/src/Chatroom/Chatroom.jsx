@@ -1,33 +1,60 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { chatUsersAtom, sendMessageAtom } from "../store/chatStore";
-import { authUserAtom } from "../store/authUser";
-import NavBar from "../components/NavBar/NavBar";
-import SearchBar from "../components/NavBar/SearchBar/SearchBar";
-import Chat from "../components/Chat/Chat";
+import { chatUsersAtom } from "./store/chatStore";
+import { authUserAtom } from "./store/authUser";
+import socket from "./store/socket";
+import NavBar from "./components/NavBar/NavBar";
+import SearchBar from "./components/NavBar/SearchBar/SearchBar";
+import Chat from "./components/Chat/Chat";
+import Community from "./components/Community/Community";
 import "./Chatroom.css";
 import { Avatar } from "@mui/material";
-import { cyan } from "@mui/material/colors";
 
 const Chatroom = () => {
   const setChatUsers = useSetRecoilState(chatUsersAtom);
   const authUser = useRecoilValue(authUserAtom);
-  const newMessageSend = useRecoilValue(sendMessageAtom);
-  const [updateState, setUpdateState] = useState(false);
+  const [openChat, setOpenChat] = useState(false);
+  const [openCommunity, setOpenCommunity] = useState(false);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const userId = authUser.id;
+    socket.emit("userId", userId);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (location.pathname.includes("/community")) {
+      setOpenChat(false);
+      setOpenCommunity(true);
+    } else if (location.pathname.includes("/chat")) {
+      setOpenChat(true);
+      setOpenCommunity(false);
+    }
+  }, [location]);
 
   let fetchedData;
 
   async function fetchChatroomData() {
     try {
-      const response = await fetch(`http://localhost:3000/chatroom/chat`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch(
+        `http://localhost:3000/chatroom/chat/${authUser.id}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       if (!response.ok) {
         throw new Error("Request failed");
       }
       fetchedData = await response.json();
-      setChatUsers(fetchedData.sortedData);
+      console.log(fetchedData);
+      setChatUsers(fetchedData);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -35,8 +62,7 @@ const Chatroom = () => {
 
   useEffect(() => {
     fetchChatroomData();
-    setUpdateState(newMessageSend);
-  }, [newMessageSend]);
+  }, []);
 
   return (
     <div className="chatroom">
@@ -52,7 +78,8 @@ const Chatroom = () => {
           sx={{ bgcolor: authUser.profile_pic, width: "30px", height: "30px" }}
         />
       </NavBar>
-      <Chat />
+      {openChat && !openCommunity && <Chat />}
+      {!openChat && openCommunity && <Community />}
     </div>
   );
 };
