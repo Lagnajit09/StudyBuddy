@@ -1,59 +1,45 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
-import "./ChatInput.css";
+import "./CommunityInput.css";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { authUserAtom } from "../../store/authUser";
-import {
-  chatUsersAtom,
-  currentChatAtom,
-  newMessageAtom,
-} from "../../store/chatStore";
-import socket from "../../store/socket";
+import { authUserAtom } from "../../../store/authUser";
+import socket from "../../../store/socket";
 import EmojiPicker from "emoji-picker-react";
-import smileyEmoji from "../../../assets/emojiPicker.svg";
-import attachment from "../../../assets/attachment.svg";
+import smileyEmoji from "../../../../assets/emojiPicker.svg";
+import attachment from "../../../../assets/attachment.svg";
 import { FiSend } from "react-icons/fi";
+import {
+  currentCommunityAtom,
+  newCommunityMsgAtom,
+} from "../../../store/communityStore";
 
-const ChatInput = (props) => {
-  const { state } = useLocation();
+const CommunityInput = (props) => {
   const sender = useRecoilValue(authUserAtom);
-  const receiver = useRecoilValue(currentChatAtom);
-  const [newMessages, setNewMessages] = useRecoilState(newMessageAtom);
+  const currentCommunity = useRecoilValue(currentCommunityAtom);
+  const [newCommunityMessages, setNewCommunityMessages] =
+    useRecoilState(newCommunityMsgAtom);
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [sendClicked, setSendClicked] = useState(false);
   const wrapperRef = useRef(null);
-  const [chatUsers, setChatUsers] = useRecoilState(chatUsersAtom);
+
+  console.log(newCommunityMessages);
 
   useEffect(() => {
     const handleIncomingMessage = (data) => {
-      setNewMessages((prev) => [...prev, data.data]);
-
-      const exists = chatUsers.some(
-        (user) => user.chatUser.email === state.chatUser.email
-      );
-      if (!exists && state) {
-        setChatUsers((prev) => [state, ...prev]);
-      }
+      console.log(data);
+      console.log(newCommunityMessages);
+      setNewCommunityMessages((prev) => [...prev, data.data]);
     };
-
-    socket.on("message", handleIncomingMessage);
+    socket.on("community:message", handleIncomingMessage);
 
     return () => {
-      socket.off("message", handleIncomingMessage);
+      socket.off("community:message", handleIncomingMessage);
     };
-  }, [setNewMessages, chatUsers, state]);
-
-  // useEffect(() => {
-  //   setNewMessages([]);
-  // }, [receiver.id, setNewMessages]);
+  }, [setNewCommunityMessages]);
 
   useEffect(() => {
-    setNewMessages([]);
-  }, [receiver.id]);
-
-  //  array
-  //  function
+    setNewCommunityMessages([]);
+  }, [currentCommunity._id]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -69,25 +55,21 @@ const ChatInput = (props) => {
 
   useEffect(() => {
     if (sendClicked) {
-      postMessages();
+      postCommunityMessages();
     }
   }, [sendClicked]);
 
-  const postMessages = () => {
-    const apiUrl = "http://localhost:3000/chatroom/chat";
+  const postCommunityMessages = () => {
+    const apiUrl = "http://localhost:3000/chatroom/community/send-message";
     const data = {
-      senderId: sender.id,
-      receiverId: receiver.id,
+      sender: sender.id,
+      community: currentCommunity._id,
       content: message,
-      timestamp: Date.now(),
+      createdAt: Date.now(),
     };
     console.log(data);
-    socket.emit("message", {
+    socket.emit("community:message", {
       data,
-    });
-    socket.emit("updateChatUsers", {
-      recipientId: receiver.id,
-      senderId: sender.id,
     });
     fetch(apiUrl, {
       method: "POST",
@@ -129,8 +111,6 @@ const ChatInput = (props) => {
   };
 
   const handleAttachFiles = () => {};
-
-  // console.log(chatMessages);
 
   return (
     <div>
@@ -193,7 +173,6 @@ const ChatInput = (props) => {
         </div>
         <button>
           <div className="send-btn" onClick={sendMessage}>
-            {/* <img src={SendBtn} alt="Send" /> */}
             <FiSend style={{ fontSize: "17px" }} />
           </div>
         </button>
@@ -202,4 +181,4 @@ const ChatInput = (props) => {
   );
 };
 
-export default ChatInput;
+export default CommunityInput;

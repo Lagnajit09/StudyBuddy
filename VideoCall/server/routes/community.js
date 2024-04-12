@@ -5,360 +5,456 @@ const communityRouter = express.Router();
 
 const communityMessages = [
   {
-    content: "Hey everyone! Just wanted to say hi and introduce myself.",
+    content: "Hey everyone!",
     sender: "660128e020c0f0ac18fda708",
     community: "6612df1a56310add5a7294c4",
-    createdAt: "2024-03-25T13:15:00.000Z",
+    createdAt: "2024-07-20T04:00:44.333Z",
   },
   {
-    content: "Welcome, Lagnajit! Glad to have you here.",
-    sender: "66012a2620c0f0ac18fda70a",
+    content: "Just finished my coding assignment. Feeling accomplished!",
+    sender: "660128e020c0f0ac18fda708",
     community: "6612df1a56310add5a7294c4",
-    createdAt: "2024-03-25T13:17:00.000Z",
+    createdAt: "2024-07-20T04:00:44.333Z",
   },
   {
-    content: "Hi everyone! I'm excited to be part of this community.",
+    content: "Does anyone have tips for acing the upcoming math exam?",
+    sender: "66127a877fa6cdaaf46ca855",
+    community: "6612df1a56310add5a7294c4",
+    createdAt: "2024-07-20T04:10:00.000Z",
+  },
+  {
+    content:
+      "Struggling with understanding quantum mechanics. Any resources or study tips?",
     sender: "66127a937fa6cdaaf46ca857",
     community: "6612df1a56310add5a7294c4",
-    createdAt: "2024-03-25T13:20:00.000Z",
+    createdAt: "2024-07-20T04:20:00.000Z",
   },
   {
-    content: "Hello, fellow developers! Let's create amazing things together.",
+    content:
+      "Started reading 'Introduction to Machine Learning.' Any fellow enthusiasts here?",
     sender: "66127ade7fa6cdaaf46ca861",
     community: "6612df1a56310add5a7294c4",
-    createdAt: "2024-03-25T13:25:00.000Z",
+    createdAt: "2024-07-20T04:30:00.000Z",
   },
   {
-    content: "Hey guys, has anyone worked with React before?",
+    content:
+      "Just joined the community! Excited to dive into some deep learning discussions.",
     sender: "66127a9e7fa6cdaaf46ca859",
     community: "6612df1a56310add5a7294c4",
-    createdAt: "2024-03-25T13:30:00.000Z",
+    createdAt: "2024-07-20T04:40:00.000Z",
   },
   {
-    content:
-      "Yes, I have some experience with React. What do you need help with?",
+    content: "Any tips for mastering JavaScript?",
     sender: "66127b307fa6cdaaf46ca865",
     community: "6612df1a56310add5a7294c4",
-    createdAt: "2024-03-25T13:35:00.000Z",
+    createdAt: "2024-07-20T04:50:00.000Z",
   },
   {
     content:
-      "Also, here's a useful tutorial I found: [React Tutorial](https://reactjs.org/tutorial/tutorial.html)",
-    sender: "66127b307fa6cdaaf46ca865",
-    community: "6612df1a56310add5a7294c4",
-    createdAt: "2024-03-25T13:40:00.000Z",
-  },
-  {
-    content: "Thanks for sharing, Umesh!",
-    sender: "66127ab77fa6cdaaf46ca85d",
-    community: "6612df1a56310add5a7294c4",
-    createdAt: "2024-03-25T13:45:00.000Z",
-  },
-  {
-    content: "I'm struggling with CSS animations. Any tips?",
+      "Just finished reviewing my data structures notes. Time for some practice!",
     sender: "660128e020c0f0ac18fda708",
     community: "6612df1a56310add5a7294c4",
-    createdAt: "2024-03-25T13:50:00.000Z",
+    createdAt: "2024-07-20T05:00:00.000Z",
   },
   {
-    content:
-      "Sure, here's a great resource: [CSS Animations Guide](https://css-tricks.com/css-animation-libraries/)",
-    sender: "66127ab77fa6cdaaf46ca85d",
+    content: "Working on a new coding project. Anyone interested in joining?",
+    sender: "66127a877fa6cdaaf46ca855",
     community: "6612df1a56310add5a7294c4",
-    createdAt: "2024-03-25T13:55:00.000Z",
-  },
-  {
-    content: "Hey everyone! Excited to learn more about Python!",
-    sender: "660128e020c0f0ac18fda708",
-    community: "6612df5656310add5a7294c6",
-    createdAt: "2024-03-25T14:00:00.000Z",
-  },
-  {
-    content: "Welcome to the Pythonistas community!",
-    sender: "66127ab77fa6cdaaf46ca85d",
-    community: "6612df5656310add5a7294c6",
-    createdAt: "2024-03-25T14:05:00.000Z",
+    createdAt: "2024-07-20T05:10:00.000Z",
   },
   {
     content:
-      "I'm currently working on a Python project for data analysis. Any tips?",
+      "Looking for recommendations on resources for learning algorithms.",
     sender: "66127a937fa6cdaaf46ca857",
-    community: "6612df5656310add5a7294c6",
-    createdAt: "2024-03-25T14:10:00.000Z",
-  },
-  {
-    content: "Sure! What specifically are you struggling with?",
-    sender: "66127b307fa6cdaaf46ca865",
-    community: "6612df5656310add5a7294c6",
-    createdAt: "2024-03-25T14:15:00.000Z",
-  },
-  {
-    content: "I'm having trouble with data visualization.",
-    sender: "66127a9e7fa6cdaaf46ca859",
-    community: "6612df5656310add5a7294c6",
-    createdAt: "2024-03-25T14:20:00.000Z",
+    community: "6612df1a56310add5a7294c4",
+    createdAt: "2024-07-20T05:20:00.000Z",
   },
   {
     content:
-      "Here's a great library for data visualization in Python: [Matplotlib](https://matplotlib.org/)",
-    sender: "66127b307fa6cdaaf46ca865",
-    community: "6612df5656310add5a7294c6",
-    createdAt: "2024-03-25T14:25:00.000Z",
+      "Just finished my first coding bootcamp. Feeling excited to apply my skills!",
+    sender: "66127ade7fa6cdaaf46ca861",
+    community: "6612df1a56310add5a7294c4",
+    createdAt: "2024-07-20T05:30:00.000Z",
   },
   {
-    content: "Thanks! I'll check it out.",
+    content: "Anyone else participating in the upcoming hackathon?",
     sender: "66127a9e7fa6cdaaf46ca859",
-    community: "6612df5656310add5a7294c6",
-    createdAt: "2024-03-25T14:30:00.000Z",
+    community: "6612df1a56310add5a7294c4",
+    createdAt: "2024-07-20T05:40:00.000Z",
   },
   {
-    content: "Anyone here familiar with Flask?",
+    content: "Completed my first coding challenge today. Feeling proud!",
+    sender: "66127b307fa6cdaaf46ca865",
+    community: "6612df1a56310add5a7294c4",
+    createdAt: "2024-07-20T05:50:00.000Z",
+  },
+  {
+    content:
+      "Just finished implementing a neural network for image classification. Exciting stuff!",
+    sender: "66127a937fa6cdaaf46ca857",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T12:53:44.333Z",
+  },
+  {
+    content:
+      "Exploring natural language processing techniques. Anyone interested in collaborating?",
+    sender: "660128e020c0f0ac18fda708",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T12:54:44.333Z",
+  },
+  {
+    content:
+      "Studying reinforcement learning algorithms. Any tips on understanding Q-learning?",
+    sender: "66127b927fa6cdaaf46ca86f",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T12:55:44.333Z",
+  },
+  {
+    content:
+      "Attended a workshop on generative adversarial networks. Mind-blowing concepts!",
+    sender: "66127bba7fa6cdaaf46ca875",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T12:56:44.333Z",
+  },
+  {
+    content:
+      "Looking for resources on computer vision applications. Any recommendations?",
+    sender: "66127b9e7fa6cdaaf46ca871",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T12:57:44.333Z",
+  },
+  {
+    content:
+      "Just completed a course on deep reinforcement learning. Ready for some hands-on projects!",
+    sender: "66127b3d7fa6cdaaf46ca867",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T12:58:44.333Z",
+  },
+  {
+    content:
+      "Exploring the latest advancements in machine learning. The field is evolving so rapidly!",
+    sender: "661188549168c35d8524526b",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T12:59:44.333Z",
+  },
+  {
+    content:
+      "Just joined AI Explorers! Excited to learn and grow with this community.",
+    sender: "66127a877fa6cdaaf46ca855",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T13:00:44.333Z",
+  },
+  {
+    content:
+      "Brushing up on my linear algebra skills. Can't wait to apply them to machine learning models!",
+    sender: "66127a6d7fa6cdaaf46ca853",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T13:01:44.333Z",
+  },
+  {
+    content:
+      "Experimenting with different activation functions in neural networks. ReLU seems to be performing well!",
+    sender: "66127a937fa6cdaaf46ca857",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T13:02:44.333Z",
+  },
+  {
+    content:
+      "Completed a project on sentiment analysis using LSTM networks. Results are promising!",
+    sender: "660128e020c0f0ac18fda708",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T13:03:44.333Z",
+  },
+  {
+    content:
+      "Studying attention mechanisms in transformer models. Fascinating how they improve model performance!",
+    sender: "66127b927fa6cdaaf46ca86f",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T13:04:44.333Z",
+  },
+  {
+    content:
+      "Looking for datasets to train my image recognition model. Any recommendations?",
+    sender: "66127bba7fa6cdaaf46ca875",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T13:05:44.333Z",
+  },
+  {
+    content:
+      "Just attended a webinar on reinforcement learning applications in robotics. Mind-blowing stuff!",
+    sender: "66127b9e7fa6cdaaf46ca871",
+    community: "6612df8056310add5a7294c8",
+    createdAt: "2024-04-08T13:06:44.333Z",
+  },
+  {
+    content: "Hey Pythonistas! Anyone working on a cool project?",
     sender: "66012a2620c0f0ac18fda70a",
     community: "6612df5656310add5a7294c6",
-    createdAt: "2024-03-25T14:35:00.000Z",
+    createdAt: "2024-05-09T10:15:44.333Z",
   },
   {
-    content:
-      "Yes, I've used Flask for web development. What do you need help with?",
-    sender: "66127a937fa6cdaaf46ca857",
+    content: "I'm diving into Django this week. Any tips?",
+    sender: "66127ab77fa6cdaaf46ca85d",
     community: "6612df5656310add5a7294c6",
-    createdAt: "2024-03-25T14:40:00.000Z",
+    createdAt: "2024-05-09T10:17:00.000Z",
   },
   {
-    content:
-      "I'm trying to build a simple REST API with Flask. Any good tutorials?",
-    sender: "660128e020c0f0ac18fda708",
+    content: "Just finished a Python script for data analysis. Feels great!",
+    sender: "66127ad17fa6cdaaf46ca85f",
     community: "6612df5656310add5a7294c6",
-    createdAt: "2024-03-25T14:45:00.000Z",
+    createdAt: "2024-05-09T10:19:00.000Z",
+  },
+  {
+    content: "Looking for Python job opportunities. Any leads?",
+    sender: "66127b267fa6cdaaf46ca863",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:21:00.000Z",
   },
   {
     content:
-      "Hello fellow AI enthusiasts! Excited to learn and explore together.",
-    sender: "6612df8056310add5a7294c8",
-    community: "66127a937fa6cdaaf46ca857",
-    createdAt: "2024-03-25T15:00:00.000Z",
+      "Just discovered a new Python library for machine learning. Excited to explore!",
+    sender: "66127b757fa6cdaaf46ca86b",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:23:00.000Z",
+  },
+  {
+    content: "Struggling with Python loops. Any good tutorials?",
+    sender: "66127baa7fa6cdaaf46ca873",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:25:00.000Z",
+  },
+  {
+    content: "Just completed a Python coding challenge. Feeling accomplished!",
+    sender: "66012a2620c0f0ac18fda70a",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:27:00.000Z",
+  },
+  {
+    content: "Working on optimizing my Python code for better performance.",
+    sender: "66127ab77fa6cdaaf46ca85d",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:29:00.000Z",
+  },
+  {
+    content: "Anyone else exploring Python web frameworks?",
+    sender: "66127ad17fa6cdaaf46ca85f",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:31:00.000Z",
+  },
+  {
+    content: "Just started learning Python. Excited for the journey ahead!",
+    sender: "66127b267fa6cdaaf46ca863",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:33:00.000Z",
+  },
+  {
+    content: "Looking for a Python mentor. Any volunteers?",
+    sender: "66127b757fa6cdaaf46ca86b",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:35:00.000Z",
+  },
+  {
+    content: "Just attended a Python workshop. Learned a lot!",
+    sender: "66127baa7fa6cdaaf46ca873",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:37:00.000Z",
+  },
+  {
+    content: "Python is such a versatile language. So many possibilities!",
+    sender: "66012a2620c0f0ac18fda70a",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:39:00.000Z",
+  },
+  {
+    content: "Anyone using Python for data science projects?",
+    sender: "66127ab77fa6cdaaf46ca85d",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:41:00.000Z",
+  },
+  {
+    content: "Just started a Python study group. DM me if interested!",
+    sender: "66127ad17fa6cdaaf46ca85f",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:43:00.000Z",
+  },
+  {
+    content: "Looking for Python programming buddies. Let's learn together!",
+    sender: "66127b267fa6cdaaf46ca863",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:45:00.000Z",
   },
   {
     content:
-      "Welcome to the AI Explorers community! Let's dive into the world of artificial intelligence.",
-    sender: "66127a9e7fa6cdaaf46ca859",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T15:05:00.000Z",
+      "Just discovered a Python library for natural language processing. Excited to try it out!",
+    sender: "66127b757fa6cdaaf46ca86b",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:47:00.000Z",
+  },
+  {
+    content: "Python is my favorite programming language!",
+    sender: "66127baa7fa6cdaaf46ca873",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:49:00.000Z",
+  },
+  {
+    content: "Just completed a Python course on Coursera. Highly recommend it!",
+    sender: "66012a2620c0f0ac18fda70a",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:51:00.000Z",
+  },
+  {
+    content: "Learning Python has been a game-changer for my career!",
+    sender: "66127ab77fa6cdaaf46ca85d",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:53:00.000Z",
+  },
+  {
+    content: "Just built my first Python web app. Feeling proud!",
+    sender: "66127ad17fa6cdaaf46ca85f",
+    community: "6612df5656310add5a7294c6",
+    createdAt: "2024-05-09T10:55:00.000Z",
+  },
+  {
+    content: "Just solved a challenging physics problem!",
+    sender: "66127b3d7fa6cdaaf46ca867",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T08:30:44.333Z",
+  },
+  {
+    content: "Does anyone need help with their physics homework?",
+    sender: "66127b867fa6cdaaf46ca86d",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T08:35:00.000Z",
+  },
+  {
+    content: "I'm studying quantum mechanics. Anyone else interested?",
+    sender: "66127b757fa6cdaaf46ca86b",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T08:40:00.000Z",
   },
   {
     content:
-      "I'm currently studying machine learning algorithms. Any recommendations for resources?",
-    sender: "66127b307fa6cdaaf46ca865",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T15:10:00.000Z",
+      "Just finished watching a physics documentary. Highly recommend it!",
+    sender: "66127bd87fa6cdaaf46ca879",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T08:45:00.000Z",
+  },
+  {
+    content: "Studying for the physics exam next week. Wish me luck!",
+    sender: "66127baa7fa6cdaaf46ca873",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T08:50:00.000Z",
   },
   {
     content:
-      "Sure! Have you checked out the book 'Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow'?",
+      "Just joined the Physics Pioneers community! Excited to learn and discuss physics.",
+    sender: "66127ab77fa6cdaaf46ca85d",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T08:55:00.000Z",
+  },
+  {
+    content: "Just attended a fascinating lecture on thermodynamics!",
+    sender: "66127b3d7fa6cdaaf46ca867",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T09:00:00.000Z",
+  },
+  {
+    content:
+      "Currently studying Newton's laws of motion. Does anyone have any tips?",
+    sender: "66127b867fa6cdaaf46ca86d",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T09:05:00.000Z",
+  },
+  {
+    content:
+      "Struggling with understanding electromagnetism. Any recommendations for resources?",
+    sender: "66127b757fa6cdaaf46ca86b",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T09:10:00.000Z",
+  },
+  {
+    content:
+      "Just conducted a physics experiment and got some interesting results!",
+    sender: "66127bd87fa6cdaaf46ca879",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T09:15:00.000Z",
+  },
+  {
+    content:
+      "Reviewing past exam papers to prepare for the upcoming physics test.",
+    sender: "66127baa7fa6cdaaf46ca873",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T09:20:00.000Z",
+  },
+  {
+    content:
+      "Just finished reading 'The Elegant Universe' by Brian Greene. Mind-blowing stuff!",
+    sender: "66127ab77fa6cdaaf46ca85d",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T09:25:00.000Z",
+  },
+  {
+    content: "Brushing up on my knowledge of optics. Light is fascinating!",
+    sender: "66127b3d7fa6cdaaf46ca867",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T09:30:00.000Z",
+  },
+  {
+    content:
+      "Just watched a documentary on the history of physics. So much to learn!",
+    sender: "66127b867fa6cdaaf46ca86d",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T09:35:00.000Z",
+  },
+  {
+    content: "Exploring the fascinating world of particle physics.",
+    sender: "66127b757fa6cdaaf46ca86b",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T09:40:00.000Z",
+  },
+  {
+    content:
+      "Just joined the Physics Pioneers community! Excited to learn and contribute.",
+    sender: "66127bd87fa6cdaaf46ca879",
+    community: "6612dfab56310add5a7294ca",
+    createdAt: "2024-05-20T09:45:00.000Z",
+  },
+  {
+    content: "Just reviewed the periodic table. Who else finds it fascinating?",
     sender: "660128e020c0f0ac18fda708",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T15:15:00.000Z",
-  },
-  {
-    content: "Yes, it's on my list! I'll definitely give it a read.",
-    sender: "66127b307fa6cdaaf46ca865",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T15:20:00.000Z",
-  },
-  {
-    content:
-      "I'm interested in natural language processing. Any projects I can contribute to?",
-    sender: "66127a937fa6cdaaf46ca857",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T15:25:00.000Z",
-  },
-  {
-    content:
-      "We're working on a sentiment analysis project. Would you like to join?",
-    sender: "66127ab77fa6cdaaf46ca85d",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T15:30:00.000Z",
-  },
-  {
-    content: "That sounds interesting! Count me in.",
-    sender: "66127a9e7fa6cdaaf46ca859",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T15:35:00.000Z",
-  },
-  {
-    content: "Is anyone here familiar with reinforcement learning?",
-    sender: "66127b307fa6cdaaf46ca865",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T15:40:00.000Z",
-  },
-  {
-    content:
-      "I've worked on some reinforcement learning projects. Happy to help!",
-    sender: "660128e020c0f0ac18fda708",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T15:45:00.000Z",
-  },
-  {
-    content:
-      "I'm curious about generative adversarial networks (GANs). Any good tutorials?",
-    sender: "66127b307fa6cdaaf46ca865",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T15:50:00.000Z",
-  },
-  {
-    content:
-      "Check out the 'GANs in Action' book by Jakub Langr and Vladimir Bok. It's a great resource!",
-    sender: "660128e020c0f0ac18fda708",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T15:55:00.000Z",
-  },
-  {
-    content: "Thanks! I'll definitely look into it.",
-    sender: "66127b307fa6cdaaf46ca865",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T16:00:00.000Z",
-  },
-  {
-    content:
-      "I'm working on a computer vision project using convolutional neural networks (CNNs). Anyone interested in collaborating?",
-    sender: "66127a9e7fa6cdaaf46ca859",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T16:05:00.000Z",
-  },
-  {
-    content:
-      "Count me in! I've been wanting to gain more experience with CNNs.",
-    sender: "66127ab77fa6cdaaf46ca85d",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T16:10:00.000Z",
-  },
-  {
-    content:
-      "Awesome! Let's discuss project details in our next community meeting.",
-    sender: "66127a9e7fa6cdaaf46ca859",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T16:15:00.000Z",
-  },
-  {
-    content:
-      "I'm interested in exploring deep reinforcement learning. Any good starting points?",
-    sender: "66127ab77fa6cdaaf46ca85d",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T16:20:00.000Z",
-  },
-  {
-    content:
-      "You might find the 'Deep Reinforcement Learning Hands-On' book by Maxim Lapan helpful!",
-    sender: "66127b307fa6cdaaf46ca865",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T16:25:00.000Z",
-  },
-  {
-    content: "Thanks! I'll check it out.",
-    sender: "66127ab77fa6cdaaf46ca85d",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T16:30:00.000Z",
-  },
-  {
-    content:
-      "Does anyone have experience with deploying machine learning models in production?",
-    sender: "66127a937fa6cdaaf46ca857",
-    community: "6612df8056310add5a7294c8",
-    createdAt: "2024-03-25T16:35:00.000Z",
-  },
-  {
-    content:
-      "Greetings, fellow physicists! Excited to delve into the mysteries of the universe.",
-    sender: "66127a937fa6cdaaf46ca857",
-    community: "6612dfab56310add5a7294ca",
-    createdAt: "2024-03-25T17:00:00.000Z",
-  },
-  {
-    content:
-      "Welcome to the Physics Enthusiasts community! Let's explore the wonders of physics together.",
-    sender: "66127bba7fa6cdaaf46ca873",
-    community: "6612dfab56310add5a7294ca",
-    createdAt: "2024-03-25T17:05:00.000Z",
-  },
-  {
-    content:
-      "I'm currently studying quantum mechanics. Any tips for understanding the concepts better?",
-    sender: "66127ab77fa6cdaaf46ca85d",
-    community: "6612dfab56310add5a7294ca",
-    createdAt: "2024-03-25T17:10:00.000Z",
-  },
-  {
-    content:
-      "Have you tried visualizing quantum phenomena with animations? It can help grasp complex ideas.",
-    sender: "66127a937fa6cdaaf46ca857",
-    community: "6612dfab56310add5a7294ca",
-    createdAt: "2024-03-25T17:15:00.000Z",
-  },
-  {
-    content:
-      "That's a great suggestion! Do you have any recommended resources for quantum animations?",
-    sender: "66127ab77fa6cdaaf46ca85d",
-    community: "6612dfab56310add5a7294ca",
-    createdAt: "2024-03-25T17:20:00.000Z",
-  },
-  {
-    content:
-      "Check out the YouTube channel 'MinutePhysics'. They have some excellent videos on quantum mechanics.",
-    sender: "66127a937fa6cdaaf46ca857",
-    community: "6612dfab56310add5a7294ca",
-    createdAt: "2024-03-25T17:25:00.000Z",
-  },
-  {
-    content: "Thanks! I'll definitely take a look.",
-    sender: "66127ab77fa6cdaaf46ca85d",
-    community: "6612dfab56310add5a7294ca",
-    createdAt: "2024-03-25T17:30:00.000Z",
-  },
-  {
-    content:
-      "Hello chemistry enthusiasts! Looking forward to exploring the fascinating world of chemistry with you all.",
-    sender: "66127a937fa6cdaaf46ca857",
     community: "6612dfe856310add5a7294cc",
-    createdAt: "2024-03-25T18:00:00.000Z",
+    createdAt: "2024-07-20T02:00:44.333Z",
+  },
+  {
+    content: "I'm studying chemical bonding today. Any tips?",
+    sender: "66127c347fa6cdaaf46ca87b",
+    community: "6612dfe856310add5a7294cc",
+    createdAt: "2024-07-20T02:15:00.000Z",
   },
   {
     content:
-      "Welcome to the Chemistry Lovers community! Let's discover the beauty of molecules and reactions together.",
+      "Just finished a lab experiment on titration. It was challenging but rewarding!",
     sender: "66127c417fa6cdaaf46ca87d",
     community: "6612dfe856310add5a7294cc",
-    createdAt: "2024-03-25T18:05:00.000Z",
+    createdAt: "2024-07-20T02:30:00.000Z",
   },
   {
-    content:
-      "I'm currently studying organic chemistry. Any tips for mastering mechanisms?",
-    sender: "66127bba7fa6cdaaf46ca873",
+    content: "Studying organic chemistry reactions today. Feeling overwhelmed!",
+    sender: "66127c567fa6cdaaf46ca881",
     community: "6612dfe856310add5a7294cc",
-    createdAt: "2024-03-25T18:10:00.000Z",
+    createdAt: "2024-07-20T02:45:00.000Z",
   },
   {
-    content:
-      "Practice, practice, practice! Mechanisms become clearer with hands-on experimentation.",
-    sender: "66127a937fa6cdaaf46ca857",
+    content: "Any recommendations for a good chemistry textbook?",
+    sender: "66127c767fa6cdaaf46ca883",
     community: "6612dfe856310add5a7294cc",
-    createdAt: "2024-03-25T18:15:00.000Z",
+    createdAt: "2024-07-20T03:00:00.000Z",
   },
   {
-    content: "Thanks for the advice! I'll spend more time in the lab.",
-    sender: "66127bba7fa6cdaaf46ca873",
+    content: "Exploring the world of biochemistry today. It's fascinating!",
+    sender: "66127c897fa6cdaaf46ca885",
     community: "6612dfe856310add5a7294cc",
-    createdAt: "2024-03-25T18:20:00.000Z",
-  },
-  {
-    content: "Anyone here fascinated by chemical kinetics?",
-    sender: "66127a937fa6cdaaf46ca857",
-    community: "6612dfe856310add5a7294cc",
-    createdAt: "2024-03-25T18:25:00.000Z",
-  },
-  {
-    content: "Absolutely! The dynamics of reactions are mesmerizing.",
-    sender: "66127c417fa6cdaaf46ca87d",
-    community: "6612dfe856310add5a7294cc",
-    createdAt: "2024-03-25T18:30:00.000Z",
+    createdAt: "2024-07-20T03:15:00.000Z",
   },
 ];
 
@@ -440,6 +536,7 @@ communityRouter.post("/add-message", async (req, res) => {
         content: message.content,
         sender: message.sender,
         community: message.community,
+        createdAt: message.createdAt,
       });
     });
 
@@ -453,11 +550,39 @@ communityRouter.post("/add-message", async (req, res) => {
   }
 });
 
+communityRouter.post("/send-message", async (req, res) => {
+  const { sender, content, community } = req.body;
+  try {
+    const newMessage = await CommunityMsg.create({
+      content: content,
+      sender: new ObjectId(sender),
+      community: new ObjectId(community),
+      createdAt: Date.now(),
+    });
+    res.json(newMessage);
+  } catch (error) {
+    res.status(400).json({
+      message: "Error!",
+    });
+  }
+});
+
 communityRouter.get("/messages/:id", async (req, res) => {
   const community = new ObjectId(req.params.id);
 
   const messages = await CommunityMsg.find({ community });
   res.json(messages);
+});
+
+communityRouter.delete("/delete-msg", async (req, res) => {
+  const { content } = req.body;
+  try {
+    await CommunityMsg.deleteMany({ content });
+
+    res.json({ message: "Deleted successfully!" });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = communityRouter;

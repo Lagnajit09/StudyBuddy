@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import "./CommunityRight.css";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
@@ -6,13 +7,14 @@ import {
   currentCommunityAtom,
 } from "../../../store/communityStore";
 import { authUserAtom } from "../../../store/authUser";
-import ChatInput from "../../ChatInput/ChatInput";
-import CommunityChat from "../CommunityChat/CommunityChat";
+import CommunityInput from "../CommunityInput/CommunityInput";
 import CommunityDetails from "../CommunityDetails/CommunityDetails";
 import JoinCommunity from "../JoinCommunity/JoinCommunity";
 import CommunityHeader from "../CommunityHeader/CommunityHeader";
+import CommunityMsg from "../CommunityMsg/CommunityMsg";
 
 const CommunityRight = () => {
+  const params = useParams();
   const currentCommunity = useRecoilValue(currentCommunityAtom);
   const authUser = useRecoilValue(authUserAtom);
   const setCommunityMessages = useSetRecoilState(communityMessagesAtom);
@@ -36,7 +38,6 @@ const CommunityRight = () => {
         throw new Error("Request failed");
       }
       currentCommunityMessage = await response.json();
-      console.log(currentCommunityMessage);
       setCommunityMessages(currentCommunityMessage);
     } catch (error) {
       console.error("Error:", error);
@@ -59,8 +60,12 @@ const CommunityRight = () => {
           detailsBtnClicked={detailsBtnClicked}
           current={currentCommunity}
         />
-        <CommunityChat />
-        {isAMember ? <ChatInput open={detailsBtnClicked} /> : <JoinCommunity />}
+        <CommunityMsg />
+        {isAMember ? (
+          <CommunityInput open={detailsBtnClicked} />
+        ) : (
+          <JoinCommunity />
+        )}
       </div>
 
       <CommunityDetails

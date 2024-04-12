@@ -16,10 +16,10 @@ export const currentCommunityAtom = atom({
 
 export const communityMessagesAtom = atom({
   key: "communityMessagesAtom",
-  default: {},
+  default: [],
 });
 
 export const newCommunityMsgAtom = atom({
   key: "newCommunityMsgAtom",
-  default: {},
+  default: [],
 });

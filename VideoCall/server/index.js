@@ -44,6 +44,13 @@ io.on("connection", (socket) => {
     io.emit("message", data);
   });
 
+  // Handle incoming community messages
+  socket.on("community:message", (data) => {
+    console.log("Received community message:", data);
+    // Broadcast the message to all connected clients
+    io.emit("community:message", data);
+  });
+
   socket.on("updateChatUsers", ({ recipientId, senderId }) => {
     const recipientSocketId = userSocketMap.get(recipientId);
     if (recipientSocketId) {
