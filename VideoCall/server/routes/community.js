@@ -488,6 +488,36 @@ communityRouter.post("/create", async (req, res) => {
   }
 });
 
+communityRouter.put("/join", async (req, res) => {
+  const { user, community } = req.body;
+  try {
+    const updatedCommunity = await Community.findByIdAndUpdate(
+      new ObjectId(community),
+      { $push: { members: new ObjectId(user) } },
+      { new: true }
+    );
+    console.log(updatedCommunity);
+    res.json({ message: "User joined.", updatedCommunity });
+  } catch (error) {
+    res.status(405).json(error);
+  }
+});
+
+communityRouter.put("/leave", async (req, res) => {
+  const { user, community } = req.body;
+  try {
+    const updatedCommunity = await Community.findByIdAndUpdate(
+      community,
+      { $pull: { members: user } },
+      { new: true }
+    );
+    console.log(updatedCommunity);
+    res.json({ message: "User left.", updatedCommunity });
+  } catch (error) {
+    res.status(405).json(error);
+  }
+});
+
 communityRouter.get("/user-communities/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
@@ -570,8 +600,12 @@ communityRouter.post("/send-message", async (req, res) => {
 communityRouter.get("/messages/:id", async (req, res) => {
   const community = new ObjectId(req.params.id);
 
-  const messages = await CommunityMsg.find({ community });
-  res.json(messages);
+  try {
+    const messages = await CommunityMsg.find({ community });
+    res.json(messages);
+  } catch (error) {
+    res.status(404).json({ error: error });
+  }
 });
 
 communityRouter.delete("/delete-msg", async (req, res) => {
@@ -581,7 +615,7 @@ communityRouter.delete("/delete-msg", async (req, res) => {
 
     res.json({ message: "Deleted successfully!" });
   } catch (err) {
-    console.log(err);
+    res.status(405).json({ err });
   }
 });
 

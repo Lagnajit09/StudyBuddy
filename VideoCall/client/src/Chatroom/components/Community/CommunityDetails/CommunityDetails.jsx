@@ -1,28 +1,46 @@
-import React, { useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CommunityDetails.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { Avatar } from "@mui/material";
 import CommunityMembers from "../../../../assets/CommunityMembers.svg";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { currentCommunityAtom } from "../../../store/communityStore";
+import {
+  communityMemberDetailsAtom,
+  currentCommunityAtom,
+  joinedCommunitiesAtom,
+} from "../../../store/communityStore";
+import { authUserAtom } from "../../../store/authUser";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import { chatUsersAtom, currentChatAtom } from "../../../store/chatStore";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { FiTrash } from "react-icons/fi";
 
 const CommunityDetails = (props) => {
   const navigate = useNavigate();
-  const currentCommunity = useRecoilValue(currentCommunityAtom);
+  const [currentCommunity, setCurrentCommunity] =
+    useRecoilState(currentCommunityAtom);
+  const [joinedCommunities, setJoinedCommunities] = useRecoilState(
+    joinedCommunitiesAtom
+  );
+  const authUser = useRecoilValue(authUserAtom);
+  const [cMember, setCMember] = useRecoilState(communityMemberDetailsAtom);
   const [showMembers, setShowMembers] = useState(false);
-  const [cMember, setCMember] = useState({});
   const [copiedVisible, setCopiedVisible] = useState(false);
+  const [showDeleteMenu, setShowDeleteMenu] = useState(false);
 
   const style = {
     height: "0",
     padding: "0 15px",
     border: "none",
   };
+
+  useEffect(() => {
+    if (cMember.firstName) {
+      setShowMembers(true);
+      setShowDeleteMenu(false);
+    }
+  }, [cMember]);
 
   const inviteLink = useMemo(() => {
     return `http://localhost:5173/chatroom/community/${currentCommunity._id}`;
@@ -33,6 +51,64 @@ const CommunityDetails = (props) => {
     setTimeout(() => {
       setCopiedVisible(false);
     }, 300);
+  };
+
+  const handleLeaveCommunity = async () => {
+    //update database
+    const userLeft = await updateDbLeave();
+    const userIndex = currentCommunity.members.findIndex(
+      (member) => member._id === authUser.id
+    );
+    const communityIndex = joinedCommunities.findIndex(
+      (community) => community._id === currentCommunity._id
+    );
+
+    if (userIndex !== -1) {
+      const updatedMembers = [
+        ...currentCommunity.members.slice(0, userIndex),
+        ...currentCommunity.members.slice(userIndex + 1),
+      ];
+      setCurrentCommunity((prevCommunity) => ({
+        ...prevCommunity,
+        members: updatedMembers,
+      }));
+    }
+
+    if (communityIndex !== -1) {
+      const updatedCommunities = [
+        ...joinedCommunities.slice(0, communityIndex),
+        ...joinedCommunities.slice(communityIndex + 1),
+      ];
+      setJoinedCommunities(updatedCommunities);
+    }
+    setShowDeleteMenu(!showDeleteMenu);
+    document.querySelector(".leave-community").style.display = "none";
+  };
+
+  const updateDbLeave = async () => {
+    const info = {
+      user: authUser.id,
+      community: currentCommunity._id,
+    };
+    try {
+      const response = await fetch(
+        "http://localhost:3000/chatroom/community/leave",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(info),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -157,6 +233,30 @@ const CommunityDetails = (props) => {
           )}
         </div>
       )}
+      <div
+        className="leave-community"
+        style={{ display: showMembers || cMember.firstName ? "none" : "flex" }}
+      >
+        {!showDeleteMenu && (
+          <div className="dlt-btn" onClick={() => setShowDeleteMenu(true)}>
+            <h4>Leave Community</h4>
+            <FiTrash style={{ color: "red" }} />
+          </div>
+        )}
+        {showDeleteMenu && (
+          <div className="leave-menu">
+            <h4>Are you sure?</h4>
+            <div className="leave-menu-btn">
+              <button className="leave" onClick={handleLeaveCommunity}>
+                Leave
+              </button>
+              <button onClick={() => setShowDeleteMenu(!showDeleteMenu)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
       {cMember.firstName && (
         <div className="communityD-about">
           <h4>About</h4>

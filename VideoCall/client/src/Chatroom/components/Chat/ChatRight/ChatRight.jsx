@@ -3,10 +3,10 @@ import "./ChatRight.css";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentChatAtom, chatMessageAtom } from "../../../store/chatStore";
 import { authUserAtom } from "../../../store/authUser";
-import ChatInput from "../../ChatInput/ChatInput";
+import ChatInput from "../ChatInput/ChatInput";
 import ChatMessage from "../ChatMessage/ChatMessage";
 import ChatUserDetails from "../ChatUserDetails/ChatUserDetails";
-import ChatHeader from "../../ChatHeader/ChatHeader";
+import ChatHeader from "../ChatHeader/ChatHeader";
 
 const ChatRight = () => {
   const currentChat = useRecoilValue(currentChatAtom);

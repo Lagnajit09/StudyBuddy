@@ -2,8 +2,11 @@ import React from "react";
 import "./Message.css";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Avatar from "@mui/material/Avatar";
-import { useRecoilValue } from "recoil";
-import { currentCommunityAtom } from "../../../../store/communityStore";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  communityMemberDetailsAtom,
+  currentCommunityAtom,
+} from "../../../../store/communityStore";
 
 const Message = ({
   message,
@@ -13,7 +16,8 @@ const Message = ({
   profile,
   authUser,
 }) => {
-  const currentCommunity = useRecoilValue(currentCommunityAtom);
+  const [member, setMember] = useRecoilState(communityMemberDetailsAtom);
+
   function getTimeWithAMPM(timestamp) {
     const date = new Date(timestamp);
     let hours = date.getHours();
@@ -28,6 +32,10 @@ const Message = ({
 
     return timeString;
   }
+
+  const openMemberDetails = () => {
+    message.sender && setMember(message.sender);
+  };
 
   return (
     <>
@@ -56,7 +64,16 @@ const Message = ({
               >
                 {!authUser && (
                   <>
-                    <p className="message-name">{`${message?.sender?.firstName} ${message?.sender?.lastName} `}</p>
+                    <p
+                      className="message-name"
+                      onClick={openMemberDetails}
+                    >{` ${
+                      message?.sender
+                        ? message.sender.firstName +
+                          " " +
+                          message.sender.lastName
+                        : "User"
+                    }`}</p>
                     <span style={{ fontWeight: "900", paddingBottom: "3px" }}>
                       .
                     </span>{" "}

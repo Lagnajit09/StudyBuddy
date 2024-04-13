@@ -9,12 +9,10 @@ import {
 import { authUserAtom } from "../../../store/authUser";
 import CommunityInput from "../CommunityInput/CommunityInput";
 import CommunityDetails from "../CommunityDetails/CommunityDetails";
-import JoinCommunity from "../JoinCommunity/JoinCommunity";
 import CommunityHeader from "../CommunityHeader/CommunityHeader";
 import CommunityMsg from "../CommunityMsg/CommunityMsg";
 
 const CommunityRight = () => {
-  const params = useParams();
   const currentCommunity = useRecoilValue(currentCommunityAtom);
   const authUser = useRecoilValue(authUserAtom);
   const setCommunityMessages = useSetRecoilState(communityMessagesAtom);
@@ -48,6 +46,10 @@ const CommunityRight = () => {
     fetchCurrentCommunityMessages();
   }, [currentCommunity, authUser]);
 
+  useEffect(() => {
+    detailsBtnClicked && setDetailsBtnClicked(false);
+  }, [currentCommunity]);
+
   return (
     <div className="community-right">
       <div
@@ -60,12 +62,8 @@ const CommunityRight = () => {
           detailsBtnClicked={detailsBtnClicked}
           current={currentCommunity}
         />
-        <CommunityMsg />
-        {isAMember ? (
-          <CommunityInput open={detailsBtnClicked} />
-        ) : (
-          <JoinCommunity />
-        )}
+        <CommunityMsg msg_height={isAMember ? "80%" : "90%"} />
+        {isAMember && <CommunityInput open={detailsBtnClicked} />}
       </div>
 
       <CommunityDetails

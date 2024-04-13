@@ -23,3 +23,8 @@ export const newCommunityMsgAtom = atom({
   key: "newCommunityMsgAtom",
   default: [],
 });
+
+export const communityMemberDetailsAtom = atom({
+  key: "communityMemberDetailsAtom",
+  default: {},
+});

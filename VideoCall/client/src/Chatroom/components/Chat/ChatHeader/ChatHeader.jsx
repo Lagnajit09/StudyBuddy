@@ -6,12 +6,7 @@ import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Avatar from "@mui/material/Avatar";
 
-const ChatHeader = ({
-  from,
-  setDetailsBtnClicked,
-  current,
-  detailsBtnClicked,
-}) => {
+const ChatHeader = ({ setDetailsBtnClicked, current, detailsBtnClicked }) => {
   return (
     <div className="chat-header">
       <div className="header-left">
@@ -24,23 +19,19 @@ const ChatHeader = ({
           alt={current.name || current.firstName}
           src="/broken-image.jpg"
         />
-        <h3>{`${
-          from === "community"
-            ? current.name
-            : current.firstName + " " + current.lastName
-        }`}</h3>
+        <h3
+          onClick={() => {
+            setDetailsBtnClicked(!detailsBtnClicked);
+          }}
+        >{`${current.firstName + " " + current.lastName}`}</h3>
       </div>
       <div className="header-right">
-        {!(from === "community") && (
-          <>
-            <span>
-              <PhoneOutlinedIcon />
-            </span>
-            <span>
-              <VideocamOutlinedIcon />
-            </span>
-          </>
-        )}
+        <span>
+          <PhoneOutlinedIcon />
+        </span>
+        <span>
+          <VideocamOutlinedIcon />
+        </span>
         <span>
           <Search />
         </span>

@@ -2,16 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./ChatInput.css";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { authUserAtom } from "../../store/authUser";
+import { authUserAtom } from "../../../store/authUser";
 import {
   chatUsersAtom,
   currentChatAtom,
   newMessageAtom,
-} from "../../store/chatStore";
-import socket from "../../store/socket";
+} from "../../../store/chatStore";
+import socket from "../../../store/socket";
 import EmojiPicker from "emoji-picker-react";
-import smileyEmoji from "../../../assets/emojiPicker.svg";
-import attachment from "../../../assets/attachment.svg";
+import smileyEmoji from "../../../../assets/emojiPicker.svg";
+import attachment from "../../../../assets/attachment.svg";
 import { FiSend } from "react-icons/fi";
 
 const ChatInput = (props) => {
@@ -44,16 +44,9 @@ const ChatInput = (props) => {
     };
   }, [setNewMessages, chatUsers, state]);
 
-  // useEffect(() => {
-  //   setNewMessages([]);
-  // }, [receiver.id, setNewMessages]);
-
   useEffect(() => {
     setNewMessages([]);
   }, [receiver.id]);
-
-  //  array
-  //  function
 
   useEffect(() => {
     function handleClickOutside(event) {

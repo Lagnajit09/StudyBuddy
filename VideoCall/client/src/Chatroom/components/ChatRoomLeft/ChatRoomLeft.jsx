@@ -45,7 +45,7 @@ const ChatRoomLeft = (props) => {
               cursor: "pointer",
             }}
             onClick={() => {
-              navigate(`/chatroom/community/${currentCommunity._id}`);
+              navigate(`/chatroom/community`);
             }}
           />
           <IoChatbubbleEllipsesOutline
