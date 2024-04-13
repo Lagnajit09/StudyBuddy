@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { authUserAtom } from "../../../store/authUser";
 import {
@@ -9,7 +9,7 @@ import {
 import "./CommunityMsg.css";
 import Message from "./Message/Message";
 
-const CommunityMsg = () => {
+const CommunityMsg = ({ msg_height }) => {
   const authUser = useRecoilValue(authUserAtom);
   const communityMessages = useRecoilValue(communityMessagesAtom);
   const newMessages = useRecoilValue(newCommunityMsgAtom);
@@ -19,8 +19,8 @@ const CommunityMsg = () => {
   const height = msgWrapper.current?.scrollHeight;
 
   let mergedMessages = [...communityMessages, ...newMessages];
-  console.log(newMessages);
-  console.log(mergedMessages);
+
+  mergedMessages = mergedMessages.sort((a, b) => a.createdAt - b.createdAt);
 
   useEffect(() => {
     msgWrapper.current?.scroll(0, height);
@@ -38,7 +38,11 @@ const CommunityMsg = () => {
   });
 
   return (
-    <div ref={msgWrapper} className="community-message">
+    <div
+      ref={msgWrapper}
+      className="community-message"
+      style={{ height: msg_height }}
+    >
       <div className="community-message-container">
         {mergedArray?.map((message, index) => {
           if (message?.sender?._id === authUser?.id) {

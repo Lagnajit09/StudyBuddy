@@ -124,7 +124,58 @@
     gap: 10px;
     padding: 10px 15px;
 }
+.communityD-members .members-header:hover{
+    background-color: #00aaff0b;
+}
 .communityD-memberlist .com-member:hover{
     background-color: #F2FBFF;
     cursor: pointer;
+}
+.leave-community .dlt-btn{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 25px 12px 15px;
+    border-bottom: 2px solid rgba(217, 217, 217, 0.773);
+    cursor: pointer;
+}
+.leave-community .dlt-btn:hover{
+    background-color: #00aaff0b;
+}
+.leave-community .leave-menu{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    border-bottom: 2px solid rgba(217, 217, 217, 0.773);
+}
+.leave-menu .leave-menu-btn{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.leave-menu-btn button{
+    border: none;
+    outline: none;
+    background-color: lightgray;
+    color: black;
+    padding: 3px 5px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.leave-menu-btn button:hover{
+    transform: scale(1.01);
+}
+.leave-menu-btn .leave{
+    background-color: rgba(255, 0, 0, 0.7);
+    color: rgba(255, 255, 255, 1);
+}
+.leave-menu-btn .leave:hover{
+    background-color: rgba(255, 0, 0, 0.6);
+    color: rgba(255, 255, 255, 1);
 }
