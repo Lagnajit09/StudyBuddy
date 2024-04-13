@@ -1,14 +1,12 @@
-
-import './App.css'
-import Notes from './Notes/Notes'
+import "./App.css";
+import Note from "./Note/Note";
 
 function App() {
-
   return (
     <>
-      <Notes/>
+      <Note />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

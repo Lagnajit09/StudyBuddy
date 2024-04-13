@@ -1,0 +1,66 @@
+.create-folder-backdrop {
+  width: 83.5%;
+  height: 92.3vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  z-index: 3;
+}
+
+.create-folder {
+  width: 30%;
+  background-color: #ffffff;
+  border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+}
+
+#create-folder-heading {
+  padding: 30px 20px 20px 20px;
+}
+
+#create-folder-input {
+  width: 83.5%;
+  padding: 10px;
+  outline: none;
+  border: 2px solid #00a9ff;
+  border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  margin: 0 0 40px 20px;
+}
+
+.create-folder-buttons {
+  width: 83.5%;
+  margin: 0 0 30px 41px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.create-folder-buttons button {
+  padding: 7px;
+  border: 2px solid transparent;
+  outline: none;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.8);
+  border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  background-color: inherit;
+}
+
+#create {
+  color: #00a9ff;
+}
+
+#create:hover {
+  border: 2px solid #00a9ff;
+}
+
+#cancel:hover {
+  border: 2px solid rgba(0, 0, 0, 0.8);
+}

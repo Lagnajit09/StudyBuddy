@@ -1,4 +1,4 @@
-import "./NotesLeft.css";
+import "./NoteLeft.css";
 import { CiStickyNote } from "react-icons/ci";
 import { PiArchive } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -15,29 +15,32 @@ import Cloud from "../../../assets/Icons/Cloud.svg";
 import Math from "../../../assets/Icons/Math.svg";
 import { useEffect, useState } from "react";
 
-const NotesLeft = () => {
-
+const NoteLeft = () => {
   const [topicDropdown, setTopicDropDown] = useState(false);
   const [archiveDropdown, setArchiveDropDown] = useState(false);
   const [trashDropdown, setTrashDropDown] = useState(false);
-  
-  useEffect(() => { 
+
+  useEffect(() => {
     if (!topicDropdown) {
-      document.getElementsByClassName("topic-wrapper")[0].style.height= "4.4%";
-    }
-    else {
-      document.getElementsByClassName("topic-wrapper")[0].style.height = "50%";
+      document.getElementsByClassName("topic-wrapper")[0].style.height = "4.2%";
+      document.getElementsByClassName("topics-div")[0].style.height = "100%";
+      document.getElementsByClassName("topics-list")[0].style.height = "0%";
+    } else {
+      document.getElementsByClassName("topic-wrapper")[0].style.height = "42%";
+      document.getElementsByClassName("topics-div")[0].style.height = "10%";
+      document.getElementsByClassName("topics-list")[0].style.height = "90%";
       setArchiveDropDown(false);
       setTrashDropDown(false);
-    }    
+    }
+  }, [topicDropdown]);
 
-  }, [topicDropdown])
-  
   useEffect(() => {
     if (!archiveDropdown) {
-      document.getElementsByClassName("archive-wrapper")[0].style.height = "4.5%";
+      document.getElementsByClassName("archive-wrapper")[0].style.height =
+        "4.2%";
     } else {
-      document.getElementsByClassName("archive-wrapper")[0].style.height = "19%";
+      document.getElementsByClassName("archive-wrapper")[0].style.height =
+        "15%";
       setTopicDropDown(false);
       setTrashDropDown(false);
     }
@@ -45,11 +48,9 @@ const NotesLeft = () => {
 
   useEffect(() => {
     if (!trashDropdown) {
-      document.getElementsByClassName("trash-wrapper")[0].style.height =
-        "4%";
+      document.getElementsByClassName("trash-wrapper")[0].style.height = "4.2%";
     } else {
-      document.getElementsByClassName("trash-wrapper")[0].style.height =
-        "21%";
+      document.getElementsByClassName("trash-wrapper")[0].style.height = "15%";
       setArchiveDropDown(false);
       setTopicDropDown(false);
     }
@@ -113,12 +114,12 @@ const NotesLeft = () => {
           </div>
         </div>
 
-        <div className="calendar-div">
+        {/* <div className="calendar-div">
           <CiCalendar
             style={{ height: "20px", width: "20px", strokeWidth: "1px" }}
           />
           <span className="calendar-span">Calendar</span>
-        </div>
+        </div> */}
 
         <div className="archive-wrapper">
           <div className="archive-div">
@@ -180,4 +181,4 @@ const NotesLeft = () => {
   );
 };
 
-export default NotesLeft;
+export default NoteLeft;

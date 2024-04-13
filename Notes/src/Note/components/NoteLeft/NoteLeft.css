@@ -12,14 +12,11 @@
   margin: 17% 0;
   flex-direction: column;
   width: 90%;
-  gap: 15px;
+  gap: 10px;
 }
 
 .notes-div,
 .trash-div,
-.topic-wrapper,
-.archive-wrapper,
-.trash-wrapper,
 .calendar-div {
   display: flex;
   align-items: center;
@@ -28,18 +25,27 @@
 }
 
 .topic-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
   flex-direction: column;
-	height: 4.4%;
+	/* height: 4.4%; */
 	transition: all 0.35s ease;
 }
 
 .archive-wrapper{
+  display: flex;
+  align-items: center;
+  width: 100%;
   flex-direction: column;
-	height: 19%;
+	/* height: 4.2%; */
 	transition: all 0.35s ease;
 }
 
 .trash-wrapper{
+  display: flex;
+  align-items: center;
+  width: 100%;
   flex-direction: column;
 	transition: all 0.35s ease;
 }
@@ -110,7 +116,7 @@
   width: 100%;
   align-items: flex-start;
   flex-direction: column;
-  gap: 6px; 
+  gap: 3.7px; 
   overflow: hidden;
 }
 
@@ -120,7 +126,7 @@
   width: 100%;
   align-items: flex-start;
   flex-direction: column;
-  gap: 6px; 
+  /* gap: 6px;  */
   overflow: hidden;
 }
 

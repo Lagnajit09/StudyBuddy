@@ -1,0 +1,23 @@
+.colour-dropdown {
+  height: 13%;
+  width: 13vw;
+  background-color: #f9f9fe;
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  -webkit-box-shadow: 0px 0px 4px 1px rgba(0, 137, 255, 0.25);
+  -moz-box-shadow: 0px 0px 4px 1px rgba(0, 137, 255, 0.25);
+  box-shadow: 0px 0px 4px 1px rgba(0, 137, 255, 0.25);
+}
+
+.sub-colour-dropdown {
+  width: 11%;
+  height: 65%;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}

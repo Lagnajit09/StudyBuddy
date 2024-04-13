@@ -7,8 +7,11 @@
 
 .notes {
   display: flex;
+  /* width: 100vw;
+  height: 90vh; */
+  overflow: hidden;
 }
 
 body {
-  background-color: paleturquoise;
+  background-color: #f7f8fc;
 }

@@ -1,11 +1,12 @@
-import "./Notes.css";
+import "./Note.css";
 import NavBar from "../NavBar/NavBar";
 import SearchBar from "../NavBar/SearchBar/SearchBar";
 import Avatar from "@mui/material/Avatar";
-import NotesLeft from "./components/NotesLeft/NotesLeft";
-import NotesRight from "./components/NotesRight/NotesRight";
+import NoteLeft from "./components/NoteLeft/NoteLeft";
+import NoteRight from "./components/NoteRight/NoteRight";
+import NoteNavBar from "./components/NoteNavBar/NoteNavBar";
 
-const Notes = () => {
+const Note = () => {
   return (
     <>
       <NavBar>
@@ -20,12 +21,13 @@ const Notes = () => {
           sx={{ bgcolor: "#00A9FF", width: "30px", height: "30px" }}
         />
       </NavBar>
+      {/* <NoteNavBar /> */}
       <div className="notes">
-        <NotesLeft />
-        <NotesRight/>
+        <NoteLeft />
+        <NoteRight />
       </div>
     </>
   );
 };
 
-export default Notes;
+export default Note;
