@@ -155,8 +155,8 @@ const viewTrash = async function (req, res) {
 const viewAllDocs = async function (req, res) {
     try {
         const { userId } = req.body
-        const folders = await Folder.find({ deleted: false, archived: false, topic_id:null, created_by: userId});   //get folders whcih are not archived and not deletd and do not exist in any topic
-        const notes = await Note.find({ deleted: false, archived: false, topic_id: null, created_by: userId })  //get notes whcih are not archived and not deletd and do not exist in any topic
+        const folders = await Folder.find({ deleted: false, archived: false, created_by: userId});   //get folders whcih are not archived and not deletd and do not exist in any topic
+        const notes = await Note.find({ deleted: false, archived: false, created_by: userId })  //get notes whcih are not archived and not deletd and do not exist in any topic
         const showNotes= await sortNotes(notes) //sort the notes
         return res.status(200).json({folders:folders, notes:showNotes})
     }
@@ -226,8 +226,19 @@ const viewTopics = async function (req, res) {
 }
 
 
+const searchNote = async function (req, res) { 
+    try {
+        const { userId, title } = req.body
+        const notes = await Note.find({ deleted: false, archived: false, title: { $regex: title, $options: 'i' }, created_by: userId })
+        res.status(200).json({ notes: notes })
+    }
+    catch (error) {
+        return res.status(404).json({message:"server error"})
+    }
+}
 
-module.exports = { deleteFolderDependencies, deleteNoteDependencies, deleteNotesInFolder, viewArchive, viewAllDocs, viewTrash, viewAllDocsinTopic, addTopic, viewTopics}
+
+module.exports = { deleteFolderDependencies, deleteNoteDependencies, deleteNotesInFolder, viewArchive, viewAllDocs, viewTrash, viewAllDocsinTopic, addTopic, viewTopics, searchNote}
 
 
 

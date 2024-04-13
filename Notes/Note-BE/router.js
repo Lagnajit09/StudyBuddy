@@ -11,7 +11,7 @@ const middleware = require("./middleware")
 const signupSchema= require("./User/signup-Schema")
 const validate=require("./User/validate-signup")
 
-const { viewArchive, viewAllDocs, viewTrash, viewAllDocsinTopic, addTopic, viewTopics} = require('./User/document-Controller')
+const { viewArchive, viewAllDocs, viewTrash, viewAllDocsinTopic, addTopic, viewTopics, searchNote} = require('./User/document-Controller')
 
 //To handle User
 router.route('/signup').post(validate(signupSchema),auth.signup)  //route to signup page //Validation to be added
@@ -56,7 +56,7 @@ router.route('/viewarchives').post(middleware.authenticate, viewArchive)
 router.route('/viewtrash').post(middleware.authenticate, viewTrash)
 router.route('/viewdocsintopic').post(middleware.authenticate, viewAllDocsinTopic)
 router.route('/alldocs').post(middleware.authenticate, viewAllDocs)
-
+router.route('/searchnote').post(middleware.authenticate, searchNote)
 
 
 
