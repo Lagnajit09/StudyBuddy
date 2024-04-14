@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import "./NoteSlider.css";
+import { folderUserAtom } from "../../../NoteStore/folderStore";
+import { noteUserAtom } from "../../../NoteStore/noteStore";
+import { useRecoilValue } from "recoil";
 import NewNote from "../NewNote/NewNote";
 import Folders from "../Folders/Folders";
 import Notes from "../Notes/Notes";
 import NoteSliderButton from "../NoteSliderButton/NoteSliderButton";
-import { cards as cards1 } from "../../Folder";
-import { cards as cards2 } from "../../Notes";
 
 const NoteSlider = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const cards1 = useRecoilValue(folderUserAtom);
+  const cards2 = useRecoilValue(noteUserAtom);
 
   const cards = [];
-  props.useFolderCards === "true" ? cards.push(...cards1) : cards.push(...cards2);
+  props.useFolderCards === "true"
+    ? cards.push(...cards1)
+    : cards.push(...cards2);
 
   let style = {};
   if (props.useFolderCards === "false") {
@@ -24,7 +29,8 @@ const NoteSlider = (props) => {
         height: "100%",
       },
       sliderWrapper: {
-        height: "90%",
+        height: "75%",
+        marginTop: "25px",
       },
     };
   }
@@ -34,11 +40,13 @@ const NoteSlider = (props) => {
       <div className="card-note-slider" style={style.cardSlider}>
         <div className="note-slider-header">
           <span id="card-note-slider-heading">{props.heading}</span>
-          {cards.length>4?<NoteSliderButton
-            useFolderCards={props.useFolderCards}
-            currentIndex={currentIndex}
-            setCurrentIndex={setCurrentIndex}
-          />:null}
+          {cards.length > 4 ? (
+            <NoteSliderButton
+              useFolderCards={props.useFolderCards}
+              currentIndex={currentIndex}
+              setCurrentIndex={setCurrentIndex}
+            />
+          ) : null}
         </div>
         <div
           className="slider-wrapper"
@@ -47,12 +55,23 @@ const NoteSlider = (props) => {
             ...style.sliderWrapper,
           }}
         >
-          {props.useFolderCards === "true" ? <Folders /> : <Notes />}
+          {props.useFolderCards === "true"
+            ? cards1.map((card, index) => {
+                return <Folders card={card} index={index} />;
+              })
+            : cards2.map((card, index) => {
+                return <Notes card={card} index={index} />;
+              })}
         </div>
       </div>
       <div className="create-card-container">
         {props.useFolderCards === "true" ? (
-          <NewNote icon="true" caption="New Folder" from="folder" />
+          <NewNote
+            icon="true"
+            caption="New Folder"
+            from="folder"
+            setNewFolder={props.setNewFolder}
+          />
         ) : (
           <NewNote icon="false" caption="New Note" from="note" />
         )}

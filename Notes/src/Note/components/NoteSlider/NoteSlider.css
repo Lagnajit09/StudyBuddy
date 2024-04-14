@@ -22,12 +22,12 @@
 .note-slider-header {
   display: flex;
   justify-content: space-between;
-  width: 98.5%;
+  width: 99.5%;
 }
 
 #card-note-slider-heading {
   font-size: 25px;
-  margin-left: 11px;
+  margin-left: 12px;
 }
 
 .slider-wrapper {

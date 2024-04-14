@@ -30,3 +30,7 @@
   padding: 3.5px;
   margin: 0 5px 0 7px;
 }
+
+#see-all:hover {
+  background-color: rgba(219, 229, 255, 0.704);
+}

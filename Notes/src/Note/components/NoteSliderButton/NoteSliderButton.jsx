@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./NoteSliderButton.css";
+import { useNavigate } from "react-router-dom";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import { cards as cards1 } from "../../Folder";
@@ -12,6 +13,8 @@ const NoteSliderButton = ({
 }) => {
   const [isPrevDisabled, setIsPrevDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
+
+  const navigate = useNavigate();
 
   const cards = [];
   useFolderCards === "true" ? cards.push(...cards1) : cards.push(...cards2);
@@ -41,7 +44,16 @@ const NoteSliderButton = ({
 
   return (
     <div className="note-buttons">
-      <button id="see-all">SEE ALL</button>
+      <button
+        id="see-all"
+        onClick={() => {
+          useFolderCards === "true"
+            ? navigate("/note/folders")
+            : navigate("/note/notes");
+        }}
+      >
+        SEE ALL
+      </button>
       <button
         onClick={prevSlide}
         disabled={isPrevDisabled}

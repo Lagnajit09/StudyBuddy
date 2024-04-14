@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Notes.css";
-import { cards as cards2 } from "../../Notes";
+import { noteUserAtom } from "../../../NoteStore/noteStore";
+import { useRecoilValue } from "recoil";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import { PiNotePencilBold } from "react-icons/pi";
 import ThreeDotsVer from "../../../assets/Icons/ThreeDotsVer.svg";
@@ -29,16 +30,41 @@ const topicDropdown = [
 ];
 
 const colours = [
-  "rgba(255, 255, 255, 1)",
-  "rgba(179, 171, 252, 1)",
-  "rgba(252, 191, 73, 1)",
-  "rgba(57, 184, 212, 1)",
-  "rgba(255, 130, 198, 1)",
-  "rgba(99, 180, 184, 1)",
-  "rgba(217, 217, 217, 1)",
+  "#79B2D9",
+  "#63B4B8",
+  "#E78895",
+  "#39B8D4",
+  "#B3ABFC",
+  "#FCBF49",
+  "#D9D9D9",
 ];
 
-const Notes = () => {
+const Notes = ({ card, index }) => {
+  const cards2 = useRecoilValue(noteUserAtom);
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? "0" : ""}${day}.${
+      month < 10 ? "0" : ""
+    }${month}.${year}`;
+  }
+
+  function formatDayTime(dateString) {
+    const date = new Date(dateString);
+    const options = {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    return `${date.toLocaleString("en-US", options)}, ${date.toLocaleDateString(
+      "en-US",
+      { weekday: "long" }
+    )}`;
+  }
+
   const [showOptDropDown, setOptDropDown] = useState(
     Array(cards2.length).fill(false)
   );
@@ -48,9 +74,6 @@ const Notes = () => {
   const [showColourDropDown, setColourDropDown] = useState(false);
   const [isOpenColour, setIsOpenColour] = useState(
     Array(cards2.length).fill(false)
-  );
-  const [selectedColours, setSelectedColours] = useState(
-    Array(cards2.length).fill(null)
   );
 
   const [isClicked, setIsClicked] = useState(Array(cards2.length).fill(false));
@@ -69,15 +92,10 @@ const Notes = () => {
     index === 2 ? setShowTopicDropDown(true) : setShowTopicDropDown(false);
   };
 
-  const handleColourClick = (index, cardsIndex, colour) => {
+  const handleColourClick = (index, cardsIndex) => {
     const updatedColourDropDown = Array(cards2.length).fill(false);
     updatedColourDropDown[cardsIndex] = !isOpenColour[cardsIndex];
     setIsOpenColour(updatedColourDropDown);
-    setSelectedColours((prevState) => {
-      const updatedSelectedColours = [...prevState];
-      updatedSelectedColours[cardsIndex] = colour;
-      return updatedSelectedColours;
-    });
     index === 3 ? setColourDropDown(true) : setColourDropDown(false);
   };
 
@@ -96,14 +114,12 @@ const Notes = () => {
     setHoveredIndex(null);
   };
 
-
-  
-  return cards2.map((card, index) => (
+  return (
     <div
       key={index}
       className="card-note"
       style={{
-        backgroundColor: selectedColours[index],
+        backgroundColor: card.color,
         border: isClicked[index]
           ? "1.5px solid rgba(0,0,0,1)"
           : "1px solid rgba(0, 0, 0, 0.1)",
@@ -119,28 +135,30 @@ const Notes = () => {
           />
         </div>
       )}
-      {hoveredIndex === index &&
-        !isClicked[index] &&
-        !selectedColours[index] && (
-          <div className="tooltip">
-            <span className="tooltip-text">Select</span>
-          </div>
-        )}
+      {hoveredIndex === index && !isClicked[index] && (
+        <div className="tooltip">
+          <span className="tooltip-text">Select</span>
+        </div>
+      )}
       <div className="sub-card-note-1">
         <div className="card-note-title">
-          <h6>{card.date}</h6>
-          <h5>{card.noteName}</h5>
+          <h6>{formatDate(card.updated_at)}</h6>
+          <h5>{card.title}</h5>
         </div>
         <PiNotePencilBold
           style={{
-            fontSize: "20",
+            fontSize: "25",
             color: "rgba(255, 255, 255, 1)",
           }}
         />
       </div>
       <div className="sub-card-note-2">
         <div className="card-note-desc">
-          <h5>{card.desc}</h5>
+          <h5>
+            {card.content.length > 195
+              ? `${card.content.slice(0, 197)}...`
+              : card.content}
+          </h5>
         </div>
         {showOptDropDown[index] &&
           !showTopicDropDown &&
@@ -159,7 +177,7 @@ const Notes = () => {
       <div className="sub-card-note-3">
         <div className="card-note-clock">
           <AccessTimeRoundedIcon style={{ fontSize: "20" }} />
-          <h6>{card.time}</h6>
+          <h6>{formatDayTime(card.updated_at)}</h6>
         </div>
         <div className="three-dots-ver">
           <img src={ThreeDotsVer} alt="" onClick={() => optDropdown(index)} />
@@ -167,15 +185,14 @@ const Notes = () => {
             <ColourDropdown
               from="note"
               arr={colours}
-              handleColourClick={(colour) =>
-                handleColourClick(3, index, colour)
-              }
+              color={card.color}
+              index={index}
             />
           )}
         </div>
       </div>
     </div>
-  ));
+  );
 };
 
 export default Notes;
