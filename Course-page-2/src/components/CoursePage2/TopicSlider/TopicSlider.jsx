@@ -58,7 +58,7 @@ const TopicSlider = (props) => {
   };
 
   return (
-    <div className="slider2ContainerParent">
+    <div className="slider2ContainerParent" id={props.id}>
       <span id="courseCap" style={style.courseCap}>
         {props.text}
       </span>
