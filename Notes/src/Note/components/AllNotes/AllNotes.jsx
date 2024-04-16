@@ -1,15 +1,12 @@
 import React from "react";
 import "./AllNotes.css";
-import { noteUserAtom } from "../../../NoteStore/noteStore";
-import { useRecoilValue } from "recoil";
 import Notes from "../Notes/Notes";
 
-const AllNotes = () => {
-  const notes = useRecoilValue(noteUserAtom);
+const AllNotes = (props) => {
 
   return (
     <div className="all-notes">
-      {notes.map((card, index) => (
+      {props.noteUser?.map((card, index) => (
         <div className="note">
           <Notes card={card} index={index} />
         </div>

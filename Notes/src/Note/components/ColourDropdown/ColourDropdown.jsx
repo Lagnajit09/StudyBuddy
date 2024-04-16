@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "./ColourDropdown.css";
 import { authUserAtom } from "../../../NoteStore/AuthUser";
 import { folderUserAtom } from "../../../NoteStore/folderStore";
@@ -9,6 +9,22 @@ const ColourDropdown = (props) => {
   const authUser = useRecoilValue(authUserAtom);
   const [folders, setFolders] = useRecoilState(folderUserAtom);
   const [notes, setNotes] = useRecoilState(noteUserAtom);
+
+  const colourRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (colourRef.current && !colourRef.current.contains(event.target)) {
+        props.setIsOpenColour(Array(props.length).fill(false));
+        props.setColourDropDown(false);
+        props.setOptDropDown(Array(props.length).fill(false));
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [colourRef]);
 
   let style = {};
   if (props.from === "folder") {
@@ -74,7 +90,11 @@ const ColourDropdown = (props) => {
   };
 
   return (
-    <div className="colour-dropdown" style={style.colourDropdown}>
+    <div
+      className="colour-dropdown"
+      style={style.colourDropdown}
+      ref={colourRef}
+    >
       {props.arr.map((colour, index) => {
         console.log(props.color, colour);
         return (

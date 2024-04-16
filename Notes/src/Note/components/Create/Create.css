@@ -30,7 +30,21 @@
   border-radius: 5px 5px 5px 5px;
   -moz-border-radius: 5px 5px 5px 5px;
   -webkit-border-radius: 5px 5px 5px 5px;
+  margin: 0 0 5px 20px;
+}
+
+#input-para {
+  font-size: 10px;
+  color: transparent;
   margin: 0 0 40px 20px;
+}
+
+.input-no-name {
+  border-color: red !important;
+}
+
+.input-no-name::placeholder {
+  color: rgb(255, 62, 62) !important;
 }
 
 .create-folder-buttons {
@@ -46,11 +60,13 @@
   border: 2px solid transparent;
   outline: none;
   font-size: 15px;
+  font-weight: 600;
   color: rgba(0, 0, 0, 0.8);
   border-radius: 5px 5px 5px 5px;
   -moz-border-radius: 5px 5px 5px 5px;
   -webkit-border-radius: 5px 5px 5px 5px;
   background-color: inherit;
+  cursor: pointer;
 }
 
 #create {

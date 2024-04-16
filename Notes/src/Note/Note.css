@@ -7,8 +7,6 @@
 
 .notes {
   display: flex;
-  /* width: 100vw;
-  height: 90vh; */
   overflow: hidden;
 }
 

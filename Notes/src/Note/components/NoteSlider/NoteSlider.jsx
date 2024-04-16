@@ -60,7 +60,13 @@ const NoteSlider = (props) => {
                 return <Folders card={card} index={index} />;
               })
             : cards2.map((card, index) => {
-                return <Notes card={card} index={index} />;
+                return (
+                  <Notes
+                    card={card}
+                    index={index}
+                    setAddToFolder={props.setAddToFolder}
+                  />
+                );
               })}
         </div>
       </div>

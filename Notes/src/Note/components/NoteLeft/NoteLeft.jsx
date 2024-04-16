@@ -114,12 +114,7 @@ const NoteLeft = () => {
           </div>
         </div>
 
-        {/* <div className="calendar-div">
-          <CiCalendar
-            style={{ height: "20px", width: "20px", strokeWidth: "1px" }}
-          />
-          <span className="calendar-span">Calendar</span>
-        </div> */}
+  
 
         <div className="archive-wrapper">
           <div className="archive-div">

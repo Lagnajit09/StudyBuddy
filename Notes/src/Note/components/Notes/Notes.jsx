@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import "./Notes.css";
 import { noteUserAtom } from "../../../NoteStore/noteStore";
-import { useRecoilValue } from "recoil";
+import { authUserAtom } from "../../../NoteStore/AuthUser";
+import { useRecoilValue, useRecoilState } from "recoil";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import { PiNotePencilBold } from "react-icons/pi";
 import ThreeDotsVer from "../../../assets/Icons/ThreeDotsVer.svg";
 import OptionDropdown from "../OptionDropdown/OptionDropdown";
 import TopicDropdown from "../TopicDropdown/TopicDropdown";
 import ColourDropdown from "../ColourDropdown/ColourDropdown";
+
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { PiFolder } from "react-icons/pi";
 
@@ -16,7 +18,7 @@ const noteOpt = [
   "Archive",
   "Add to Topics",
   "Change colour",
-  "Make a copy",
+  "Add to Folder",
   "Download",
 ];
 
@@ -39,17 +41,29 @@ const colours = [
   "#D9D9D9",
 ];
 
-const Notes = ({ card, index }) => {
-  const cards2 = useRecoilValue(noteUserAtom);
+const Notes = ({ card, index, setAddToFolder }) => {
+  const [cards2, setCards2] = useRecoilState(noteUserAtom);
+  const authUser = useRecoilValue(authUserAtom);
+
+  const [showOptDropDown, setOptDropDown] = useState(
+    Array(cards2.length).fill(false)
+  );
+  const [showTopicDropDown, setTopicDropDown] = useState(false);
+  const [isOpen, setIsOpen] = useState(Array(cards2.length).fill(false));
+
+  const [showColourDropDown, setColourDropDown] = useState(false);
+  const [isOpenColour, setIsOpenColour] = useState(
+    Array(cards2.length).fill(false)
+  );
 
   function formatDate(dateString) {
     const date = new Date(dateString);
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return `${day < 10 ? "0" : ""}${day}.${
+    return `${day < 10 ? "0" : ""}${day}/${
       month < 10 ? "0" : ""
-    }${month}.${year}`;
+    }${month}/${year}`;
   }
 
   function formatDayTime(dateString) {
@@ -65,19 +79,8 @@ const Notes = ({ card, index }) => {
     )}`;
   }
 
-  const [showOptDropDown, setOptDropDown] = useState(
-    Array(cards2.length).fill(false)
-  );
-  const [showTopicDropDown, setShowTopicDropDown] = useState(false);
-  const [isOpen, setIsOpen] = useState(Array(cards2.length).fill(false));
-
-  const [showColourDropDown, setColourDropDown] = useState(false);
-  const [isOpenColour, setIsOpenColour] = useState(
-    Array(cards2.length).fill(false)
-  );
-
-  const [isClicked, setIsClicked] = useState(Array(cards2.length).fill(false));
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  // const [isClicked, setIsClicked] = useState(Array(cards2.length).fill(false));
+  // const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const optDropdown = (index) => {
     const updatedOptDropDown = Array(cards2.length).fill(false);
@@ -89,7 +92,7 @@ const Notes = ({ card, index }) => {
     const updatedTopicDropDown = Array(cards2.length).fill(false);
     updatedTopicDropDown[cardsIndex] = !isOpen[cardsIndex];
     setIsOpen(updatedTopicDropDown);
-    index === 2 ? setShowTopicDropDown(true) : setShowTopicDropDown(false);
+    index === 2 ? setTopicDropDown(true) : setTopicDropDown(false);
   };
 
   const handleColourClick = (index, cardsIndex) => {
@@ -100,19 +103,45 @@ const Notes = ({ card, index }) => {
   };
 
   const handleOptClick = (index, cardsIndex) => {
-    if (index === 2) {
+    if (index === 0) {
+      handleDelete();
+    } else if (index === 2) {
       handleTopicClick(index, cardsIndex);
     } else if (index === 3) {
       handleColourClick(index, cardsIndex);
+    } else if (index === 4) {
+      handleAdd(cardsIndex);
     }
   };
 
-  const handleFolderClick = (index) => {
-    const updatedIsClicked = Array(cards2.length).fill(false);
-    updatedIsClicked[index] = !isClicked[index];
-    setIsClicked(updatedIsClicked);
-    setHoveredIndex(null);
+  const handleDelete = async () => {
+    const updatedNotes = cards2.filter((folder) => folder._id !== card._id);
+    setCards2(updatedNotes);
+    const response = await fetch("http://localhost:3000/note/deletenote", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: authUser._id,
+        noteIds: [card._id],
+      }),
+    });
+    const data = await response.json();
+    setOptDropDown(Array(cards2.length).fill(false));
   };
+
+  const handleAdd = (cardsIndex) => {
+    setAddToFolder(cardsIndex);
+    setOptDropDown(Array(cards2.length).fill(false));
+  };
+
+  // const handleFolderClick = (index) => {
+  //   const updatedIsClicked = Array(cards2.length).fill(false);
+  //   updatedIsClicked[index] = !isClicked[index];
+  //   setIsClicked(updatedIsClicked);
+  //   setHoveredIndex(null);
+  // };
 
   return (
     <div
@@ -120,15 +149,15 @@ const Notes = ({ card, index }) => {
       className="card-note"
       style={{
         backgroundColor: card.color,
-        border: isClicked[index]
-          ? "1.5px solid rgba(0,0,0,1)"
-          : "1px solid rgba(0, 0, 0, 0.1)",
+        // border: isClicked[index]
+        //   ? "1.5px solid rgba(0,0,0,1)"
+        //   : "1px solid rgba(0, 0, 0, 0.1)",
       }}
-      onClick={() => handleFolderClick(index)}
-      onMouseOver={() => setHoveredIndex(index)}
-      onMouseOut={() => setHoveredIndex(null)}
+      // onClick={() => handleFolderClick(index)}
+      // onMouseOver={() => setHoveredIndex(index)}
+      // onMouseOut={() => setHoveredIndex(null)}
     >
-      {isClicked[index] && (
+      {/* {isClicked[index] && (
         <div className="arrow-icon-note">
           <IoIosCheckmarkCircle
             style={{ fontSize: "27", color: "rgba(101, 203, 255, 1)" }}
@@ -139,7 +168,7 @@ const Notes = ({ card, index }) => {
         <div className="tooltip">
           <span className="tooltip-text">Select</span>
         </div>
-      )}
+      )} */}
       <div className="sub-card-note-1">
         <div className="card-note-title">
           <h6>{formatDate(card.updated_at)}</h6>
@@ -168,10 +197,20 @@ const Notes = ({ card, index }) => {
               arr={noteOpt}
               handleOptClick={handleOptClick}
               cardsIndex={index}
+              setOptDropDown={setOptDropDown}
+              length={cards2.length}
             />
           )}
         {showTopicDropDown && isOpen[index] && (
-          <TopicDropdown from="note" arr={topicDropdown} heading="Note Topic" />
+          <TopicDropdown
+            from="note"
+            arr={topicDropdown}
+            heading="Note Topic"
+            setOptDropDown={setOptDropDown}
+            length={cards2.length}
+            setIsOpen={setIsOpen}
+            setTopicDropDown={setTopicDropDown}
+          />
         )}
       </div>
       <div className="sub-card-note-3">
@@ -187,6 +226,10 @@ const Notes = ({ card, index }) => {
               arr={colours}
               color={card.color}
               index={index}
+              setOptDropDown={setOptDropDown}
+              length={cards2.length}
+              setIsOpenColour={setIsOpenColour}
+              setColourDropDown={setColourDropDown}
             />
           )}
         </div>

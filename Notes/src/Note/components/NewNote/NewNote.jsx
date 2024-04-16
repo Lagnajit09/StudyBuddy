@@ -1,6 +1,7 @@
 import React from "react";
 import { MdOutlineFolderOpen } from "react-icons/md";
 import { PiNotePencilBold } from "react-icons/pi";
+import { PiFolder } from "react-icons/pi";
 import "./NewNote.css";
 const NewNote = (props) => {
   const handleCreate = () => {
@@ -15,7 +16,7 @@ const NewNote = (props) => {
       createNote: {
         width: "100%",
         height: "100%",
-        marginTop: "7px",
+        marginTop: "5px",
       },
     };
   } else if (props.from === "note") {
@@ -31,9 +32,7 @@ const NewNote = (props) => {
   return (
     <div className="createNote" style={style.createNote} onClick={handleCreate}>
       {props.icon === "true" ? (
-        <MdOutlineFolderOpen
-          style={{ fontSize: "30", color: "rgba(0, 0, 0, 0.8)" }}
-        />
+        <PiFolder style={{ fontSize: "30", color: "rgba(0, 0, 0, 0.8)" }} />
       ) : (
         <PiNotePencilBold
           style={{ fontSize: "30", color: "rgba(0, 0, 0, 0.8)" }}

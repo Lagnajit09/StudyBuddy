@@ -12,6 +12,7 @@ function App() {
             <Route path="/note" element={<Note />}></Route>
             <Route path="/note/folders" element={<Note />}></Route>
             <Route path="/note/notes" element={<Note />}></Route>
+            <Route path="/note/:folderid" element={<Note />}></Route>
           </Routes>
         </Router>
       </RecoilRoot>

@@ -83,6 +83,7 @@
 }
 
 .three-dots-ver img {
+  width:13px;
   height: 23px;
   margin-top: 11px;
   cursor: pointer;

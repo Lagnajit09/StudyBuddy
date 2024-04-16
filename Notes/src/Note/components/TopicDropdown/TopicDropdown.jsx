@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./TopicDropdown.css";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
@@ -6,6 +6,22 @@ import { MdOutlineCheckBox } from "react-icons/md";
 
 const TopicDropdown = (props) => {
   const [checkedItems, setCheckedItems] = useState([]);
+
+  const topicRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (topicRef.current && !topicRef.current.contains(event.target)) {
+        props.setIsOpen(Array(props.length).fill(false));
+        props.setTopicDropDown(false);
+        props.setOptDropDown(Array(props.length).fill(false));
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [topicRef]);
 
   const handleCheck = (topic) => {
     setCheckedItems((prevState) => {
@@ -41,7 +57,7 @@ const TopicDropdown = (props) => {
   }
 
   return (
-    <div className="topic-dropdown" style={style.topicDropdown}>
+    <div className="topic-dropdown" style={style.topicDropdown} ref={topicRef}>
       <div className="sub-topic-dropdown-1">
         <span id="topic-heading">{props.heading}</span>
         {/* <span id="create-topic">

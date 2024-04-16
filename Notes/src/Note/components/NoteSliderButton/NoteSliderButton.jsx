@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "./NoteSliderButton.css";
+import { folderUserAtom } from "../../../NoteStore/folderStore";
+import { noteUserAtom } from "../../../NoteStore/noteStore";
+import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import { cards as cards1 } from "../../Folder";
-import { cards as cards2 } from "../../Notes";
 
 const NoteSliderButton = ({
   useFolderCards,
@@ -13,6 +14,9 @@ const NoteSliderButton = ({
 }) => {
   const [isPrevDisabled, setIsPrevDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
+
+  const cards1 = useRecoilValue(folderUserAtom);
+  const cards2 = useRecoilValue(noteUserAtom);
 
   const navigate = useNavigate();
 
@@ -28,10 +32,10 @@ const NoteSliderButton = ({
   };
 
   const nextSlide = () => {
+    currentIndex === cards.length - 5 ? handleNextDisable() : null;
     setIsPrevDisabled(false);
     const nextIndex = currentIndex + 1 >= cards.length ? 0 : currentIndex + 1;
     setCurrentIndex(nextIndex);
-    currentIndex === cards.length - 5 ? handleNextDisable() : null;
   };
 
   const prevSlide = () => {

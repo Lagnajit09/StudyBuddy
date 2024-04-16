@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./Folders.css";
 import { folderUserAtom } from "../../../NoteStore/folderStore";
-import { useRecoilValue } from "recoil";
+import { authUserAtom } from "../../../NoteStore/AuthUser";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
 import ThreeDotsHor from "../../../assets/Icons/ThreeDotsHor.svg";
 import OptionDropdown from "../OptionDropdown/OptionDropdown";
 import TopicDropdown from "../TopicDropdown/TopicDropdown";
@@ -36,24 +38,20 @@ const colours = [
 ];
 
 const Folders = ({ card, index }) => {
-  const cards1 = useRecoilValue(folderUserAtom);
+  const [cards1, setCards1] = useRecoilState(folderUserAtom);
+  const authUser = useRecoilValue(authUserAtom);
+
+  const navigate = useNavigate();
 
   function formatDate(dateString) {
     const date = new Date(dateString);
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return `${day < 10 ? "0" : ""}${day}.${
+    return `${day < 10 ? "0" : ""}${day}/${
       month < 10 ? "0" : ""
-    }${month}.${year}`;
+    }${month}/${year}`;
   }
-
-  // const dateString = cards1.createdAt;
-  // const formattedDate = date.toLocaleDateString("en-GB", {
-  //   day: "2-digit",
-  //   month: "2-digit",
-  //   year: "numeric",
-  // });
 
   const [showOptDropDown, setOptDropDown] = useState(
     Array(cards1.length).fill(false)
@@ -66,8 +64,8 @@ const Folders = ({ card, index }) => {
     Array(cards1.length).fill(false)
   );
 
-  const [isClicked, setIsClicked] = useState(Array(cards1.length).fill(false));
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  // const [isClicked, setIsClicked] = useState(Array(cards1.length).fill(false));
+  // const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const optDropdown = (index) => {
     const updatedDropDown = Array(cards1.length).fill(false);
@@ -94,15 +92,34 @@ const Folders = ({ card, index }) => {
       handleTopicClick(index, cardsIndex);
     } else if (index === 3) {
       handleColourClick(index, cardsIndex);
+    } else if (index === 0) {
+      handleDelete();
     }
   };
 
-  const handleFolderClick = (index) => {
-    const updatedIsClicked = Array(cards1.length).fill(false);
-    updatedIsClicked[index] = !isClicked[index];
-    setIsClicked(updatedIsClicked);
-    setHoveredIndex(null);
+  const handleDelete = async () => {
+    const updatedFolders = cards1.filter((folder) => folder._id !== card._id);
+    setCards1(updatedFolders);
+    const response = await fetch("http://localhost:3000/note/deletefolder", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: authUser._id,
+        folderIds: [card._id],
+      }),
+    });
+    const data = await response.json();
+    setOptDropDown(Array(cards1.length).fill(false));
   };
+
+  // const handleFolderClick = (index) => {
+  //   const updatedIsClicked = Array(cards1.length).fill(false);
+  //   updatedIsClicked[index] = !isClicked[index];
+  //   setIsClicked(updatedIsClicked);
+  //   setHoveredIndex(null);
+  // };
 
   return (
     <div
@@ -110,15 +127,16 @@ const Folders = ({ card, index }) => {
       className="card-folder"
       style={{
         backgroundColor: card.color,
-        border: isClicked[index]
-          ? "1.5px solid rgba(0,0,0,1)"
-          : "1px solid rgba(0, 0, 0, 0.1)",
+        // border: isClicked[index]
+        //   ? "1.5px solid rgba(0,0,0,1)"
+        //   : "1px solid rgba(0, 0, 0, 0.1)",
       }}
-      onClick={() => handleFolderClick(index)}
-      onMouseOver={() => setHoveredIndex(index)}
-      onMouseOut={() => setHoveredIndex(null)}
+      // onClick={() => handleFolderClick(index)}
+      // onMouseOver={() => setHoveredIndex(index)}
+      // onMouseOut={() => setHoveredIndex(null)}
+      onDoubleClick={() => navigate(`/note/${card._id}`)}
     >
-      {isClicked[index] && (
+      {/* {isClicked[index] && (
         <div className="arrow-icon-folder">
           <IoIosCheckmarkCircle
             style={{ fontSize: "27", color: "rgba(101, 203, 255, 1)" }}
@@ -129,7 +147,7 @@ const Folders = ({ card, index }) => {
         <div className="tooltip">
           <span className="tooltip-text">Select</span>
         </div>
-      )}
+      )} */}
 
       <div className="card-folder-icons">
         <PiFolder
@@ -148,6 +166,8 @@ const Folders = ({ card, index }) => {
                 arr={folderOpt}
                 handleOptClick={handleOptClick}
                 cardsIndex={index}
+                setOptDropDown={setOptDropDown}
+                length={cards1.length}
               />
             )}
           {showTopicDropDown && isOpen[index] && (
@@ -155,6 +175,10 @@ const Folders = ({ card, index }) => {
               from="folder"
               arr={topicDropdown}
               heading="Folder Topic"
+              setOptDropDown={setOptDropDown}
+              length={cards1.length}
+              setIsOpen={setIsOpen}
+              setTopicDropDown={setTopicDropDown}
             />
           )}
           {showColourDropDown && isOpenColour[index] && (
@@ -163,6 +187,10 @@ const Folders = ({ card, index }) => {
               arr={colours}
               color={card.color}
               index={index}
+              setOptDropDown={setOptDropDown}
+              length={cards1.length}
+              setIsOpenColour={setIsOpenColour}
+              setColourDropDown={setColourDropDown}
             />
           )}
         </div>
