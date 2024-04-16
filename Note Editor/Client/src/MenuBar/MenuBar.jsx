@@ -24,13 +24,13 @@ import { LuHeading2 } from "react-icons/lu";
 import { LuHighlighter } from "react-icons/lu";
 import { IoIosArrowDown } from "react-icons/io";
 
-const MenuBar = () => {
+const MenuBar = ({ selected_Size, setSelected_Size }) => {
+  const { editor } = useCurrentEditor();
   const [textLink, setTextLink] = useState(true);
   const [textAlign, setTextAlign] = useState(<PiTextAlignLeft />);
   const [showAlignMenu, setShowAlignMenu] = useState(false);
   const [showHighlightMenu, setShowHighlightMenu] = useState(false);
   const [showFontMenu, setShowFontMenu] = useState(false);
-  const { editor } = useCurrentEditor();
   const [showFontSizeMenu, setShowFontSizeMenu] = useState(false);
   const [showFontColorMenu, setShowFontColorMenu] = useState(false);
   const [selectedSize, setSelectedSize] = useState("Normal");
@@ -71,16 +71,13 @@ const MenuBar = () => {
     setTextLink(false);
     const previousUrl = editor.getAttributes("link").href;
     const url = window.prompt("URL", previousUrl);
-    // cancelled
     if (url === null) {
       return;
     }
-    // empty
     if (url === "") {
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
       return;
     }
-    // update link
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   }, [editor]);
 
@@ -98,6 +95,31 @@ const MenuBar = () => {
     },
     [editor]
   );
+
+  const handleFontSizeButtonClick = () => {
+    setShowFontSizeMenu(!showFontSizeMenu);
+  };
+
+  const handleFontSizeSelection = (size) => {
+    setSelected_Size(size);
+    setShowFontSizeMenu(false);
+    switch (size) {
+      case "Small":
+        editor.chain().focus().toggleHeading({ level: 5 }).run();
+        break;
+      case "Normal":
+        editor.chain().focus().toggleHeading({ level: 3 }).run();
+        break;
+      case "Large":
+        editor.chain().focus().toggleHeading({ level: 2 }).run();
+        break;
+      case "Huge":
+        editor.chain().focus().toggleHeading({ level: 1 }).run();
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <>
@@ -118,62 +140,34 @@ const MenuBar = () => {
         <div className="toolbar-middle">
           <div className="toolbar-div1">
             <button
-              onClick={() => {
-                setShowFontSizeMenu(!showFontSizeMenu);
-              }}
-              id="fontSizeBtn"
-              className={editor.isActive("heading") ? "is-active" : ""}
+              onClick={handleFontSizeButtonClick}
+              className={showFontSizeMenu ? "active" : ""}
             >
               {selectedSize} <IoIosArrowDown />
             </button>
             {showFontSizeMenu && (
-              <div className="size-menu" ref={buttonMenuWrapper}>
+              <div className="size-menu">
                 <button
-                  onClick={() => {
-                    editor.chain().focus().toggleHeading({ level: 5 }).run();
-                    setSelectedSize("Small");
-                    setShowFontSizeMenu(false);
-                  }}
-                  className={
-                    editor.isActive("heading", { level: 5 }) ? "is-active" : ""
-                  }
+                  onClick={() => handleFontSizeSelection("Small")}
+                  className={selectedSize === "Small" ? "active" : ""}
                 >
                   Small
                 </button>
                 <button
-                  onClick={() => {
-                    editor.chain().focus().toggleHeading({ level: 3 }).run();
-                    setShowFontSizeMenu(!showFontSizeMenu);
-                    setSelectedSize("Normal");
-                  }}
-                  id="fontSizeBtn"
-                  className={
-                    editor.isActive("heading", { level: 3 }) ? "is-active" : ""
-                  }
+                  onClick={() => handleFontSizeSelection("Normal")}
+                  className={selectedSize === "Normal" ? "active" : ""}
                 >
                   Normal
                 </button>
                 <button
-                  onClick={() => {
-                    editor.chain().focus().toggleHeading({ level: 2 }).run();
-                    setSelectedSize("Large");
-                    setShowFontSizeMenu(false);
-                  }}
-                  className={
-                    editor.isActive("heading", { level: 2 }) ? "is-active" : ""
-                  }
+                  onClick={() => handleFontSizeSelection("Large")}
+                  className={selectedSize === "Large" ? "active" : ""}
                 >
                   Large
                 </button>
                 <button
-                  onClick={() => {
-                    editor.chain().focus().toggleHeading({ level: 1 }).run();
-                    setSelectedSize("Huge");
-                    setShowFontSizeMenu(false);
-                  }}
-                  className={
-                    editor.isActive("heading", { level: 1 }) ? "is-active" : ""
-                  }
+                  onClick={() => handleFontSizeSelection("Huge")}
+                  className={selectedSize === "Huge" ? "active" : ""}
                 >
                   Huge
                 </button>
