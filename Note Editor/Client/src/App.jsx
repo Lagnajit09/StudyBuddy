@@ -1,5 +1,5 @@
 import React from "react";
-import TipTap from "./TipTap";
+import TipTap from "./Editor/TipTap";
 import "./App.css";
 
 const App = () => {

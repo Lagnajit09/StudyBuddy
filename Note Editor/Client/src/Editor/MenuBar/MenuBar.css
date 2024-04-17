@@ -1,0 +1,173 @@
+.tiptap-toolbar{
+    width: 96%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    gap: 77px;
+    padding: 18px 30px 15px;
+    position: fixed;
+    top: 0;
+    left: 0px;
+    border-bottom: 2px solid rgba(217, 217, 217, 0.773);
+    -webkit-box-shadow: 0px 1px 4px 1px rgba(0, 169, 255, 0.2);
+    -moz-box-shadow: 0px 1px 4px 1px rgba(0, 169, 255, 0.2);
+    box-shadow: 0px 1px 4px 1px rgba(0, 169, 255, 0.2);
+    z-index: 2;
+}
+
+.toolbar-left{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.toolbar-middle{
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 50px;
+}
+.toolbar-right{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 25px;
+    margin-left: 30px;
+}
+
+.toolbar-left input{
+    width: 100px;
+    background-color: transparent;
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid gray;
+}
+
+.tiptap-toolbar button{
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.toolbar-div1,
+.toolbar-div2, 
+.toolbar-div3,
+.toolbar-div4,
+.toolbar-div5,
+.toolbar-div6{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.toolbar-div1{
+    display: flex;
+    justify-content: space-between;
+}
+
+.size-menu, .font-menu,
+.highlight-menu, 
+.text-align-opt, 
+.fontcolor-menu, 
+.toolbar-more-menu{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 5px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 2;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.216);
+}
+
+
+.toolbar-div2 .color{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.toolbar-div1 button{   
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+.text-align-opt{
+    flex-direction: row;
+    bottom: -30%;
+    right: 36.8%;
+    padding: 5px 5px 0;
+}
+
+.highlight-menu{
+    flex-direction: row;
+    bottom: -30%;
+    left: 44.7%;
+    padding: 5px;
+}
+
+.fontcolor-menu{
+    flex-direction: row;
+    padding: 5px;
+    bottom: -30%;
+    left: 42.3%;
+}
+
+.font-menu{
+    top: 85%;
+    left: 26%;
+}
+
+.size-menu{
+    top: 85%;
+    left: 18%;
+}
+
+.toolbar-more-menu{
+    width: 7%;
+    font-size: 14px;
+    right: 1%;
+    top: 85%;
+    padding: 1px;
+    overflow: hidden;
+}
+
+.toolbar-more-menu span{
+    padding: 2px 3px;
+    width: 94%;
+}
+
+.toolbar-more-menu span:hover{
+    background-color: aliceblue;
+    cursor: pointer;
+}
+
+.font-menu button,.size-menu button{
+    font-size: 14px;
+    padding: 0 5px;
+    width: 100%;
+}
+.font-menu button:hover,.size-menu button:hover{
+    background-color: aliceblue;
+}
+
+#fontSizeBtn{
+    width: 85px;
+}
+#fontBtn{
+    width: 130px;
+}
+
+.select-image label{
+    font-size: 18px;
+    cursor: pointer;
+}
+#image-picker{
+    width: 0;  
+}
