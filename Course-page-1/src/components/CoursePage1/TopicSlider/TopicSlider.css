@@ -54,11 +54,11 @@
 }
 
 .prevSlideButton {
-  left: 107px;
+  left: 7%;
 }
 
 .nextSlideButton {
-  right: 114px;
+  right: 7.5%;
 }
 
 .prevSlideButton:hover,

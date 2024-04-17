@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { course_name } from "../../CoursePage1/coursepageSlider2";
+import { course_name } from "../coursepageSlider2";
 import CourseCard from "../TopicSlider/CourseCard/CourseCard";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
@@ -14,11 +14,38 @@ const createCard = (index) => (
     cap={course_name[index].cap}
     c_dest={course_name[index].c_dest}
     cap_color={course_name[index].cap_color}
+    link={course_name[index].link}
   />
 );
 
-const TopicSlider = () => {
+const TopicSlider = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  let style = {};
+
+  if (props.from === "profile") {
+    style = {
+      slider2Container: {
+        height: "233px",
+        width: "89.3%",
+        margin: "0 auto",
+      },
+
+      courseCap: {
+        margin: "33px 0 20px 68px",
+      },
+
+      prevSlideButton: {
+        top: "48%",
+        left: "4%",
+      },
+      nextSlideButton: {
+        top: "48%",
+        right: "7%",
+      },
+    };
+  }
+
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex >= course_name.length - 4 ? 0 : prevIndex + 4
@@ -33,8 +60,10 @@ const TopicSlider = () => {
 
   return (
     <div className="slider2ContainerParent">
-      <span id="courseCap">Best Courses</span>
-      <div className="slider2Container">
+      <span id="courseCap" style={style.courseCap}>
+        {props.text}
+      </span>
+      <div className="slider2Container" style={style.slider2Container}>
         <div
           className="slider2Wrapper"
           style={{
@@ -64,10 +93,15 @@ const TopicSlider = () => {
           onClick={prevSlide}
           className="prevSlideButton"
           disabled={currentIndex >= 8 ? true : false}
+          style={style.prevSlideButton}
         >
           <KeyboardArrowLeftRoundedIcon style={{ fontSize: "40" }} />
         </button>
-        <button onClick={nextSlide} className="nextSlideButton">
+        <button
+          onClick={nextSlide}
+          className="nextSlideButton"
+          style={style.nextSlideButton}
+        >
           <KeyboardArrowRightRoundedIcon style={{ fontSize: "40" }} />
         </button>
       </div>

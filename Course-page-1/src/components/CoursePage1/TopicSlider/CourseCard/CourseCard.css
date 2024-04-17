@@ -35,15 +35,15 @@
 }
 
 #cap {
-  width: 70%;
-  padding-left: 15px;
+  width: 90%;
+  margin: auto;
   font-size: 15px;
   font-weight: 500;
   color: rgba(36, 36, 36, 1);
 }
 
 #dest {
-  width: 70%;
+  width: 100%;
   padding-left: 15px;
   font-size: 12px;
   font-weight: 500;
