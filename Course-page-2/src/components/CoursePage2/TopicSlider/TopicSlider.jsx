@@ -81,12 +81,6 @@ const TopicSlider = (props) => {
             {createCard(6)}
             {createCard(7)}
           </div>
-          <div className="topicWrapper3">
-            {createCard(8)}
-            {createCard(9)}
-            {createCard(10)}
-            {createCard(11)}
-          </div>
         </div>
         <button
           onClick={prevSlide}
