@@ -1,12 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { MdOutlineFolderOpen } from "react-icons/md";
 import { PiNotePencilBold } from "react-icons/pi";
 import { PiFolder } from "react-icons/pi";
 import "./NewNote.css";
 const NewNote = (props) => {
+  const navigate = useNavigate();
+
   const handleCreate = () => {
     if (props.icon === "true") {
       props.setNewFolder(true);
+    } else {
+      navigate("/note/new");
     }
   };
 

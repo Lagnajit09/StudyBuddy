@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./Notes.css";
 import { noteUserAtom } from "../../../NoteStore/noteStore";
 import { authUserAtom } from "../../../NoteStore/AuthUser";
 import { useRecoilValue, useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import { PiNotePencilBold } from "react-icons/pi";
 import ThreeDotsVer from "../../../assets/Icons/ThreeDotsVer.svg";
@@ -20,6 +21,7 @@ const noteOpt = [
   "Change colour",
   "Add to Folder",
   "Download",
+  // "Rename",
 ];
 
 const topicDropdown = [
@@ -45,6 +47,8 @@ const Notes = ({ card, index, setAddToFolder }) => {
   const [cards2, setCards2] = useRecoilState(noteUserAtom);
   const authUser = useRecoilValue(authUserAtom);
 
+  const navigate = useNavigate();
+
   const [showOptDropDown, setOptDropDown] = useState(
     Array(cards2.length).fill(false)
   );
@@ -55,6 +59,22 @@ const Notes = ({ card, index, setAddToFolder }) => {
   const [isOpenColour, setIsOpenColour] = useState(
     Array(cards2.length).fill(false)
   );
+
+  // const [rename, setRename] = useState(card.title);
+
+  // const renameRef = useRef(null);
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (renameRef.current && !renameRef.current.contains(event.target)) {
+  //       handleRenameNote();
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [renameRef]);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -112,10 +132,13 @@ const Notes = ({ card, index, setAddToFolder }) => {
     } else if (index === 4) {
       handleAdd(cardsIndex);
     }
+    // else if (index === 6) {
+    //   handleRename();
+    // }
   };
 
   const handleDelete = async () => {
-    const updatedNotes = cards2.filter((folder) => folder._id !== card._id);
+    const updatedNotes = cards2.filter((note) => note._id !== card._id);
     setCards2(updatedNotes);
     const response = await fetch("http://localhost:3000/note/deletenote", {
       method: "PATCH",
@@ -136,11 +159,46 @@ const Notes = ({ card, index, setAddToFolder }) => {
     setOptDropDown(Array(cards2.length).fill(false));
   };
 
-  // const handleFolderClick = (index) => {
-  //   const updatedIsClicked = Array(cards2.length).fill(false);
-  //   updatedIsClicked[index] = !isClicked[index];
-  //   setIsClicked(updatedIsClicked);
-  //   setHoveredIndex(null);
+  // const handleRename = async () => {
+  //   const rename = document.querySelector(`.card-note-title-input${index}`);
+  //   rename.disabled = false;
+  //   rename.focus();
+  //   setOptDropDown(Array(cards2.length).fill(false));
+  // };
+
+  // // const handleFolderClick = (index) => {
+  // //   const updatedIsClicked = Array(cards2.length).fill(false);
+  // //   updatedIsClicked[index] = !isClicked[index];
+  // //   setIsClicked(updatedIsClicked);
+  // //   setHoveredIndex(null);
+  // // };
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   handleRenameNote();
+  // };
+
+  // const handleRenameNote = async () => {
+  //   const rename = document.querySelector(`.card-note-title-input${index}`);
+  //   rename.disabled = true;
+  //   const updatedNotes = [...cards2];
+  //   updatedNotes[index] = {
+  //     ...updatedNotes[index],
+  //     name: rename.value,
+  //   };
+  //   setCards2(updatedNotes);
+  //   const response = await fetch("http://localhost:3000/note/updatenote", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       userId: authUser._id,
+  //       noteId: card._id,
+  //       newtitle: rename.value,
+  //     }),
+  //   });
+  //   const data = await response.json();
   // };
 
   return (
@@ -156,6 +214,15 @@ const Notes = ({ card, index, setAddToFolder }) => {
       // onClick={() => handleFolderClick(index)}
       // onMouseOver={() => setHoveredIndex(index)}
       // onMouseOut={() => setHoveredIndex(null)}
+      onDoubleClick={() => {
+        navigate(`/note/content/${card._id}`, {
+          state: {
+            content: card.content,
+            title: card.title,
+          },
+        });
+      }}
+      // ref={renameRef}
     >
       {/* {isClicked[index] && (
         <div className="arrow-icon-note">
@@ -172,7 +239,15 @@ const Notes = ({ card, index, setAddToFolder }) => {
       <div className="sub-card-note-1">
         <div className="card-note-title">
           <h6>{formatDate(card.updated_at)}</h6>
-          <h5>{card.title}</h5>
+          <form action="">
+            <input
+              className={`card-note-title-input${index} note-rename`}
+              type="text"
+              value={card.title}
+              // onChange={(e) => setRename(e.target.value)}
+              disabled
+            />
+          </form>
         </div>
         <PiNotePencilBold
           style={{
@@ -184,9 +259,9 @@ const Notes = ({ card, index, setAddToFolder }) => {
       <div className="sub-card-note-2">
         <div className="card-note-desc">
           <h5>
-            {card.content.length > 195
-              ? `${card.content.slice(0, 197)}...`
-              : card.content}
+            {card.contentText.length > 195
+              ? `${card.contentText.slice(0, 197)}...`
+              : card.contentText}
           </h5>
         </div>
         {showOptDropDown[index] &&

@@ -32,6 +32,8 @@ const OptionDropdown = (props) => {
         width: "43.5%",
         position: "absolute",
         top: "27.5%",
+        // top:"18%",
+        right: "10%",
         zIndex: "3",
       },
     };

@@ -41,9 +41,7 @@ router
 router
   .route("/deletefolderpermanently")
   .post(middleware.authenticate, folder.deleteFolderPermanently); //toute to delete user permanently from trashbin
-router
-  .route("/renamefolder")
-  .post(middleware.authenticate, folder.renameFolder);
+router.route("/renamefolder").post(folder.renameFolder);
 
 router.route("/addtotopic").post(middleware.authenticate, folder.moveToTopic); //route to add a single folder to topics
 router.route("/updatefolder").post(folder.updateFolderColor); //route to change color of a folder
@@ -60,12 +58,12 @@ router
 router.route("/viewnote").get(middleware.authenticate, note.viewNote); //route to view folder
 router.route("/updatenote").post(note.updateNote); //route to update note
 
-router.route("/archivenote").post(middleware.authenticate, note.archiveNote);
+router.route("/archivenote").post(note.archiveNote);
 router
   .route("/unarchivenote")
   .post(middleware.authenticate, note.unarchiveNote);
 
-router.route("/movetofolder").post( note.moveToFolder);
+router.route("/movetofolder").post(note.moveToFolder);
 router.route("/movetotopic").post(middleware.authenticate, note.moveToTopic);
 
 //To Handle All Documents

@@ -96,7 +96,6 @@ const ColourDropdown = (props) => {
       ref={colourRef}
     >
       {props.arr.map((colour, index) => {
-        console.log(props.color, colour);
         return (
           <div
             className="sub-colour-dropdown"

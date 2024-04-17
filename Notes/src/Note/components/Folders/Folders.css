@@ -43,7 +43,10 @@
   font-size: 10px;
 }
 
-.card-folder-desc h5 {
+.folder-rename {
+  background-color: inherit;
+  border: none;
+  outline: none;
   color: #000000;
   font-weight: 550;
 }

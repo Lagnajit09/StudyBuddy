@@ -14,6 +14,10 @@ const noteSchema = new mongoose.Schema({
     type: "String",
     required: true,
   },
+  contentText: {
+    type: "String",
+    required: true,
+  },
   created_by: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -21,11 +25,11 @@ const noteSchema = new mongoose.Schema({
   },
   created_at: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   updated_at: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   folder_id: {
     type: Schema.Types.ObjectId,

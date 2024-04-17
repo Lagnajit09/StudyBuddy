@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Folders.css";
 import { folderUserAtom } from "../../../NoteStore/folderStore";
 import { authUserAtom } from "../../../NoteStore/AuthUser";
@@ -16,6 +16,7 @@ const folderOpt = [
   "Archive",
   "Add to Topics",
   "Change colour",
+  // "Rename",
 ];
 
 const topicDropdown = [
@@ -42,6 +43,22 @@ const Folders = ({ card, index }) => {
   const authUser = useRecoilValue(authUserAtom);
 
   const navigate = useNavigate();
+
+  // const [rename, setRename] = useState(card.name);
+
+  // const renameRef = useRef(null);
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (renameRef.current && !renameRef.current.contains(event.target)) {
+  //       handleRenameFolder();
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [renameRef]);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -94,6 +111,8 @@ const Folders = ({ card, index }) => {
       handleColourClick(index, cardsIndex);
     } else if (index === 0) {
       handleDelete();
+    } else if (index === 4) {
+      handleRename();
     }
   };
 
@@ -113,6 +132,41 @@ const Folders = ({ card, index }) => {
     const data = await response.json();
     setOptDropDown(Array(cards1.length).fill(false));
   };
+
+  // const handleRename = async () => {
+  //   const rename = document.querySelector(`.card-folder-name-input${index}`);
+  //   rename.disabled = false;
+  //   rename.focus();
+  //   setOptDropDown(Array(cards1.length).fill(false));
+  // };
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   handleRenameFolder();
+  // };
+
+  // const handleRenameFolder = async () => {
+  //   const rename = document.querySelector(`.card-folder-name-input${index}`);
+  //   rename.disabled = true;
+  //   const updatedFolders = [...cards1];
+  //   updatedFolders[index] = {
+  //     ...updatedFolders[index],
+  //     name: rename.value,
+  //   };
+  //   setCards1(updatedFolders);
+  //   const response = await fetch("http://localhost:3000/note/renamefolder", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       userId: authUser._id,
+  //       folderId: card._id,
+  //       newname: rename.value,
+  //     }),
+  //   });
+  //   const data = await response.json();
+  // };
 
   // const handleFolderClick = (index) => {
   //   const updatedIsClicked = Array(cards1.length).fill(false);
@@ -135,6 +189,7 @@ const Folders = ({ card, index }) => {
       // onMouseOver={() => setHoveredIndex(index)}
       // onMouseOut={() => setHoveredIndex(null)}
       onDoubleClick={() => navigate(`/note/${card._id}`)}
+      // ref={renameRef}
     >
       {/* {isClicked[index] && (
         <div className="arrow-icon-folder">
@@ -196,7 +251,15 @@ const Folders = ({ card, index }) => {
         </div>
       </div>
       <div className="card-folder-desc">
-        <h5>{card.name}</h5>
+        <form action="">
+          <input
+            className={`card-folder-name-input${index} folder-rename`}
+            type="text"
+            value={card.name}
+            // onChange={(e) => setRename(e.target.value)}
+            disabled
+          />
+        </form>
         <h6>{formatDate(card.createdAt)}</h6>
       </div>
     </div>

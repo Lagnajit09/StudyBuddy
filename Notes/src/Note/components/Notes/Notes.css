@@ -34,7 +34,10 @@
   gap: 5px;
 }
 
-.card-note-title h5 {
+.note-rename {
+  background-color: inherit;
+  border: none;
+  outline: none;
   color: #000000;
   font-weight: 550;
 }
@@ -83,7 +86,7 @@
 }
 
 .three-dots-ver img {
-  width:13px;
+  width: 13px;
   height: 23px;
   margin-top: 11px;
   cursor: pointer;
