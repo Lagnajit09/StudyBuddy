@@ -3,7 +3,7 @@ import "./AllNotes.css";
 import Notes from "../Notes/Notes";
 
 const AllNotes = (props) => {
-
+  console.log(props.noteUser);
   return (
     <div className="all-notes">
       {props.noteUser?.map((card, index) => (

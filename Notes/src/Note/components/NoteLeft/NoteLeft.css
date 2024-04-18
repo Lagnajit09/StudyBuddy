@@ -89,24 +89,28 @@
   display: flex;
   /* height: 100%; */
   font-size: 15px;
+  cursor: pointer;
 }
 
 .topics-span {
   margin-right: 51%;
   margin-left: 5%;
   font-size: 15px;
+  cursor: pointer;
 }
 
 .archive-span {
   margin-right: 46.5%;
   margin-left: 5%;
   font-size: 15px;
+  cursor: pointer;
 }
 
 .trash-span {
   margin-right: 53.5%;
   margin-left: 5%;
   font-size: 15px;
+  cursor: pointer;
 }
 
 .topics-list,

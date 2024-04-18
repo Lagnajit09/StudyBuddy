@@ -11,9 +11,11 @@ const signupSchema = require("./User/signup-Schema");
 const validate = require("./User/validate-signup");
 
 const {
-  viewArchive,
+  viewFoldersArchive,
+  viewNotesArchive,
   viewAllDocs,
-  viewTrash,
+  viewFoldersTrash,
+  viewNotesTrash,
   viewAllDocsinTopic,
   addTopic,
   viewTopics,
@@ -28,19 +30,11 @@ router.route("/login").post(auth.login); //route to handle login page
 router.route("/makefolder").post(folder.createFolder); //route to create folder
 router.route("/deletefolder").patch(folder.deleteFolder); //route to delete folder
 router.route("/viewfolder").get(middleware.authenticate, folder.viewFolder); //route to view folder
-router
-  .route("/archivefolder")
-  .post(middleware.authenticate, folder.archiveFolder); //route to archive folder
+router.route("/archivefolder").post(folder.archiveFolder); //route to archive folder
 
-router
-  .route("/recoverfolder")
-  .post(middleware.authenticate, folder.recoverFolder); //route to recover folder from trashbin
-router
-  .route("/unarchivefolder")
-  .post(middleware.authenticate, folder.unarchiveFolder); //route to unarchive folder from trashbin
-router
-  .route("/deletefolderpermanently")
-  .post(middleware.authenticate, folder.deleteFolderPermanently); //toute to delete user permanently from trashbin
+router.route("/recoverfolder").post(folder.recoverFolder); //route to recover folder from trashbin
+router.route("/unarchivefolder").post(folder.unarchiveFolder); //route to unarchive folder from trashbin
+router.route("/deletefolderpermanently").post(folder.deleteFolderPermanently); //toute to delete user permanently from trashbin
 router.route("/renamefolder").post(folder.renameFolder);
 
 router.route("/addtotopic").post(middleware.authenticate, folder.moveToTopic); //route to add a single folder to topics
@@ -50,18 +44,14 @@ router.route("/updatefolder").post(folder.updateFolderColor); //route to change 
 router.route("/makenote").post(note.saveNote); //route to handle note creation
 
 router.route("/deletenote").patch(note.deleteNote); //route to handle note deletion
-router.route("/recovernote").post(middleware.authenticate, note.recoverNote);
-router
-  .route("/deletenotepermanently")
-  .post(middleware.authenticate, note.deleteNotePermanently);
+router.route("/recovernote").post(note.recoverNote);
+router.route("/deletenotepermanently").post(note.deleteNotePermanently);
 
 router.route("/viewnote").get(middleware.authenticate, note.viewNote); //route to view folder
 router.route("/updatenote").post(note.updateNote); //route to update note
 
 router.route("/archivenote").post(note.archiveNote);
-router
-  .route("/unarchivenote")
-  .post(middleware.authenticate, note.unarchiveNote);
+router.route("/unarchivenote").post(note.unarchiveNote);
 
 router.route("/movetofolder").post(note.moveToFolder);
 router.route("/movetotopic").post(middleware.authenticate, note.moveToTopic);
@@ -69,8 +59,10 @@ router.route("/movetotopic").post(middleware.authenticate, note.moveToTopic);
 //To Handle All Documents
 router.route("/addtopic").post(middleware.authenticate, addTopic);
 router.route("/viewtopics").post(middleware.authenticate, viewTopics);
-router.route("/viewarchives").post(middleware.authenticate, viewArchive);
-router.route("/viewtrash").post(middleware.authenticate, viewTrash);
+router.route("/viewfoldersarchive/:userId").get(viewFoldersArchive);
+router.route("/viewnotesarchive/:userId").get(viewNotesArchive);
+router.route("/viewfolderstrash/:userId").get(viewFoldersTrash);
+router.route("/viewnotestrash/:userId").get(viewNotesTrash);
 router
   .route("/viewdocsintopic")
   .post(middleware.authenticate, viewAllDocsinTopic);

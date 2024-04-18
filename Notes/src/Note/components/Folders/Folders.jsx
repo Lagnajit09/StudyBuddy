@@ -1,23 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useMemo } from "react";
 import "./Folders.css";
-import { folderUserAtom } from "../../../NoteStore/folderStore";
+import {
+  folderUserAtom,
+  archivedFoldersAtom,
+  deletedFoldersAtom,
+} from "../../../NoteStore/folderStore";
 import { authUserAtom } from "../../../NoteStore/AuthUser";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import ThreeDotsHor from "../../../assets/Icons/ThreeDotsHor.svg";
 import OptionDropdown from "../OptionDropdown/OptionDropdown";
 import TopicDropdown from "../TopicDropdown/TopicDropdown";
 import ColourDropdown from "../ColourDropdown/ColourDropdown";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { PiFolder } from "react-icons/pi";
-
-const folderOpt = [
-  "Delete Folder",
-  "Archive",
-  "Add to Topics",
-  "Change colour",
-  // "Rename",
-];
 
 const topicDropdown = [
   "Biology",
@@ -41,8 +37,32 @@ const colours = [
 const Folders = ({ card, index }) => {
   const [cards1, setCards1] = useRecoilState(folderUserAtom);
   const authUser = useRecoilValue(authUserAtom);
+  const [archiveFolder, setArchiveFolder] = useRecoilState(archivedFoldersAtom);
+  const [trashFolder, setTrashFolder] = useRecoilState(deletedFoldersAtom);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const trashPath = useMemo(() => {
+    return location.pathname.includes("/trash/folder");
+  }, [location.pathname]);
+
+  const archivePath = useMemo(() => {
+    return location.pathname.includes("/archive/folder");
+  }, [location.pathname]);
+
+  let folderOpt = [
+    "Move to Trash",
+    "Archive",
+    "Add to Topics",
+    "Change colour",
+    // "Rename",
+  ];
+
+  if (trashPath) {
+    folderOpt = ["Delete", "Recover"];
+  } else if (archivePath) {
+    folderOpt = ["Move to Trash", "Unarchive"];
+  }
 
   // const [rename, setRename] = useState(card.name);
 
@@ -105,22 +125,114 @@ const Folders = ({ card, index }) => {
   };
 
   const handleOptClick = (index, cardsIndex) => {
-    if (index === 2) {
+    if (index === 0) {
+      trashPath ? handleDelete() : handleTrash();
+    } else if (index === 1) {
+      if (archivePath) {
+        handleUnarchive();
+      } else if (trashPath) {
+        handleRecover();
+      } else {
+        handleArchive();
+      }
+    } else if (index === 2) {
       handleTopicClick(index, cardsIndex);
     } else if (index === 3) {
       handleColourClick(index, cardsIndex);
-    } else if (index === 0) {
-      handleDelete();
-    } else if (index === 4) {
-      handleRename();
     }
+    // else if (index === 4) {
+    //   handleRename();
+    // }
   };
 
-  const handleDelete = async () => {
+  const handleTrash = async () => {
     const updatedFolders = cards1.filter((folder) => folder._id !== card._id);
     setCards1(updatedFolders);
     const response = await fetch("http://localhost:3000/note/deletefolder", {
       method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: authUser._id,
+        folderIds: [card._id],
+      }),
+    });
+    const data = await response.json();
+    setOptDropDown(Array(cards1.length).fill(false));
+  };
+
+  const handleDelete = async () => {
+    const updatedFolders = trashFolder.filter(
+      (folder) => folder._id !== card._id
+    );
+    setTrashFolder(updatedFolders);
+    const response = await fetch(
+      "http://localhost:3000/note/deletefolderpermanently",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: authUser._id,
+          folderIds: [card._id],
+        }),
+      }
+    );
+    const data = await response.json();
+    setOptDropDown(Array(cards1.length).fill(false));
+  };
+
+  const handleArchive = async () => {
+    const updatedFolders = cards1.filter((folder) => folder._id !== card._id);
+    setCards1(updatedFolders);
+    const response = await fetch("http://localhost:3000/note/archivefolder", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: authUser._id,
+        folderIds: [card._id],
+      }),
+    });
+    const data = await response.json();
+    setOptDropDown(Array(cards1.length).fill(false));
+  };
+
+  const handleUnarchive = async () => {
+    const unarchiveFolder = archiveFolder.find(
+      (folder) => folder._id === card._id
+    );
+    setCards1((prev) => [unarchiveFolder, ...prev]);
+    const updatedFolders = archiveFolder.filter(
+      (folder) => folder._id !== card._id
+    );
+    setArchiveFolder(updatedFolders);
+    const response = await fetch("http://localhost:3000/note/unarchivefolder", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: authUser._id,
+        folderIds: [card._id],
+      }),
+    });
+    const data = await response.json();
+    setOptDropDown(Array(cards1.length).fill(false));
+  };
+
+  const handleRecover = async () => {
+    const recoverFolder = trashFolder.find((folder) => folder._id === card._id);
+    setCards1((prev) => [recoverFolder, ...prev]);
+    const updatedFolders = trashFolder.filter(
+      (folder) => folder._id !== card._id
+    );
+    setTrashFolder(updatedFolders);
+    const response = await fetch("http://localhost:3000/note/recoverfolder", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -188,7 +300,9 @@ const Folders = ({ card, index }) => {
       // onClick={() => handleFolderClick(index)}
       // onMouseOver={() => setHoveredIndex(index)}
       // onMouseOut={() => setHoveredIndex(null)}
-      onDoubleClick={() => navigate(`/note/${card._id}`)}
+      onDoubleClick={() => {
+        !trashPath && navigate(`/note/${card._id}`);
+      }}
       // ref={renameRef}
     >
       {/* {isClicked[index] && (

@@ -7,9 +7,9 @@ const { deleteNoteDependencies } = require("../User/document-Controller");
 
 //1     Function to Create and Svae a Note // Dont require folder id
 exports.saveNote = async (req, res) => {
-  console.log(req.body);
   try {
     const { title, content, contentText, folderId, topicId, userId } = req.body;
+    console.log(req.body);
     const user = await User.findById(userId); //find user
     const note = await Note.findOne({ title: title, created_by: userId }); //find if note exists with same title anywhere(by the user)
 
@@ -20,7 +20,7 @@ exports.saveNote = async (req, res) => {
 
     if (folderId && topicId) {
       //If any one is giving both topicID and folderId //not possible from frontend
-      return res.json({
+      return res.status(450).json({
         message: "Provide either folderId or topicId, not both",
       });
     }
@@ -39,14 +39,14 @@ exports.saveNote = async (req, res) => {
         if (noteInFolder) {
           if (noteInFolder.deleted || noteInFolder.archived) {
             //If virtually exists in trash or archives
-            return res.status(200).json({
+            return res.status(430).json({
               message:
                 "Note with same name from this folder already exist, check trash or archives",
             });
           } else {
             //If physically exists
             return res
-              .status(200)
+              .status(428)
               .json({ message: "Note already exists in the folder" });
           }
         }
@@ -69,14 +69,14 @@ exports.saveNote = async (req, res) => {
           //If exists
           if (noteInTopic.deleted || noteInTopic.archived) {
             //Virtually
-            return res.status(200).json({
+            return res.status(420).json({
               message:
                 "Note with same name from this topic already exist, check trash or archives",
             });
           } else {
             //Physically
             return res
-              .status(200)
+              .status(418)
               .json({ message: "Note already exists in the topic" });
           }
         }
@@ -92,13 +92,13 @@ exports.saveNote = async (req, res) => {
         if (existingNote) {
           if (existingNote.deleted || existingNote.archived) {
             //virtually
-            return res.status(200).json({
+            return res.status(410).json({
               message:
                 "Note with same name already exist, check trash or archives",
             });
           } else {
             //physically
-            return res.status(200).json({ message: "Note already exists" });
+            return res.status(408).json({ message: "Note already exists" });
           }
         }
       }
@@ -225,7 +225,7 @@ exports.deleteNote = async (req, res) => {
       await note.save();
     }
     return res.status(200).json({
-      message: "Note deleted and added to thrashbin",
+      message: "Note deleted and added to trashbin",
     });
   } catch (error) {
     console.error(error);

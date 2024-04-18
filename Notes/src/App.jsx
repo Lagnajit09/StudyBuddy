@@ -16,6 +16,11 @@ function App() {
             <Route path="/note/:folderid" element={<Note />}></Route>
             <Route path="/note/new" element={<TipTap />}></Route>
             <Route path="/note/content/:noteid" element={<TipTap />}></Route>
+            <Route path="/note/trash/folder" element={<Note />}></Route>
+            <Route path="/note/trash/note" element={<Note />}></Route>
+            <Route path="/note/archive/folder" element={<Note />}></Route>
+            <Route path="/note/archive/note" element={<Note />}></Route>
+            <Route path="/note/topic/:topicid" element={<Note />}></Route>
           </Routes>
         </Router>
       </RecoilRoot>

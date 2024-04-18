@@ -1,9 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import "./Notes.css";
-import { noteUserAtom } from "../../../NoteStore/noteStore";
+import {
+  noteUserAtom,
+  archivedNotesAtom,
+  deletedNotesAtom,
+} from "../../../NoteStore/noteStore";
 import { authUserAtom } from "../../../NoteStore/AuthUser";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import { PiNotePencilBold } from "react-icons/pi";
 import ThreeDotsVer from "../../../assets/Icons/ThreeDotsVer.svg";
@@ -13,16 +17,6 @@ import ColourDropdown from "../ColourDropdown/ColourDropdown";
 
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { PiFolder } from "react-icons/pi";
-
-const noteOpt = [
-  "Delete Note",
-  "Archive",
-  "Add to Topics",
-  "Change colour",
-  "Add to Folder",
-  "Download",
-  // "Rename",
-];
 
 const topicDropdown = [
   "Biology",
@@ -46,8 +40,35 @@ const colours = [
 const Notes = ({ card, index, setAddToFolder }) => {
   const [cards2, setCards2] = useRecoilState(noteUserAtom);
   const authUser = useRecoilValue(authUserAtom);
+  const [archiveNote, setArchiveNote] = useRecoilState(archivedNotesAtom);
+  const [trashNote, setTrashNote] = useRecoilState(deletedNotesAtom);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const trashPath = useMemo(() => {
+    return location.pathname.includes("/trash/note");
+  }, [location.pathname]);
+
+  const archivePath = useMemo(() => {
+    return location.pathname.includes("/archive/note");
+  }, [location.pathname]);
+
+  let noteOpt = [
+    "Move to Trash",
+    "Archive",
+    "Add to Topics",
+    "Change colour",
+    "Add to Folder",
+    "Download",
+    // "Rename",
+  ];
+
+  if (trashPath) {
+    noteOpt = ["Delete", "Recover"];
+  } else if (archivePath) {
+    noteOpt = ["Move to Trash", "Unarchive"];
+  }
 
   const [showOptDropDown, setOptDropDown] = useState(
     Array(cards2.length).fill(false)
@@ -124,7 +145,15 @@ const Notes = ({ card, index, setAddToFolder }) => {
 
   const handleOptClick = (index, cardsIndex) => {
     if (index === 0) {
-      handleDelete();
+      trashPath ? handleDelete() : handleTrash();
+    } else if (index === 1) {
+      if (archivePath) {
+        handleUnarchive();
+      } else if (trashPath) {
+        handleRecover();
+      } else {
+        handleArchive();
+      }
     } else if (index === 2) {
       handleTopicClick(index, cardsIndex);
     } else if (index === 3) {
@@ -137,11 +166,84 @@ const Notes = ({ card, index, setAddToFolder }) => {
     // }
   };
 
-  const handleDelete = async () => {
+  const handleTrash = async () => {
     const updatedNotes = cards2.filter((note) => note._id !== card._id);
     setCards2(updatedNotes);
     const response = await fetch("http://localhost:3000/note/deletenote", {
       method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: authUser._id,
+        noteIds: [card._id],
+      }),
+    });
+    const data = await response.json();
+    setOptDropDown(Array(cards2.length).fill(false));
+  };
+
+  const handleDelete = async () => {
+    const response = await fetch(
+      "http://localhost:3000/note/deletenotepermanently",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: authUser._id,
+          noteIds: [card._id],
+        }),
+      }
+    );
+    const data = await response.json();
+    setOptDropDown(Array(cards2.length).fill(false));
+  };
+
+  const handleArchive = async () => {
+    const updatedNotes = cards2.filter((note) => note._id !== card._id);
+    setCards2(updatedNotes);
+    const response = await fetch("http://localhost:3000/note/archivenote", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: authUser._id,
+        noteIds: [card._id],
+      }),
+    });
+    const data = await response.json();
+    setOptDropDown(Array(cards2.length).fill(false));
+  };
+
+  const handleUnarchive = async () => {
+    const unarchiveNote = archiveNote.find((note) => note._id === card._id);
+    setCards2((prev) => [unarchiveNote, ...prev]);
+    const updatedNotes = archiveNote.filter((note) => note._id !== card._id);
+    setArchiveNote(updatedNotes);
+    const response = await fetch("http://localhost:3000/note/unarchivenote", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: authUser._id,
+        noteIds: [card._id],
+      }),
+    });
+    const data = await response.json();
+    setOptDropDown(Array(cards2.length).fill(false));
+  };
+
+  const handleRecover = async () => {
+    const recoverNote = trashNote.find((note) => note._id === card._id);
+    setCards2((prev) => [recoverNote, ...prev]);
+    const updatedNotes = trashNote.filter((note) => note._id !== card._id);
+    setTrashNote(updatedNotes);
+    const response = await fetch("http://localhost:3000/note/recovernote", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -215,12 +317,13 @@ const Notes = ({ card, index, setAddToFolder }) => {
       // onMouseOver={() => setHoveredIndex(index)}
       // onMouseOut={() => setHoveredIndex(null)}
       onDoubleClick={() => {
-        navigate(`/note/content/${card._id}`, {
-          state: {
-            content: card.content,
-            title: card.title,
-          },
-        });
+        !trashPath &&
+          navigate(`/note/content/${card._id}`, {
+            state: {
+              content: card.content,
+              title: card.title,
+            },
+          });
       }}
       // ref={renameRef}
     >

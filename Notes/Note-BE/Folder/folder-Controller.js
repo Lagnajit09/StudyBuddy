@@ -43,7 +43,7 @@ exports.createFolder = async (req, res) => {
           //If virtually exists in trash or archives
           return res.status(400).json({
             message:
-              "Folder with the same name already exists in your thrashbin or archives",
+              "Folder with the same name already exists in your trashbin or archives",
           });
         }
       }
@@ -58,7 +58,7 @@ exports.createFolder = async (req, res) => {
       else {
         return res.status(400).json({
           message:
-            "Folder with the same name already exists in your thrashbin or archives",
+            "Folder with the same name already exists in your trashbin or archives",
         });
       }
     }
@@ -124,7 +124,7 @@ exports.deleteFolder = async (req, res) => {
       }
     }
     res.status(200).json({
-      message: "Folder deleted and added to thrashbin",
+      message: "Folder deleted and added to trashbin",
     });
   } catch (error) {
     console.error(error);

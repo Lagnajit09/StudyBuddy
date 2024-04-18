@@ -1,8 +1,7 @@
 import "./MenuBar.css";
 import React, { useCallback, useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { authUserAtom } from "../../../../NoteStore/AuthUser";
-import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { GoBold } from "react-icons/go";
 import { PiTextItalicBold } from "react-icons/pi";
@@ -30,8 +29,8 @@ import { saveNote } from "../saveNote";
 
 const MenuBar = ({ setSelected_Size, editor, content, contentText }) => {
   const { state } = useLocation();
-  const authUser = useRecoilValue(authUserAtom);
   const navigate = useNavigate();
+  const authUser = useRecoilValue(authUserAtom);
 
   const [textLink, setTextLink] = useState(true);
   const [textAlign, setTextAlign] = useState(<PiTextAlignLeft />);

@@ -13,6 +13,10 @@ import AllFolders from "../AllFolders/AllFolders";
 import SelectFolder from "../SelectFolder/SelectFolder";
 import Move from "../Move/Move";
 import FolderContent from "../FolderContent/FolderContent";
+import TrashFolder from "../Trash/TrashFolder";
+import TrashNote from "../Trash/TrashNote";
+import ArchiveFolder from "../Archive/ArchiveFolder";
+import ArchiveNote from "../Archive/ArchiveNote";
 
 const NoteRight = () => {
   const [newFolder, setNewFolder] = useState(false);
@@ -36,6 +40,22 @@ const NoteRight = () => {
     return params.folderid;
   }, [params]);
 
+  const folderTrash = useMemo(() => {
+    return location.pathname.includes("/trash/folder");
+  }, [location]);
+
+  const noteTrash = useMemo(() => {
+    return location.pathname.includes("/trash/note");
+  }, [location]);
+
+  const folderArchive = useMemo(() => {
+    return location.pathname.includes("/archive/folder");
+  }, [location]);
+
+  const noteArchive = useMemo(() => {
+    return location.pathname.includes("/archive/note");
+  }, [location]);
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
@@ -54,50 +74,59 @@ const NoteRight = () => {
   return (
     <div className="noteRight">
       {notePath && !folderPath && <AllNotes noteUser={noteUser} />}
-      {folderPath && !notePath && <AllFolders />}
+      {folderPath && !notePath && <AllFolders folderUser={folderUser} />}
       {folderContent && <FolderContent />}
-      {!notePath && !folderPath && !folderContent && (
-        <>
-          {folderUser.length < 1 ? (
-            <CreateNote
-              heading="Recent Folders"
-              icon="true"
-              caption="New Folder"
-              setNewFolder={setNewFolder}
-            />
-          ) : (
-            <NoteSlider
-              heading="Recent Folder"
-              useFolderCards="true"
-              setNewFolder={setNewFolder}
-            />
-          )}
-          {noteUser.length < 1 ? (
-            <CreateNote
-              heading="Recent Notes"
-              icon="false"
-              caption="New Note"
-            />
-          ) : (
-            <NoteSlider
-              heading="Recent Note"
-              useFolderCards="false"
-              setAddToFolder={setAddToFolder}
-            />
-          )}
+      {folderTrash && <TrashFolder />}
+      {noteTrash && <TrashNote />}
+      {folderArchive && <ArchiveFolder />}
+      {noteArchive && <ArchiveNote />}
+      {!notePath &&
+        !folderPath &&
+        !folderContent &&
+        !folderTrash &&
+        !noteTrash &&
+        !folderArchive &&
+        !noteArchive && (
+          <>
+            {folderUser.length < 1 ? (
+              <CreateNote
+                heading="Recent Folders"
+                icon="true"
+                caption="New Folder"
+                setNewFolder={setNewFolder}
+              />
+            ) : (
+              <NoteSlider
+                heading="Recent Folder"
+                useFolderCards="true"
+                setNewFolder={setNewFolder}
+              />
+            )}
+            {noteUser.length < 1 ? (
+              <CreateNote
+                heading="Recent Notes"
+                icon="false"
+                caption="New Note"
+              />
+            ) : (
+              <NoteSlider
+                heading="Recent Note"
+                useFolderCards="false"
+                setAddToFolder={setAddToFolder}
+              />
+            )}
 
-          {newFolder && <Create setNewFolder={setNewFolder} />}
-          {addToFolder >= 0 && (
-            <SelectFolder
-              addToFolder={addToFolder}
-              setAddToFolder={setAddToFolder}
-              setMove={setMove}
-            
-            />
-          )}
-          {move && <Move move={move} />}
-        </>
-      )}
+            {newFolder && <Create setNewFolder={setNewFolder} />}
+            {addToFolder >= 0 && (
+              <SelectFolder
+                addToFolder={addToFolder}
+                setAddToFolder={setAddToFolder}
+                setMove={setMove}
+              />
+            )}
+            {move && <Move move={move} />}
+          </>
+        )}
     </div>
   );
 };
