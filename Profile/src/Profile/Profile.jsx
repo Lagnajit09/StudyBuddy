@@ -17,8 +17,8 @@ const Profile=()=> {
         <p>Notes</p>
         <Avatar
           src={"username"}
-          alt={""}
-          sx={{ bgcolor: "#00A9FF" ,width: "30px", height: "30px" }}
+          alt={""}          
+          sx={{ bgcolor: "rgba(0, 169, 255, 1)",width: "30px", height: "30px" }}
         />
       </NavBar>
       <div className="profile-container">

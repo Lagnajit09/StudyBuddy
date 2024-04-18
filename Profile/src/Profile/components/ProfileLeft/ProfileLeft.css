@@ -47,16 +47,21 @@
 .profile-span,
 .settings-span,
 .calender-span,
-.help-span{
+.help-span,
+.logout-span{
     display: flex;
     align-items: center;
     padding: 10px;
     width: 100%;
+    font-size: 18px;
     cursor: pointer;
     background-color: #ffffff;
 }
 
-
+a{
+    text-decoration: solid;
+    color: black;
+}
 
 .profile-bottom-sub{
     display: flex;

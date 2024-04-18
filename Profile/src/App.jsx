@@ -1,14 +1,23 @@
+import "./App.css";
+import Profile from "./Profile/Profile";
+import Settings from "./Profile/Settings/Settings";
+import { RecoilRoot } from "recoil";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HelpCenter from "./Profile/HelpCenter/HelpCenter";
 
-import './App.css'
-import Profile from './Profile/Profile'
-
-function App() {
-
+const App=()=>{
   return (
     <>
-      <Profile/>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/profile" element={<RecoilRoot> <Profile /> </RecoilRoot>}/>
+          <Route path="/settings" element={<Settings/>} />
+          <Route path="/help" element={<HelpCenter/>} />
+        </Routes>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

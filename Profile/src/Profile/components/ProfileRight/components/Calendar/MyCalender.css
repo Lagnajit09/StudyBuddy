@@ -25,6 +25,9 @@
 
 .custom-calendar .rbc-date-cell {
   text-align: center; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .custom-calendar .rbc-date-cell * {
@@ -35,3 +38,19 @@
 .calender-btn{
   cursor: pointer;
 } 
+
+.rbc-button-link  {
+  display: flex;
+  margin-left: 20% ;
+}
+
+.custom-calendar .rbc-today {
+  background-color: #00A9FF; 
+  font-weight: bold; /* Make the date bold */
+  border-radius: 50%; /* Add border radius for rounded corners */  
+  flex: 1 0 0%;
+  height: 30px;
+  width: 10px;
+  -webkit-box-flex: 1;
+}
+

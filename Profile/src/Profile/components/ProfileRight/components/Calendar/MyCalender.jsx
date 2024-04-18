@@ -76,8 +76,7 @@ const MyCalendar = () => {
         eventPropGetter={eventStyleGetter}
         views={toolbarButtons}
         components={{
-          toolbar: CustomToolbar,
-          
+          toolbar: CustomToolbar,          
         }}
         formats={formats} // Use custom formats
         className="custom-calendar"
