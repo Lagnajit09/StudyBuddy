@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const chatRouter = require("./routes/chat");
-const communityRouter = require("./routes/community");
+const chatRouter = require("./chatroom-routes/chat");
+const communityRouter = require("./chatroom-routes/community");
 const mongoose = require("mongoose");
 const http = require("http");
 

@@ -30,7 +30,7 @@ const CommunityDetails = (props) => {
   const [showDeleteMenu, setShowDeleteMenu] = useState(false);
 
   const style = {
-    height: "0",
+    height: "0%",
     padding: "0 15px",
     border: "none",
   };
@@ -169,6 +169,8 @@ const CommunityDetails = (props) => {
                     email: cMember.email,
                     profile_pic: cMember.profile_pic,
                   },
+                  lastMessage: "",
+                  lastMsgTime: "",
                 },
               });
             }}

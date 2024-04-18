@@ -518,15 +518,58 @@ communityRouter.put("/leave", async (req, res) => {
   }
 });
 
+// communityRouter.get("/user-communities/:userId", async (req, res) => {
+//   const userId = req.params.userId;
+//   try {
+//     const members = await Community.find({
+//       members: new ObjectId(userId),
+//     })
+//       .populate("members", "firstName lastName email profile_pic")
+//       .exec();
+//     res.json(members);
+//   } catch (error) {
+//     res.status(400).json({
+//       error,
+//     });
+//   }
+// });
+
 communityRouter.get("/user-communities/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
-    const members = await Community.find({
+    const communities = await Community.find({
       members: new ObjectId(userId),
     })
       .populate("members", "firstName lastName email profile_pic")
       .exec();
-    res.json(members);
+
+    console.log(communities);
+
+    // Fetch the last message and its time for each community
+    const communitiesWithLastMessage = await Promise.all(
+      communities.map(async (community) => {
+        const lastMessage = await CommunityMsg.findOne({
+          community: community._id,
+        })
+          .sort({ createdAt: -1 })
+          .limit(1);
+
+        return {
+          ...community.toObject(),
+          lastMessage: lastMessage ? lastMessage.content : null,
+          lastMsgTime: lastMessage ? lastMessage.createdAt : null,
+        };
+      })
+    );
+
+    // Sort communities by lastMsgTime
+    const sortedCommunities = communitiesWithLastMessage.sort(
+      (a, b) => (b.lastMsgTime || 0) - (a.lastMsgTime || 0)
+    );
+
+    console.log(sortedCommunities);
+
+    res.json(sortedCommunities);
   } catch (error) {
     res.status(400).json({
       error,

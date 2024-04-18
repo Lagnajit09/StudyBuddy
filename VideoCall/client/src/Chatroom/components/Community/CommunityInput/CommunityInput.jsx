@@ -9,6 +9,7 @@ import attachment from "../../../../assets/attachment.svg";
 import { FiSend } from "react-icons/fi";
 import {
   currentCommunityAtom,
+  joinedCommunitiesAtom,
   newCommunityMsgAtom,
 } from "../../../store/communityStore";
 
@@ -17,6 +18,9 @@ const CommunityInput = (props) => {
   const currentCommunity = useRecoilValue(currentCommunityAtom);
   const [newCommunityMessages, setNewCommunityMessages] =
     useRecoilState(newCommunityMsgAtom);
+  const [joinedCommunities, setJoinedCommunities] = useRecoilState(
+    joinedCommunitiesAtom
+  );
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [sendClicked, setSendClicked] = useState(false);
@@ -90,8 +94,31 @@ const CommunityInput = (props) => {
       .catch((error) => {
         console.error("Error:", error);
       });
+    updateLastMessage();
     setSendClicked(false);
     setMessage("");
+  };
+
+  const updateLastMessage = () => {
+    const communityIndex = joinedCommunities.findIndex(
+      (community) => community._id === currentCommunity._id
+    );
+
+    let updatedCommunities = [...joinedCommunities];
+
+    if (communityIndex !== -1) {
+      updatedCommunities[communityIndex] = {
+        ...updatedCommunities[communityIndex],
+        lastMessage: message,
+        lastMsgTime: Date.now(),
+      };
+    }
+    updatedCommunities.sort(
+      (a, b) => new Date(b.lastMsgTime) - new Date(a.lastMsgTime)
+    );
+
+    // Return the updated chat users array
+    setJoinedCommunities(updatedCommunities);
   };
 
   const handleEmojiPicker = () => {

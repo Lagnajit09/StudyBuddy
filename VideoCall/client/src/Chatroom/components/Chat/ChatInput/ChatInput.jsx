@@ -28,7 +28,7 @@ const ChatInput = (props) => {
   useEffect(() => {
     const handleIncomingMessage = (data) => {
       setNewMessages((prev) => [...prev, data.data]);
-
+      updateLastMessage(sender.id);
       const exists = chatUsers.some(
         (user) => user.chatUser.email === state.chatUser.email
       );
@@ -101,8 +101,32 @@ const ChatInput = (props) => {
       .catch((error) => {
         console.error("Error:", error);
       });
+
+    updateLastMessage(receiver.id);
     setSendClicked(false);
     setMessage("");
+  };
+
+  const updateLastMessage = (userId) => {
+    const userIndex = chatUsers.findIndex(
+      (user) => user.chatUser.id === userId
+    );
+
+    let updatedUsers = [...chatUsers];
+
+    if (userIndex !== -1) {
+      updatedUsers[userIndex] = {
+        ...updatedUsers[userIndex],
+        lastMessage: message,
+        lastMsgTime: Date.now(),
+      };
+    }
+    updatedUsers.sort(
+      (a, b) => new Date(b.lastMsgTime) - new Date(a.lastMsgTime)
+    );
+
+    // Return the updated chat users array
+    setChatUsers(updatedUsers);
   };
 
   const handleEmojiPicker = () => {
