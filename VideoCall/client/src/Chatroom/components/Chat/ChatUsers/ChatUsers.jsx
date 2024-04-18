@@ -118,7 +118,7 @@ const ChatUsers = () => {
               />
               <div className="chatUserDetails">
                 <h3>{`${user.chatUser.firstName} ${user.chatUser.lastName}`}</h3>
-                {/* <p>{truncateString(user.lastMessage, 30)}</p> */}
+                <p>{truncateString(user.lastMessage || "", 30)}</p>
               </div>
             </div>
           ))}

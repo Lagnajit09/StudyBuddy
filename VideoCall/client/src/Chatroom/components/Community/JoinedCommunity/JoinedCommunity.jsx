@@ -19,6 +19,8 @@ const JoinedCommunity = () => {
     useRecoilState(currentCommunityAtom);
   const authUser = useRecoilValue(authUserAtom);
 
+  console.log(joinedCommunities);
+
   useEffect(() => {
     fetchCommunityById();
   }, [params?.id]);
@@ -38,7 +40,7 @@ const JoinedCommunity = () => {
       const responseData = await response.json();
       setCurrentCommunity(responseData[0]);
     } catch (error) {
-      setError(error);
+      console.log(error);
     }
   };
 
@@ -54,9 +56,17 @@ const JoinedCommunity = () => {
       // console.log(responseData);
       setJoinedCommunities(responseData);
     } catch (error) {
-      setError(error);
+      console.log(error);
     }
   };
+
+  function truncateString(str, maxLength) {
+    if (str.length <= maxLength) {
+      return str;
+    } else {
+      return str.slice(0, maxLength) + "...";
+    }
+  }
 
   return (
     <>
@@ -93,7 +103,7 @@ const JoinedCommunity = () => {
                   />
                   <div className="joined-com-right">
                     <h3>{community.name}</h3>
-                    <p>{community.description?.slice(0, 25) + "..."}</p>
+                    <p>{truncateString(community.lastMessage || "", 30)}</p>
                   </div>
                 </div>
               </Link>

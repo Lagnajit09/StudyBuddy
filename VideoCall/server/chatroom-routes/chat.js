@@ -67,6 +67,7 @@ chatRouter.get("/:id", async (req, res) => {
           email: user.email,
           profile_pic: user.profile_pic,
         },
+        lastMessage: item.lastMessage.content,
         lastMsgTime: item.lastMessage.timestamp,
       };
     })
