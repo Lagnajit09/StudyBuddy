@@ -1,0 +1,42 @@
+.middle-text{
+    width: 100%; 
+    height: 40vh; 
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+
+.text-span1{
+    width: 180px;
+    height: 40px;
+    background-color: #E7F1FB;
+    color :#00A9FF;
+    border-radius: 40px;
+    font-size: 20px;
+    /* padding: 4px 13px; */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.middletext-subdiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.text-span2{
+    font-size: 40px;
+    font-weight: 500;
+    color:#000000; 
+} 
+
+.text-span3{
+   font-size: 40px;
+   font-weight: 500;
+   color:#000000;
+}

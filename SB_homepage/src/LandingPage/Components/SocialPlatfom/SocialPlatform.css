@@ -1,0 +1,13 @@
+.social-platform-div{
+  width: 100%;
+  height: 30vh;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.social-platform{
+  object-fit: contain;
+  width: 90%;
+  height: auto;
+}
