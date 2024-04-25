@@ -1,0 +1,26 @@
+.about-topic-div{
+    width: 100%;
+    height: auto;
+    display: flex;
+    margin-top: 70px;
+    flex-direction: column;
+}
+
+.about-topic-header{
+    width: 172px;
+    height: 34px;
+    display: flex;
+    font-size: 28px;
+    color: rgba(0, 0, 0, 1);
+    padding-left: 125px;
+}
+
+/* .about-topic-contents{
+    width: 1114px;
+    height: auto;
+    display: flex;
+    font-size: 15px;
+    line-height: 18.29px;
+    padding-left: 150px;
+    padding-top: 50px;
+} */

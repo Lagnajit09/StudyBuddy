@@ -14,7 +14,6 @@ const createCard = (index) => (
     cap={course_name[index].cap}
     c_dest={course_name[index].c_dest}
     cap_color={course_name[index].cap_color}
-    link={course_name[index].link}
   />
 );
 
@@ -59,7 +58,7 @@ const TopicSlider = (props) => {
   };
 
   return (
-    <div className="slider2ContainerParent">
+    <div className="slider2ContainerParent" id={props.id}>
       <span id="courseCap" style={style.courseCap}>
         {props.text}
       </span>
@@ -81,12 +80,6 @@ const TopicSlider = (props) => {
             {createCard(5)}
             {createCard(6)}
             {createCard(7)}
-          </div>
-          <div className="topicWrapper3">
-            {createCard(8)}
-            {createCard(9)}
-            {createCard(10)}
-            {createCard(11)}
           </div>
         </div>
         <button

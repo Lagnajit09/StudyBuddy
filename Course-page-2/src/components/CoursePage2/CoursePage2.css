@@ -1,0 +1,11 @@
+.topic-container {
+  padding-top: 100px;
+  width: 100%;
+}
+
+#course-name-heading {
+  width: 15%;
+  font-size: 45px;
+  font-weight: 500;
+  margin: 0 0 30px 120px;
+}

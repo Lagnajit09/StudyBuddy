@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { course_name } from "../coursepageSlider2";
+import { course_name } from "../../coursepageSlider2";
 import CourseCard from "../TopicSlider/CourseCard/CourseCard";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
@@ -14,7 +14,6 @@ const createCard = (index) => (
     cap={course_name[index].cap}
     c_dest={course_name[index].c_dest}
     cap_color={course_name[index].cap_color}
-    link={course_name[index].link}
   />
 );
 
@@ -60,6 +59,7 @@ const TopicSlider = (props) => {
 
   return (
     <div className="slider2ContainerParent">
+      <span className="slider-related-courses">Related Courses</span>
       <span id="courseCap" style={style.courseCap}>
         {props.text}
       </span>

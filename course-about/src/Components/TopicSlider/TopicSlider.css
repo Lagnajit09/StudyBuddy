@@ -6,6 +6,13 @@
   position: relative;
 }
 
+.slider-related-courses{
+  margin-left: 125px;
+  font-size: 28px;
+  color: rgba(0, 0, 0, 1);
+
+}
+
 #courseCap {
   color: rgba(0, 0, 0, 1);
   font-size: 28px;
@@ -14,10 +21,10 @@
 }
 
 .slider2Container {
-  height: 346px;
+  height: 260px;
   width: 83.5%;
   overflow: hidden;
-  margin: 0 auto 100px;
+  margin: 0 auto 50px;
 }
 
 .slider2Wrapper {
@@ -39,7 +46,7 @@
 .prevSlideButton,
 .nextSlideButton {
   position: absolute;
-  top: 27%;
+  top: 37%;
   height: 40px;
   width: 40px;
   display: flex;
