@@ -1,13 +1,15 @@
 .reviews{
     width: 100%;
-    height: 70vh;
+    height: 80vh;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    gap: 50px;
 }
 
 .review-line1-parent{
     width: 100%;
-    height: 30vh;
+    height: 40vh;
     display: flex;
     align-items: flex-start;
     overflow: hidden;
@@ -27,7 +29,7 @@
 
 .review-line2-parent{
     width: 100%;
-    height: 30vh;
+    height: 40vh;
     display: flex;
     align-items: flex-start;
     overflow: hidden;
@@ -43,8 +45,8 @@
     flex-shrink: 0;
     animation: slider2 20s linear infinite; 
     animation-direction: reverse;
-    transition: all 0.5s linear; 
-}
+    transition: all 0.5s linear;
+} 
 
 @keyframes slider1 {
     from {left:translateX(0);}

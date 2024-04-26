@@ -1,12 +1,12 @@
-import React from 'react';
-import './FindCourseButton.css';
+import React from "react";
+import "./FindCourseButton.css";
+import { Link } from "react-router-dom";
 function FindCourseButton() {
   return (
-    <div className='button-container'>
-      <button className='button'>Find Course</button>
-    </div>
-    
+    <Link to={"/course"} className="button-container">
+      <button className="button">Find Course</button>
+    </Link>
   );
-};
+}
 
 export default FindCourseButton;

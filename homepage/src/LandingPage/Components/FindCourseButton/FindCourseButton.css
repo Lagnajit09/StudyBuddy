@@ -4,17 +4,17 @@
     display: flex;
     justify-content: center;
     margin-top:45px ;
-
+    align-items: center;
+    text-decoration: none;
 }
 .button{
 background-color: #00A9FF;
 width: 15%;
 height: 100%;
-padding: 15px 40px;
 border: none;
 border-radius: 112px;
-font-size: 28px;
+font-size: 22px;
 color: #ffffff;
-
+cursor: pointer;
 }
 

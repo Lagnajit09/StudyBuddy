@@ -1,0 +1,23 @@
+.course-dest-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  margin: 70px 0 70px 0;
+}
+
+.course-dest-sub-container {
+  width: 83.7%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-dest-sub-container img {
+  cursor: pointer;
+}
+
+.course-dest-sub-container img:hover{
+    opacity: 0.83;
+}

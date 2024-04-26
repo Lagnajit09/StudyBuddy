@@ -1,0 +1,61 @@
+.navbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px;
+    height: 5%;
+    background-color: transparent;
+}
+
+.navbar .buttons{
+    width: 11%;
+    height: 100%;    
+}
+
+.buttons button{
+    background-color: white;
+}
+
+.navbar h2{
+    background-color: white;    
+}
+.buttons{
+    display: flex;
+    position: relative;
+    background-color: transparent;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+.navbar p{
+    cursor: pointer;
+    background-color: white;
+}
+
+.navbar p:hover{
+    text-decoration: underline;
+}
+
+.buttons button{
+    font-size: 1rem;
+    padding: 5px;
+    width: 47%;
+    font-weight: 500;
+    border:none;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.hoverBorder{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    position: absolute;
+    z-index: -1;
+    border: solid 1px;
+    border-radius: 15px;  
+    transform: translate(45%);
+    transition: transform 0.5s ease;
+    cursor: pointer;
+}
+

@@ -1,5 +1,5 @@
 import React from "react";
-import CoursePage1 from "./components/CoursePage1/CoursePage1";
+import CoursePage1 from "./CoursePage1/components/CoursePage1";
 import { BrowserRouter } from "react-router-dom";
 
 const App = () => {
