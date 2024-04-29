@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./CoursePage2.css";
 import TopicSlider from "./components/TopicSlider/TopicSlider";
 import SocialPlatformBar from "./components/SocialPlatformBar/SocialPlatformBar";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { authUserAtom } from "../../store/authAtom";
+import { useRecoilValue } from "recoil";
+import NavBar from "../../NavBar/NavBar";
+import SearchBar from "../../NavBar/SearchBar/SearchBar";
 
 const CoursePage2 = () => {
   const { state } = useLocation();
+  const authUser = useRecoilValue(authUserAtom);
   const navigate = useNavigate();
 
-  if (!state) {
+  if (!state || !authUser.user) {
     useEffect(() => {
       navigate("/courses");
     }, [state]);
@@ -21,6 +26,41 @@ const CoursePage2 = () => {
 
   return (
     <>
+      <NavBar>
+        <Link to={"/"} style={{ textDecoration: "none", color: "black" }}>
+          <h2>Study Buddy.</h2>
+        </Link>
+        <div
+          className="cpage-navbar-middle"
+          style={{ width: authUser.user ? "75%" : "60%" }}
+        >
+          <p
+            onClick={() => {
+              navigate("/courses");
+            }}
+          >
+            Courses
+          </p>
+          <SearchBar
+            className="searchWidth"
+            width={authUser.user ? "700px" : "510px"}
+          />
+          <p
+            onClick={() => {
+              navigate("/chatroom");
+            }}
+          >
+            Chat Room
+          </p>
+          <p
+            onClick={() => {
+              navigate("/note");
+            }}
+          >
+            Notes
+          </p>
+        </div>
+      </NavBar>
       <SocialPlatformBar from="Course-page-2" />
 
       <div className="topic-container">

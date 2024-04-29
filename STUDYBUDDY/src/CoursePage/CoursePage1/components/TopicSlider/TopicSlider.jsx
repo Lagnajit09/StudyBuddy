@@ -4,7 +4,7 @@ import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftR
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import "./TopicSlider.css";
 
-const createCard = (index, course_name) => (
+const createCard = (index, course_name, toggleSignupModal) => (
   <CourseCard
     key={course_name[index].id}
     img={course_name[index].img}
@@ -15,6 +15,7 @@ const createCard = (index, course_name) => (
     link={course_name[index].link}
     course={course_name}
     index={index}
+    toggleSignupModal={toggleSignupModal}
   />
 );
 
@@ -71,22 +72,22 @@ const TopicSlider = (props) => {
           }}
         >
           <div className="topicWrapper3">
-            {createCard(0, props.arr)}
-            {createCard(1, props.arr)}
-            {createCard(2, props.arr)}
-            {createCard(3, props.arr)}
+            {createCard(0, props.arr, props.toggleSignupModal)}
+            {createCard(1, props.arr, props.toggleSignupModal)}
+            {createCard(2, props.arr, props.toggleSignupModal)}
+            {createCard(3, props.arr, props.toggleSignupModal)}
           </div>
           <div className="topicWrapper3">
-            {createCard(4, props.arr)}
-            {createCard(5, props.arr)}
-            {createCard(6, props.arr)}
-            {createCard(7, props.arr)}
+            {createCard(4, props.arr, props.toggleSignupModal)}
+            {createCard(5, props.arr, props.toggleSignupModal)}
+            {createCard(6, props.arr, props.toggleSignupModal)}
+            {createCard(7, props.arr, props.toggleSignupModal)}
           </div>
           <div className="topicWrapper3">
-            {createCard(8, props.arr)}
-            {createCard(9, props.arr)}
-            {createCard(10, props.arr)}
-            {createCard(11, props.arr)}
+            {createCard(8, props.arr, props.toggleSignupModal)}
+            {createCard(9, props.arr, props.toggleSignupModal)}
+            {createCard(10, props.arr, props.toggleSignupModal)}
+            {createCard(11, props.arr, props.toggleSignupModal)}
           </div>
         </div>
         <button

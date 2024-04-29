@@ -1,5 +1,7 @@
 import "./SignupModal.css";
-import React from "react";
+import React, { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { authUserAtom } from "../store/authAtom";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa";
@@ -9,19 +11,34 @@ import {
   passwordHandler,
   confirmPasswordHandler,
   nameHandler,
-} from "../validation";
+} from "../userAuthHandlers/validation";
+import { signupHandler } from "../userAuthHandlers/authHandler";
 
 const SignupModal = (props) => {
+  const [authUser, setAuthUser] = useRecoilState(authUserAtom);
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState("");
   const [enteredFirstName, setEnteredFirstName] = useState("");
   const [enteredLastName, setEnteredLastName] = useState("");
 
-  const loginClickHandler=(event)=>{
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [cPasswordValid, setCpasswordValid] = useState(false);
+  const [fNameValid, setFnameValid] = useState(false);
+  const [lNameValid, setLnameValid] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
+
+  const loginClickHandler = (event) => {
     props.setLoginModal(true);
     props.setSignupModal(false);
-  }
+  };
+
+  useEffect(() => {
+    setFormIsValid(
+      emailValid && fNameValid && lNameValid && passwordValid && cPasswordValid
+    );
+  }, [emailValid, fNameValid, lNameValid, passwordValid, cPasswordValid]);
 
   return (
     <div className="Signup-Modal-container">
@@ -56,7 +73,20 @@ const SignupModal = (props) => {
             />
           </button>
         </div>
-        <form>
+        <form
+          onSubmit={(e) => {
+            signupHandler(
+              e,
+              formIsValid,
+              enteredEmail,
+              enteredFirstName,
+              enteredLastName,
+              enteredPassword,
+              setAuthUser,
+              props.toggleSignupModal
+            );
+          }}
+        >
           <div className="signup-form-div">
             <input
               type="text"
@@ -68,7 +98,8 @@ const SignupModal = (props) => {
                   enteredFirstName,
                   "firstname",
                   "fname-invalid",
-                  "input-error"
+                  "input-error",
+                  setFnameValid
                 );
               }}
               onChange={(e) => {
@@ -86,7 +117,9 @@ const SignupModal = (props) => {
                   enteredLastName,
                   "lastname",
                   "lname-invalid",
-                  "input-error"
+                  "input-error",
+                  setLnameValid,
+                  "s-email-invalid"
                 );
               }}
               onChange={(e) => {
@@ -103,7 +136,8 @@ const SignupModal = (props) => {
                   enteredEmail,
                   "s-email-input",
                   "s-email-invalid",
-                  "input-error"
+                  "input-error",
+                  setEmailValid
                 );
               }}
               onChange={(e) => {
@@ -123,7 +157,8 @@ const SignupModal = (props) => {
                   enteredPassword,
                   "cpwd-input",
                   "s-pass-invalid",
-                  "input-error"
+                  "input-error",
+                  setPasswordValid
                 );
               }}
               onChange={(e) => {
@@ -144,7 +179,8 @@ const SignupModal = (props) => {
                   enteredConfirmPassword,
                   "cpwd-input",
                   "cpass-invalid",
-                  "input-error"
+                  "input-error",
+                  setCpasswordValid
                 );
               }}
               onChange={(e) => {
@@ -156,10 +192,10 @@ const SignupModal = (props) => {
               Confirm password should be same as Password.
             </span>
           </div>
+          <button type="submit" className="signup-btn">
+            Signup
+          </button>
         </form>
-        <button type="submit" className="signup-btn">
-          Signup
-        </button>
       </div>
       <div className="to-login">
         <div className="welcome-1">

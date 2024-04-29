@@ -5,7 +5,6 @@
     width: 60%;
     position: relative;
     border-radius: 10px;
-    margin-top: 53px;
     z-index: 2;
 }
 
@@ -24,7 +23,6 @@
 }
 
 #login-span{
-
     font-size: 28px;
     background-color: white;
 }
@@ -64,7 +62,6 @@
     justify-content: space-around;
     align-items: center;
     width: 70%;
-    height: 23%;
     background-color:white;
 }
 
@@ -127,7 +124,7 @@
     font-size: 12px;
     color: rgba(0, 0, 0, 0.493);
     cursor: pointer;
-    margin-top: 15px;
+    margin-bottom: 15px;
     background-color: transparent;
 }
 

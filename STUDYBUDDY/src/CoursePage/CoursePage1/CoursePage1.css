@@ -1,23 +1,30 @@
-.searchWidth {
-    width: 700px;
-    background-color: white;
-  }
-  
-  .coursepage-text {
+.searchWidth{
+  border-radius: 18px;
+  justify-content: center;
+  border: 1px solid #555;
+}
+
+.cpage-navbar-middle{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.coursepage-text {
     width: 70%;
     display: flex;
     flex-direction: column;
     margin-left: 126px;
-    margin-top: 40px;
+    margin-top: 50px;
   }
   
-  #c-text1 {
+#c-text1 {
     font-size: 45px;
     font-weight: 500;
     color: #000000;
   }
   
-  #c-text2 {
+#c-text2 {
     font-size: 20px;
     font-weight: 500;
     color: #00000067;

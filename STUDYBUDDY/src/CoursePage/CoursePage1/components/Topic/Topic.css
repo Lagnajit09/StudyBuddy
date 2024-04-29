@@ -1,9 +1,9 @@
-.topic-container {
+.c1-topic-container {
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 50px;
 }
 
 #headt-span {

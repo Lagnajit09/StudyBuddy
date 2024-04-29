@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CourseHeader from "./Components/CourseHeader/CourseHeader";
 import AboutTopic from "./Components/AboutTopic/AboutTopic";
 import Requirements from "./Components/Requirements/Requirements";
 import TopicSlider from "./Components/TopicSlider/TopicSlider";
 import SocialPlatformBar from "./Components/SocialPlatformBar/SocialPlatformBar";
 import { ThreeDots } from "react-loader-spinner";
+import { authUserAtom } from "../../store/authAtom";
+import { useRecoilValue } from "recoil";
+import NavBar from "../../NavBar/NavBar";
+import SearchBar from "../../NavBar/SearchBar/SearchBar";
 
 function CourseAboutPage() {
+  const authUser = useRecoilValue(authUserAtom);
   const { state } = useLocation();
   const navigate = useNavigate();
   const [fetchedData, setFetchedData] = useState({});
   const [loading, setLoading] = useState(true); // State to track loading status
 
-  if (!state) {
+  if (!state || !authUser.user) {
     useEffect(() => {
       navigate("/courses");
     }, [state]);
@@ -50,6 +55,41 @@ function CourseAboutPage() {
 
   return (
     <>
+      <NavBar>
+        <Link to={"/"} style={{ textDecoration: "none", color: "black" }}>
+          <h2>Study Buddy.</h2>
+        </Link>
+        <div
+          className="cpage-navbar-middle"
+          style={{ width: authUser.user ? "75%" : "60%" }}
+        >
+          <p
+            onClick={() => {
+              navigate("/courses");
+            }}
+          >
+            Courses
+          </p>
+          <SearchBar
+            className="searchWidth"
+            width={authUser.user ? "700px" : "510px"}
+          />
+          <p
+            onClick={() => {
+              navigate("/chatroom");
+            }}
+          >
+            Chat Room
+          </p>
+          <p
+            onClick={() => {
+              navigate("/note");
+            }}
+          >
+            Notes
+          </p>
+        </div>
+      </NavBar>
       <SocialPlatformBar platform={state.course[state.index].c_dest} />
       <CourseHeader />
       {/* Show loading indicator if loading is true */}

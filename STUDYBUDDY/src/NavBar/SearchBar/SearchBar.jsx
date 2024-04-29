@@ -7,6 +7,7 @@ const SearchBar = (props) => {
       <form className="nosubmit">
         <input
           className={`nosubmit ${props.className}`}
+          style={{ width: props.width }}
           type="text"
           placeholder="Search Chat Room"
         />
@@ -16,4 +17,3 @@ const SearchBar = (props) => {
 };
 
 export default SearchBar;
-

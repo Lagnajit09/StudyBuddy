@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { authUserAtom } from "../store/authAtom";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa";
@@ -6,19 +8,27 @@ import Email_icon from "../assets/Login_imgs/Email_icon.svg";
 import Password_icon from "../assets/Login_imgs/Password_icon.svg";
 import "./LoginModal.css";
 import { useState } from "react";
-import { emailHandler, passwordHandler } from "../validation";
+import { emailHandler, passwordHandler } from "../userAuthHandlers/validation";
+import { loginHandler } from "../userAuthHandlers/authHandler";
 
 const LoginModal = (props) => {
+  const [authUser, setAuthUser] = useRecoilState(authUserAtom);
+
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
-  const loginHandler = (event) => {
-    event.preventDefault();
-  };
 
-  const signupClickHandler=(event)=>{
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
+
+  const signupClickHandler = (event) => {
     props.setLoginModal(false);
     props.setSignupModal(true);
-  }
+  };
+
+  useEffect(() => {
+    setFormIsValid(emailValid && passwordValid);
+  }, [emailValid, passwordValid]);
 
   return (
     <div className="Login-Modal-container">
@@ -54,7 +64,18 @@ const LoginModal = (props) => {
           </button>
         </div>
         <span id="option-span">or use your email account:</span>
-        <form>
+        <form
+          onSubmit={(e) => {
+            loginHandler(
+              e,
+              enteredEmail,
+              enteredPassword,
+              formIsValid,
+              setAuthUser,
+              props.toggleLoginModal
+            );
+          }}
+        >
           <div className="email-input ">
             <img src={Email_icon} />
             <input
@@ -66,7 +87,8 @@ const LoginModal = (props) => {
                   enteredEmail,
                   "email-input",
                   "email-invalid",
-                  "input-error"
+                  "input-error",
+                  setEmailValid
                 );
               }}
               onChange={(e) => {
@@ -88,7 +110,8 @@ const LoginModal = (props) => {
                   enteredPassword,
                   "pwd-input",
                   "pass-invalid",
-                  "input-error"
+                  "input-error",
+                  setPasswordValid
                 );
               }}
               onChange={(e) => {
@@ -99,11 +122,11 @@ const LoginModal = (props) => {
           <span className="pass-invalid">
             Password should have atleast 6 characters.
           </span>
+          <span id="forgot-pwd">Forgot your password?</span>
+          <button type="submit" className="login-btn">
+            Login
+          </button>
         </form>
-        <span id="forgot-pwd">Forgot your password?</span>
-        <button type="submit" className="login-btn" onClick={loginHandler}>
-          Login
-        </button>
       </div>
 
       <div className="to-signup">
@@ -113,7 +136,11 @@ const LoginModal = (props) => {
         </div>
 
         <span id="welcome-2">New Here?</span>
-        <button type="submit" className="signup-btn" onClick={signupClickHandler} >
+        <button
+          type="submit"
+          className="signup-btn"
+          onClick={signupClickHandler}
+        >
           Signup
         </button>
       </div>

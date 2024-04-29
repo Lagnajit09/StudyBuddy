@@ -13,8 +13,11 @@ import FooterComponent from "./Components/FooterRegister/FooterComponent";
 import Footer from "../Footer/Footer";
 import AuthModal from "../Modal/AuthModal";
 import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { authUserAtom } from "../store/authAtom";
 
 function LandingPage() {
+  const authUser = useRecoilValue(authUserAtom);
   const navigate = useNavigate();
   const [loginModal, setLoginModal] = useState(false);
   const [signupModal, setSignupModal] = useState(false);
@@ -63,14 +66,14 @@ function LandingPage() {
           </p>
           <p
             onClick={() => {
-              navigate("/chatroom");
+              authUser.user ? navigate("/chatroom") : toggleSignupModal();
             }}
           >
             Chat Room
           </p>
           <p
             onClick={() => {
-              navigate("/note");
+              authUser.user ? navigate("/note") : toggleSignupModal();
             }}
           >
             Notes
@@ -88,7 +91,7 @@ function LandingPage() {
         setSignupModal={setSignupModal}
         signupModal={signupModal}
       />
-      <Footer />
+      <Footer toggleSignupModal={toggleSignupModal} />
     </>
   );
 }

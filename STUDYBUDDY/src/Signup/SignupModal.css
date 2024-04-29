@@ -6,7 +6,6 @@
     width: 60%;
     position: relative;
     border-radius: 10px;
-    margin-top: 53px;
 }
 .signup{
     display: flex;
@@ -63,7 +62,6 @@
     align-items: center;
     width: 63%;
     background-color: white;
-    
 }
 
 .signup-form-div{

@@ -13,12 +13,7 @@ function SocialPlatformBar(props) {
   };
 
   return (
-    <div
-      className="social-platforms"
-      style={{
-        position: props.from === "Course-page-2" ? "fixed" : "relative",
-      }}
-    >
+    <div className="social-platforms-about">
       <span
         onClick={() => {
           scrollToSlider("youtube");

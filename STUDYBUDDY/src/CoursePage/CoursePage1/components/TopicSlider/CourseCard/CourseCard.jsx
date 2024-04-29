@@ -1,8 +1,11 @@
 import React, { useMemo } from "react";
 import "./CourseCard.css";
 import { useNavigate } from "react-router-dom";
+import { authUserAtom } from "../../../../../store/authAtom";
+import { useRecoilValue } from "recoil";
 
 const CourseCard = (props) => {
+  const authUser = useRecoilValue(authUserAtom);
   const navigate = useNavigate();
   let style = {};
   if (props.from === "profile") {
@@ -30,9 +33,11 @@ const CourseCard = (props) => {
       className="cardContainer"
       style={style.cardContainer}
       onClick={() => {
-        navigate("/courses/about", {
-          state: { course: updatedArr, index: props.index },
-        });
+        authUser.user
+          ? navigate("/courses/about", {
+              state: { course: updatedArr, index: props.index },
+            })
+          : props.toggleSignupModal();
       }}
     >
       <img src={props.img} alt="Course-pic" style={style.img} />

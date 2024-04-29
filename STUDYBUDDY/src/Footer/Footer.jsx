@@ -3,8 +3,11 @@ import Facebook from "../assets/footer_imgs/Facebook.svg";
 import Twitter from "../assets/footer_imgs/Twitter.svg";
 import Instagram from "../assets/footer_imgs/Instagram.svg";
 import Linkedin from "../assets/footer_imgs/Linkedin.svg";
+import { useRecoilValue } from "recoil";
+import { authUserAtom } from "../store/authAtom";
 
-const Footer = () => {
+const Footer = ({ toggleSignupModal }) => {
+  const authUser = useRecoilValue(authUserAtom);
   return (
     <>
       <div className="footer">
@@ -23,8 +26,20 @@ const Footer = () => {
           <h2>Take a Tour</h2>
           <div className="features">
             <h4>Courses</h4>
-            <h4>Chat Room</h4>
-            <h4>Notes</h4>
+            <h4
+              onClick={() => {
+                authUser.user ? navigate("/chatroom") : toggleSignupModal();
+              }}
+            >
+              Chat Room
+            </h4>
+            <h4
+              onClick={() => {
+                authUser.user ? navigate("/note") : toggleSignupModal();
+              }}
+            >
+              Notes
+            </h4>
             <h4>Reviews</h4>
           </div>
         </div>

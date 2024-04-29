@@ -17,15 +17,16 @@ import { AIandCloudComputing } from "../../../../CoursesSource/AIandCloudComputi
 
 const topicimg = [Phy, Chem, Math, Bio, ITandSW, AIandCloud];
 
-const Topic = () => {
+const Topic = (props) => {
   const navigate = useNavigate();
 
   return (
-    <div className="topic-container">
+    <div className="c1-topic-container">
       <span id="headt-span">Popular Topics</span>
       <div className="child-topic-container">
         <div className="sub-child-topic-container">
           <TopicItem
+            toggleSignupHandler={props.toggleSignupModal}
             img={topicimg[0]}
             text="Physics"
             onClick={() => {
@@ -35,6 +36,7 @@ const Topic = () => {
             }}
           />
           <TopicItem
+            toggleSignupHandler={props.toggleSignupModal}
             img={topicimg[1]}
             text="Chemistry"
             onClick={() => {
@@ -44,6 +46,7 @@ const Topic = () => {
             }}
           />
           <TopicItem
+            toggleSignupHandler={props.toggleSignupModal}
             img={topicimg[2]}
             text="Mathematics"
             onClick={() => {
@@ -56,6 +59,7 @@ const Topic = () => {
 
         <div className="sub-child-topic-container">
           <TopicItem
+            toggleSignupHandler={props.toggleSignupModal}
             img={topicimg[3]}
             text="Biology"
             onClick={() => {
@@ -65,6 +69,7 @@ const Topic = () => {
             }}
           />
           <TopicItem
+            toggleSignupHandler={props.toggleSignupModal}
             img={topicimg[4]}
             text="IT and Software"
             onClick={() => {
@@ -74,6 +79,7 @@ const Topic = () => {
             }}
           />
           <TopicItem
+            toggleSignupHandler={props.toggleSignupModal}
             img={topicimg[5]}
             text="AI and Cloud Computing"
             onClick={() => {

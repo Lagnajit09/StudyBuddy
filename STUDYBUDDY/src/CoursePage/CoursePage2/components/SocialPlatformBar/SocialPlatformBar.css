@@ -5,13 +5,14 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    top: -5px;
-    z-index: 10;
     border-bottom: 2px solid rgba(217, 217, 217, 0.773) ;
     box-shadow: rgba(0, 169, 255, 0.2) 0px 1px 4px 1px;
     font-size: 18px;
     color: rgba(0, 0, 0, 1);
     font-weight: 500;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 .social-platforms span{
     cursor: pointer;

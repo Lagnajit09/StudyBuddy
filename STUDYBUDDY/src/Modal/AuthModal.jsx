@@ -13,6 +13,7 @@ const AuthModal = (props) => {
             <LoginModal
               setSignupModal={props.signupModal[1]}
               setLoginModal={props.loginModal[1]}
+              toggleLoginModal={props.toggleLoginModal}
             />
           </div>
         </div>
@@ -25,6 +26,7 @@ const AuthModal = (props) => {
             <SignupModal
               setSignupModal={props.signupModal[1]}
               setLoginModal={props.loginModal[1]}
+              toggleSignupModal={props.toggleSignupModal}
             />
           </div>
         </div>
