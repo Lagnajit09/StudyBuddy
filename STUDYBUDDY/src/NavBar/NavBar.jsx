@@ -3,9 +3,11 @@ import "./NavBar.css";
 import { authUserAtom } from "../store/authAtom";
 import { useRecoilValue } from "recoil";
 import { Avatar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = (props) => {
   const authUser = useRecoilValue(authUserAtom);
+  const navigate = useNavigate();
 
   let navbarStyle = {};
   props.style === false
@@ -13,12 +15,12 @@ const NavBar = (props) => {
     : (navbarStyle = {
         padding: "10px 25px",
         borderBottom: "2px solid rgba(217, 217, 217, 0.773)",
-        webkitBoxShadow: "0px 1px 4px 1px rgba(0, 169, 255, 0.2)",
-        mozBoxShadow: "0px 1px 4px 1px rgba(0, 169, 255, 0.2)",
+        WebkitBoxShadow: "0px 1px 4px 1px rgba(0, 169, 255, 0.2)",
+        MozBoxShadow: "0px 1px 4px 1px rgba(0, 169, 255, 0.2)",
         boxShadow: "0px 1px 4px 1px rgba(0, 169, 255, 0.2)",
         position: "relative",
         top: "0",
-        zIndex: "2",
+        zIndex: "50",
       });
 
   const hoverinHandler = () => {
@@ -48,6 +50,10 @@ const NavBar = (props) => {
               height: "35px",
               width: "35px",
               fontWeight: "bold",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/profile");
             }}
           />
         </div>

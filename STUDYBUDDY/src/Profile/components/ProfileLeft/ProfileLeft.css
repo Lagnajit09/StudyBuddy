@@ -1,0 +1,74 @@
+.profileLeft-container{
+    display: flex;
+    gap:50px;
+    padding-top: 30px;
+    align-items: center;
+    flex-direction: column;
+    height: 100;
+    width: 16.5%;
+    /* background-color: rgba(42, 42, 119, 0.562); */
+    background-color: white;
+}
+
+.profile-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.username{
+    display: flex;
+    margin-top: 10px;   
+}
+
+.uname-span{
+    display:flex;
+    align-items: center;
+    height: 100%;
+    margin-right: 10px;
+    background-color: #ffffff;
+}
+
+.edit-profile{
+    padding-top: 5px;
+    cursor: pointer;
+}
+
+
+.profile-bottom{
+    display: flex;
+    flex-direction: column;
+    width:70% ;
+    justify-content: flex-start;
+    gap:2px;
+}
+
+.profile-span,
+.settings-span,
+.calender-span,
+.help-span,
+.logout-span{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #ffffff;
+}
+
+.profileLeft-container a{
+    text-decoration: solid;
+    color: black;
+}
+
+.profile-bottom-sub{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.profile-bottom-sub span:hover{
+    transform: scale(1.02);
+}

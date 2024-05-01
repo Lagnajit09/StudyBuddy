@@ -6,6 +6,9 @@ import CourseAboutPage from "./CoursePage/CourseAbout/CourseAboutPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { RecoilRoot, useRecoilState } from "recoil";
 import { authUserAtom } from "./store/authAtom";
+import Profile from "./Profile/Profile";
+import Settings from "./Profile/Settings/Settings";
+import HelpCenter from "./Profile/HelpCenter/HelpCenter";
 
 const App = () => {
   const [userAtom, setUserAtom] = useRecoilState(authUserAtom);
@@ -30,10 +33,16 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/"
+          element={userAtom.user ? <Profile /> : <LandingPage />}
+        />
         <Route path="/courses" element={<CoursePage1 />}></Route>
         <Route path="/courses/:topic" element={<CoursePage2 />}></Route>
         <Route path="/courses/about" element={<CourseAboutPage />}></Route>
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/help" element={<HelpCenter />} />
       </Routes>
     </BrowserRouter>
   );

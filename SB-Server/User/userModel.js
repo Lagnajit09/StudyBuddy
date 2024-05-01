@@ -33,6 +33,12 @@ const userSchema = new mongoose.Schema({
     type: "String",
     default: "#A197FC",
   },
+  bio: {
+    type: "String",
+  },
+  phone: {
+    type: "String",
+  },
   folders: [
     {
       type: Schema.Types.ObjectId,
