@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRecoilState } from "recoil";
 import "./SettingsMiddle.css";
 import Avatar from "@mui/material/Avatar";
@@ -8,7 +8,6 @@ import {
   confirmPasswordHandler,
   newPasswordHandler,
   phNoHandler,
-  bioHandler,
   nameHandler,
   getCurrentDate,
   defDateHandler,
@@ -28,58 +27,118 @@ import bookIcon from "../../../../assets/Profile-Icons/ProfileMiddleIcon/BookIco
 import bellIcon from "../../../../assets/Profile-Icons/ProfileMiddleIcon/BellIcon.svg";
 import Move from "../Move";
 import { authUserAtom } from "../../../../store/authAtom";
+import { updateUser } from "./updateUser";
+
+const colours = [
+  "#00A9FF",
+  "#B3ABFC",
+  "#FCBF49",
+  "#79B2D9",
+  "#39B8D4",
+  "#E78895",
+  "#63B4B8",
+];
 
 const SettingsMiddle = () => {
   const [authUser, setAuthUser] = useRecoilState(authUserAtom);
   const [clicked, setClicked] = useRecoilState(openCalendarAtom);
   const [openRight, setOpenRight] = useRecoilState(openCalendarEvent);
   const [showForm, setShowForm] = useRecoilState(openAddEvent);
-  const [selectedDate, setSelectedDate] = useRecoilState(defDate);
   const [inputStartTime, setInputStartTime] = useRecoilState(defSTime);
   const [inputEndTime, setInputEndTime] = useRecoilState(defETime);
   const [showDel, setShowDel] = useState(false);
   const [showUpdatePop, setUpdatePop] = useState(false);
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPhoneNo, setEnteredPhoneNo] = useState("");
-  const [enteredBio, setEnteredBio] = useState(
-    authUser?.user?.bio || "Your Bio..."
-  );
+  const [enteredBio, setEnteredBio] = useState("");
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState("");
   const [enteredCurrentPassword, setEnteredCurrentPassword] = useState("");
-  const [enteredChatuPassword, setEnteredChatuPassword] = useState("");
+  const [enteredDltPassword, setEnteredDltPassword] = useState("");
   const [enteredNewPassword, setEnteredNewPassword] = useState("");
-  const [enteredUserName, setEnteredUserName] = useState(
-    authUser?.user?.username || ""
-  );
+  const [enteredUserName, setEnteredUserName] = useState("");
   const [editPop, setEditPop] = useState(false);
-  const [currColor, setCurrColor] = useState(authUser?.user?.profile_pic);
+  const [currColor, setCurrColor] = useState("");
+
+  const [readyToUpdate, setReadyToUpdate] = useState(false);
+
+  const user = useMemo(() => {
+    return authUser.user;
+  }, [authUser]);
+
+  const username = useMemo(
+    () => (user?.username !== user?.email ? user?.username : user?.firstname),
+    [authUser]
+  );
 
   useEffect(() => {
     if (authUser.user) {
-      setEnteredEmail(authUser.user.email);
-      setEnteredUserName(authUser.user.firstname);
-      setEnteredBio(authUser.user.bio);
-      setEnteredPhoneNo(authUser.user.phone);
-      setCurrColor(authUser.user.profile_pic);
+      setEnteredEmail(user.email);
+      setEnteredUserName(
+        user?.username !== user?.email ? user?.username : user?.firstname
+      );
+      setEnteredBio(user.bio);
+      setEnteredPhoneNo(user.phone);
+      setCurrColor(user.profile_pic);
+      setEnteredPhoneNo(user.phone);
     }
   }, [authUser]);
 
-  const handlePop = () => {
-    setUpdatePop(true);
-    setTimeout(() => {
-      setUpdatePop(false);
-    }, 5000);
-  };
+  useEffect(() => {
+    if (authUser.user) {
+      if (
+        enteredUserName !== username ||
+        enteredEmail !== user.email ||
+        enteredBio !== user.bio ||
+        enteredPhoneNo !== user.phone ||
+        currColor !== user.profile_pic ||
+        (enteredCurrentPassword.length !== 0 && enteredNewPassword.length !== 0)
+      ) {
+        setReadyToUpdate(true);
+      } else {
+        setReadyToUpdate(false);
+      }
+    }
+  }, [
+    authUser,
+    user,
+    currColor,
+    enteredUserName,
+    enteredEmail,
+    enteredBio,
+    enteredPhoneNo,
+    enteredCurrentPassword,
+    enteredNewPassword,
+  ]);
 
-  const colours = [
-    "#00A9FF",
-    "#B3ABFC",
-    "#FCBF49",
-    "#79B2D9",
-    "#39B8D4",
-    "#E78895",
-    "#63B4B8",
-  ];
+  const updatedInfo = useMemo(() => {
+    if (readyToUpdate && authUser.user) {
+      return {
+        _id: authUser.user._id,
+        username: enteredUserName,
+        email: enteredEmail,
+        bio: enteredBio,
+        phone: enteredPhoneNo,
+        profile_pic: currColor,
+        password: enteredNewPassword,
+        currPassword: enteredCurrentPassword,
+      };
+    }
+  }, [
+    authUser,
+    enteredUserName,
+    enteredEmail,
+    enteredBio,
+    enteredPhoneNo,
+    currColor,
+    enteredNewPassword,
+  ]);
+
+  // const handlePop = () => {
+  //   setUpdatePop(true);
+  //   setTimeout(() => {
+  //     setUpdatePop(false);
+  //   }, 5000);
+  // };
 
   const colorHandler = (index) => {
     setCurrColor(colours[index]);
@@ -122,14 +181,14 @@ const SettingsMiddle = () => {
                     placeholder="Enter Password"
                     onBlur={() => {
                       passwordHandler(
-                        enteredChatuPassword,
+                        enteredDltPassword,
                         "dc-input",
                         "dc-invalid",
                         "input-error"
                       );
                     }}
                     onChange={(e) => {
-                      setEnteredChatuPassword(e.target.value);
+                      setEnteredDltPassword(e.target.value);
                     }}
                   />
                   <span className="dc-invalid">Password Invalid</span>
@@ -371,7 +430,7 @@ const SettingsMiddle = () => {
                       emailHandler(
                         enteredEmail,
                         "email-input",
-                        "email-invalid",
+                        "settings-email-invalid",
                         "input-error"
                       );
                     }}
@@ -389,7 +448,8 @@ const SettingsMiddle = () => {
                         enteredCurrentPassword,
                         "npass-input",
                         "n-pas-invalid",
-                        "input-error"
+                        "input-error",
+                        setReadyToUpdate
                       );
                     }}
                     onChange={(e) => {
@@ -398,7 +458,7 @@ const SettingsMiddle = () => {
                   />
                 </div>
                 <div className="right-r2-spans">
-                  <span className="email-invalid">Email Invalid</span>
+                  <span className="settings-email-invalid">Email Invalid</span>
                   <span className="n-pas-invalid">New Password Invalid</span>
                 </div>
               </div>
@@ -415,7 +475,8 @@ const SettingsMiddle = () => {
                         enteredPhoneNo,
                         "phno-input",
                         "phno-invalid",
-                        "input-error"
+                        "input-error",
+                        setReadyToUpdate
                       );
                     }}
                     onChange={(e) => {
@@ -432,7 +493,8 @@ const SettingsMiddle = () => {
                         enteredConfirmPassword,
                         "copass-input",
                         "co-pas-invalid",
-                        "input-error"
+                        "input-error",
+                        setReadyToUpdate
                       );
                     }}
                     onChange={(e) => {
@@ -460,23 +522,14 @@ const SettingsMiddle = () => {
                 </span>
                 <textarea
                   className="acc-info-Bioinput"
+                  value={enteredBio}
                   onInput={() => {
                     checkCharacterLimit();
-                  }}
-                  onBlur={() => {
-                    bioHandler(
-                      enteredBio,
-                      "acc-info-Bioinput",
-                      "bio-invalid",
-                      "input-error"
-                    );
                   }}
                   onChange={(e) => {
                     setEnteredBio(e.target.value);
                   }}
-                >
-                  {enteredBio}
-                </textarea>
+                ></textarea>
                 <span className="bio-invalid">Bio invalid</span>
               </div>
 
@@ -484,8 +537,21 @@ const SettingsMiddle = () => {
                 <div className="r5-left">
                   <button
                     className="update-btn"
-                    style={{ color: "white", backgroundColor: "#00A9FF" }}
-                    onClick={handlePop}
+                    style={{
+                      color: "white",
+                      backgroundColor: readyToUpdate ? "#00A9FF" : "gray",
+                    }}
+                    onClick={() =>
+                      updateUser(
+                        setAuthUser,
+                        updatedInfo,
+                        setUpdatePop,
+                        setEnteredCurrentPassword,
+                        setEnteredNewPassword,
+                        setEnteredConfirmPassword
+                      )
+                    }
+                    disabled={!readyToUpdate}
                   >
                     Update
                   </button>
@@ -493,7 +559,7 @@ const SettingsMiddle = () => {
                     className="cancel-btn"
                     style={{ backgroundColor: "#EEEFF1" }}
                   >
-                    Cancel
+                    Reset
                   </button>
                 </div>
 

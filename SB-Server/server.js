@@ -38,6 +38,7 @@ const io = require("socket.io")(server, {
 app.route("/signup").post(validate(signupSchema), auth.signup); //route to signup page //Validation to be added
 app.route("/login").post(auth.login); //route to handle login page
 app.route("/user/:id").get(auth.fetchUser); //route to fetch user details when page loads
+app.route("/user/update").patch(auth.updateUser); //route to update user details
 
 app.use("/courses", geminiRouter);
 app.use("/note", noteRouter);

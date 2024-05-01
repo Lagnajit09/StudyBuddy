@@ -49,6 +49,7 @@ export const passwordHandler = (
   errorDivName,
   errorDesignClass
 ) => {
+  ////////////////////
   if (enteredPassword.length > 6) {
     document.getElementsByClassName(errorDivName)[0].style.visibility =
       "hidden";
@@ -57,9 +58,9 @@ export const passwordHandler = (
       .classList.remove(errorDesignClass);
   } else {
     const element = document.getElementsByClassName(errorDivName);
-    element[0].style.visibility = "visible";
+    element[0].style.visibility = "hidden";
     const pass_ele = document.getElementsByClassName(inputDivName);
-    pass_ele[0].classList.add(errorDesignClass);
+    pass_ele[0].classList.remove(errorDesignClass);
   }
 };
 
@@ -68,25 +69,31 @@ export const newPasswordHandler = (
   enteredCPassword,
   inputDivName,
   errorDivName,
-  errorDesignClass
+  errorDesignClass,
+  setReadyToUpdate
 ) => {
-  if (enteredNPassword != enteredCPassword) {
-    document.getElementsByClassName(errorDivName)[0].style.visibility =
-      "hidden";
+  if (enteredCPassword.length !== 0 && enteredNPassword === enteredCPassword) {
+    const element = document.getElementsByClassName(errorDivName)[0];
+    element.innerHTML = "Please use a different password!";
+    element.style.visibility = "visible";
     document
       .getElementsByClassName(inputDivName)[0]
-      .classList.remove(errorDesignClass);
-  } else if (enteredNPassword.length !== 0) {
-    document.getElementsByClassName(errorDivName)[0].style.visibility =
-      "hidden";
+      .classList.add(errorDesignClass);
+    setReadyToUpdate(false);
+  } else if (enteredCPassword.length !== 0 && enteredNPassword.length === 0) {
+    const element = document.getElementsByClassName(errorDivName)[0];
+    element.innerHTML = "New password is required!";
+    element.style.visibility = "visible";
     document
       .getElementsByClassName(inputDivName)[0]
-      .classList.remove(errorDesignClass);
+      .classList.add(errorDesignClass);
+    setReadyToUpdate(false);
   } else {
     const element = document.getElementsByClassName(errorDivName);
-    element[0].style.visibility = "visible";
+    element[0].style.visibility = "hidden";
     const cpass_ele = document.getElementsByClassName(inputDivName);
-    cpass_ele[0].classList.add(errorDesignClass);
+    cpass_ele[0].classList.remove(errorDesignClass);
+    setReadyToUpdate(true);
   }
 };
 
@@ -95,19 +102,26 @@ export const confirmPasswordHandler = (
   enteredConfirmPassword,
   inputDivName,
   errorDivName,
-  errorDesignClass
+  errorDesignClass,
+  setReadyToUpdate
 ) => {
+  if (enteredConfirmPassword.length === 0) {
+    setReadyToUpdate(false);
+    return;
+  }
   if (enteredNPassword === enteredConfirmPassword) {
     document.getElementsByClassName(errorDivName)[0].style.visibility =
       "hidden";
     document
       .getElementsByClassName(inputDivName)[0]
       .classList.remove(errorDesignClass);
+    setReadyToUpdate(true);
   } else {
     const element = document.getElementsByClassName(errorDivName);
     element[0].style.visibility = "visible";
     const cpass_ele = document.getElementsByClassName(inputDivName);
     cpass_ele[0].classList.add(errorDesignClass);
+    setReadyToUpdate(false);
   }
 };
 
@@ -141,39 +155,27 @@ export const phNoHandler = (
   enteredPhoneN,
   inputDivName,
   errorDivName,
-  errorDesignClass
+  errorDesignClass,
+  setReadyToUpdate
 ) => {
-  console.log(typeof enteredPhoneN);
-  enteredPhoneN = Number(enteredPhoneN);
-  console.log(typeof enteredPhoneN);
-  let len = enteredPhoneN.toString().length;
-  console.log(len);
-
-  if (isNaN(enteredPhoneN) || enteredPhoneN == 0 || len < 10) {
-    const element = document.getElementsByClassName(errorDivName);
-    element[0].style.visibility = "visible";
-    const name_ele = document.getElementsByClassName(inputDivName);
-    name_ele[0].classList.add(errorDesignClass);
-  } else {
+  if (enteredPhoneN.length === 0) {
     document.getElementsByClassName(errorDivName)[0].style.visibility =
       "hidden";
     document
       .getElementsByClassName(inputDivName)[0]
       .classList.remove(errorDesignClass);
+    return;
   }
-};
 
-export const bioHandler = (
-  enteredBio,
-  inputDivName,
-  errorDivName,
-  errorDesignClass
-) => {
-  if (enteredBio.length == 0) {
+  enteredPhoneN = Number(enteredPhoneN);
+  let len = enteredPhoneN.toString().length;
+
+  if (isNaN(enteredPhoneN) || len !== 10) {
     const element = document.getElementsByClassName(errorDivName);
     element[0].style.visibility = "visible";
     const name_ele = document.getElementsByClassName(inputDivName);
     name_ele[0].classList.add(errorDesignClass);
+    setReadyToUpdate(false);
   } else {
     document.getElementsByClassName(errorDivName)[0].style.visibility =
       "hidden";

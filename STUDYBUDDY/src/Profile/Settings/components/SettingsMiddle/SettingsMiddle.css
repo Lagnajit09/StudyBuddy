@@ -14,7 +14,7 @@
   background-color: #fbfcfe;
 }
 
-.left-container {
+.settingsmiddle .left-container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -33,7 +33,7 @@
   margin-bottom: 17%;
 }
 
-.right-container {
+.settingsmiddle .right-container {
   display: flex;
   justify-content: left;
   align-items: flex-end;

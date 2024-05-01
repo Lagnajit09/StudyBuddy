@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema({
   },
   bio: {
     type: "String",
+    default: "Hey there!",
   },
   phone: {
     type: "String",

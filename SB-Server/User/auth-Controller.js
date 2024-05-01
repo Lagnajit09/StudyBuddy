@@ -89,3 +89,70 @@ exports.fetchUser = async (req, res) => {
     return res.status(500).json("Internl server error!");
   }
 };
+
+// Update user details route
+exports.updateUser = async (req, res) => {
+  const {
+    _id,
+    username,
+    email,
+    phone,
+    bio,
+    profile_pic,
+    password,
+    currPassword,
+  } = req.body;
+
+  try {
+    // Find the user by userId
+    const user = await User.findById(_id);
+
+    if (currPassword) {
+      const checkPassword = await bcrypt.compare(currPassword, user.password);
+      if (!checkPassword) {
+        return res.status(410).json({
+          message: "Incorrect password!",
+        });
+      }
+    }
+
+    if (email !== user.email) {
+      const checkEmailExists = await User.findOne({ email });
+      if (checkEmailExists) {
+        return res.status(408).json({
+          message: "Email already exists!",
+        });
+      }
+    }
+
+    // Update user details
+    if (username) user.username = username;
+    if (email) user.email = email;
+    if (phone) user.phone = phone;
+    if (bio) user.bio = bio;
+    if (profile_pic) user.profile_pic = profile_pic;
+
+    // Update password if newPassword is provided
+    if (password) {
+      const saltRound = await bcrypt.genSalt(10);
+      const hashPassword = await bcrypt.hash(password, saltRound);
+      user.password = hashPassword;
+    }
+
+    // Save updated user details
+    await user.save();
+
+    // Generate new JWT token with updated user details
+    const token = await user.generateToken();
+
+    // Return the updated user details along with the new token
+    res.status(200).json({
+      user,
+      token,
+      userId: user._id,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};

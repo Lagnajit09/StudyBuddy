@@ -36,7 +36,11 @@ const ProfileLeft = () => {
         />
         <div className="username">
           <div className="uname-span">
-            <span>{authUser?.user?.firstname}</span>
+            <span>
+              {authUser?.user?.username !== authUser?.user?.email
+                ? authUser?.user?.username
+                : authUser?.user?.firstname}
+            </span>
           </div>
           <div className="edit-profile">
             <RiEdit2Line />
