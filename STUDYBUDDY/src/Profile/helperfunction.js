@@ -88,6 +88,14 @@ export const newPasswordHandler = (
       .getElementsByClassName(inputDivName)[0]
       .classList.add(errorDesignClass);
     setReadyToUpdate(false);
+  } else if (enteredCPassword.length !== 0 && enteredNPassword.length < 6) {
+    const element = document.getElementsByClassName(errorDivName)[0];
+    element.innerHTML = "Password must be at least 6 characters long!";
+    element.style.visibility = "visible";
+    document
+      .getElementsByClassName(inputDivName)[0]
+      .classList.add(errorDesignClass);
+    setReadyToUpdate(false);
   } else {
     const element = document.getElementsByClassName(errorDivName);
     element[0].style.visibility = "hidden";

@@ -10,6 +10,8 @@ export const updateUser = async (
 ) => {
   const token = localStorage.getItem("token");
 
+  console.log(updatedInfo);
+
   try {
     const response = await fetch(`${BASE_URL}/user/update`, {
       method: "PATCH",

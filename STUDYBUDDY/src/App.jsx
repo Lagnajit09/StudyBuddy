@@ -9,6 +9,7 @@ import { authUserAtom } from "./store/authAtom";
 import Profile from "./Profile/Profile";
 import Settings from "./Profile/Settings/Settings";
 import HelpCenter from "./Profile/HelpCenter/HelpCenter";
+import { BASE_URL } from "./config";
 
 const App = () => {
   const [userAtom, setUserAtom] = useRecoilState(authUserAtom);
@@ -19,7 +20,7 @@ const App = () => {
       const token = localStorage.getItem("token");
       if (userId) {
         try {
-          const response = await fetchUserFromServer(userId); // Function to fetch user details from server
+          const response = await fetchUserFromServer(userId, token); // Function to fetch user details from server
           setUserAtom({ user: response, token, userId }); // Assuming response is an object containing user details
         } catch (error) {
           console.error("Error fetching user details:", error);
@@ -48,8 +49,12 @@ const App = () => {
   );
 };
 
-const fetchUserFromServer = async (userId) => {
-  const response = await fetch(`http://localhost:3000/user/${userId}`);
+const fetchUserFromServer = async (userId, token) => {
+  const response = await fetch(`${BASE_URL}/user/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Include JWT token in the Authorization header
+    },
+  });
   if (!response.ok) {
     throw new Error("Failed to fetch user details");
   }

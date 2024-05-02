@@ -6,16 +6,19 @@ import { PiQuestionLight } from "react-icons/pi";
 import { PiUserCircleLight } from "react-icons/pi";
 import { CiSettings } from "react-icons/ci";
 import { SlLogout } from "react-icons/sl";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { openCalendarAtom } from "../../../store/profileStore/profileStore";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { authUserAtom } from "../../../store/authAtom";
+import { logoutHandler } from "../../../userAuthHandlers/authHandler";
 
 const ProfileLeft = () => {
-  const authUser = useRecoilValue(authUserAtom);
+  const [authUser, setAuthUser] = useRecoilState(authUserAtom);
   const [clicked, setClicked] = useRecoilState(openCalendarAtom);
   const location = useLocation();
+  const navigate = useNavigate();
+
   const path = useMemo(() => {
     return location.pathname;
   }, [location]);
@@ -43,7 +46,7 @@ const ProfileLeft = () => {
             </span>
           </div>
           <div className="edit-profile">
-            <RiEdit2Line />
+            <RiEdit2Line onClick={() => navigate("/settings")} />
           </div>
         </div>
       </div>
@@ -141,6 +144,9 @@ const ProfileLeft = () => {
           <span
             className="logout-span"
             style={{ color: "rgba(255, 50, 50, 0.8)" }}
+            onClick={() => {
+              logoutHandler(setAuthUser, navigate);
+            }}
           >
             Logout
           </span>

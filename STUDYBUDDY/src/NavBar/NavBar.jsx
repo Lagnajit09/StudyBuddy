@@ -13,6 +13,7 @@ const NavBar = (props) => {
   props.style === false
     ? null
     : (navbarStyle = {
+        backgroundColor: "white",
         padding: "10px 25px",
         borderBottom: "2px solid rgba(217, 217, 217, 0.773)",
         WebkitBoxShadow: "0px 1px 4px 1px rgba(0, 169, 255, 0.2)",

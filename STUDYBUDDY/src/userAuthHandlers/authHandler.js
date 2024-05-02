@@ -1,3 +1,5 @@
+import { BASE_URL } from "../config";
+
 const colors = [
   "#00A9FF",
   "#B3ABFC",
@@ -25,7 +27,7 @@ export const signupHandler = async (
     const data = { email, firstname, lastname, password, profile_pic };
 
     try {
-      const response = await fetch("http://localhost:3000/signup", {
+      const response = await fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,7 +76,7 @@ export const loginHandler = async (
     const data = { email, password };
 
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch(`${BASE_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,16 +87,19 @@ export const loginHandler = async (
         console.log("Network error");
       }
       if (response.status === 404) {
-        const inpDiv = document.getElementsByClassName("email-input")[0];
+        const inpDiv = document.getElementsByClassName("login-email-input")[0];
         inpDiv.classList.add("input-error");
-        const errorDiv = document.getElementsByClassName("email-invalid")[0];
+        const errorDiv = document.getElementsByClassName(
+          "login-email-invalid"
+        )[0];
         errorDiv.style.visibility = "visible";
         errorDiv.innerHTML = "Email doesn't exist!";
         return;
       } else if (response.status === 400) {
-        const inpDiv = document.getElementsByClassName("pwd-input")[0];
+        const inpDiv = document.getElementsByClassName("login-pwd-input")[0];
         inpDiv.classList.add("input-error");
-        const errorDiv = document.getElementsByClassName("pass-invalid")[0];
+        const errorDiv =
+          document.getElementsByClassName("login-pass-invalid")[0];
         errorDiv.style.visibility = "visible";
         errorDiv.innerHTML = "Incorrect password!";
         return;
@@ -113,5 +118,53 @@ export const loginHandler = async (
     }
   } else {
     console.log("Invalid");
+  }
+};
+
+export const logoutHandler = (setAuthUser, navigate) => {
+  setAuthUser({});
+  localStorage.removeItem("token");
+  localStorage.removeItem("userId");
+  navigate("/");
+};
+
+export const deleteAccountHandler = async (
+  setAuthUser,
+  navigate,
+  email,
+  password
+) => {
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+  const data = { email, password, userId };
+
+  try {
+    const response = await fetch(`${BASE_URL}/user/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      console.log("Network error");
+    }
+    if (response.status === 404) {
+      const element = document.getElementsByClassName("dc-invalid");
+      element[0].style.visibility = "visible";
+      const pass_ele = document.getElementsByClassName("dc-input");
+      pass_ele[0].classList.add("input-error");
+      return;
+    }
+
+    const res = await response.json();
+    setAuthUser({});
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    navigate("/");
+  } catch (error) {
+    console.log("Failed to delete: " + error);
   }
 };

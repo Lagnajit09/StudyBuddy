@@ -28,6 +28,8 @@ import bellIcon from "../../../../assets/Profile-Icons/ProfileMiddleIcon/BellIco
 import Move from "../Move";
 import { authUserAtom } from "../../../../store/authAtom";
 import { updateUser } from "./updateUser";
+import { deleteAccountHandler } from "../../../../userAuthHandlers/authHandler";
+import { useNavigate } from "react-router-dom";
 
 const colours = [
   "#00A9FF",
@@ -40,6 +42,8 @@ const colours = [
 ];
 
 const SettingsMiddle = () => {
+  const navigate = useNavigate();
+
   const [authUser, setAuthUser] = useRecoilState(authUserAtom);
   const [clicked, setClicked] = useRecoilState(openCalendarAtom);
   const [openRight, setOpenRight] = useRecoilState(openCalendarEvent);
@@ -91,7 +95,9 @@ const SettingsMiddle = () => {
         enteredBio !== user.bio ||
         enteredPhoneNo !== user.phone ||
         currColor !== user.profile_pic ||
-        (enteredCurrentPassword.length !== 0 && enteredNewPassword.length !== 0)
+        (enteredCurrentPassword.length !== 0 &&
+          enteredNewPassword.length !== 0 &&
+          enteredNewPassword === enteredConfirmPassword)
       ) {
         setReadyToUpdate(true);
       } else {
@@ -108,12 +114,13 @@ const SettingsMiddle = () => {
     enteredPhoneNo,
     enteredCurrentPassword,
     enteredNewPassword,
+    enteredConfirmPassword,
   ]);
 
   const updatedInfo = useMemo(() => {
     if (readyToUpdate && authUser.user) {
       return {
-        _id: authUser.user._id,
+        userId: authUser?.userId,
         username: enteredUserName,
         email: enteredEmail,
         bio: enteredBio,
@@ -131,6 +138,8 @@ const SettingsMiddle = () => {
     enteredPhoneNo,
     currColor,
     enteredNewPassword,
+    enteredCurrentPassword,
+    readyToUpdate,
   ]);
 
   // const handlePop = () => {
@@ -178,6 +187,7 @@ const SettingsMiddle = () => {
                   <input
                     className="dc-input"
                     type="password"
+                    value={enteredDltPassword}
                     placeholder="Enter Password"
                     onBlur={() => {
                       passwordHandler(
@@ -191,7 +201,7 @@ const SettingsMiddle = () => {
                       setEnteredDltPassword(e.target.value);
                     }}
                   />
-                  <span className="dc-invalid">Password Invalid</span>
+                  <span className="dc-invalid">Incorrect password!</span>
                   <span className="dc-btns">
                     <button
                       className="del-btn"
@@ -206,7 +216,12 @@ const SettingsMiddle = () => {
                       className="del-btn"
                       style={{ backgroundColor: "rgba(255, 95, 95, 1)" }}
                       onClick={() => {
-                        setShowDel(!showDel);
+                        deleteAccountHandler(
+                          setAuthUser,
+                          navigate,
+                          authUser.user.email,
+                          enteredDltPassword
+                        );
                       }}
                     >
                       Delete
@@ -448,6 +463,14 @@ const SettingsMiddle = () => {
                         enteredCurrentPassword,
                         "npass-input",
                         "n-pas-invalid",
+                        "input-error",
+                        setReadyToUpdate
+                      );
+                      confirmPasswordHandler(
+                        enteredNewPassword,
+                        enteredConfirmPassword,
+                        "copass-input",
+                        "co-pas-invalid",
                         "input-error",
                         setReadyToUpdate
                       );

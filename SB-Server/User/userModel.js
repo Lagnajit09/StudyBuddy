@@ -92,11 +92,10 @@ userSchema.pre("save", async function (next) {
     next();
   }
   try {
-    const saltRound = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hash(user.password, saltRound);
-    user.password = hashPassword;
-
     if (this.isNew) {
+      const saltRound = await bcrypt.genSalt(10);
+      const hashPassword = await bcrypt.hash(user.password, saltRound);
+      user.password = hashPassword;
       //only runs for the first time when user is created
       const defaultTopics = [
         "Biology",

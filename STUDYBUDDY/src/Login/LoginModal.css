@@ -65,7 +65,7 @@
     background-color:white;
 }
 
-.email-invalid{
+.login-email-invalid{
     display: flex;
     visibility: hidden;
     font-size: 0.7rem;
@@ -83,7 +83,7 @@
     border: red solid 1px !important;
 }
 
-.pass-invalid{
+.login-pass-invalid{
     display: flex;
     visibility:hidden;
     font-size: 0.7rem;
@@ -96,16 +96,16 @@
     margin-top: 5px;
 }
 
-.email-input,
-.pwd-input{
+.login-email-input,
+.login-pwd-input{
     display: flex;
     width:90%;
     border: none;
     background-color:rgba(0, 0, 0, 0.06);
 }
 
-.email-input input,
-.pwd-input input {
+.login-email-input input,
+.login-pwd-input input {
     width: 100%;
     border: none;
     padding: 4%;
@@ -113,8 +113,8 @@
     outline: none;
 }
 
-.email-input img,
-.pwd-input img{
+.login-email-input img,
+.login-pwd-input img{
     padding-left:10px;
     padding-right: 5px;
     background-color:transparent;

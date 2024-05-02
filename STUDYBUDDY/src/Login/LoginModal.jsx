@@ -76,17 +76,17 @@ const LoginModal = (props) => {
             );
           }}
         >
-          <div className="email-input ">
+          <div className="login-email-input">
             <img src={Email_icon} />
             <input
-              type="text"
+              type="email"
               placeholder="Email"
               value={enteredEmail}
               onBlur={() => {
                 emailHandler(
                   enteredEmail,
-                  "email-input",
-                  "email-invalid",
+                  "login-email-input",
+                  "login-email-invalid",
                   "input-error",
                   setEmailValid
                 );
@@ -96,10 +96,10 @@ const LoginModal = (props) => {
               }}
             />
           </div>
-          <span className="email-invalid">
+          <span className="login-email-invalid">
             Email must contain a '@' and a '.'{" "}
           </span>
-          <div className="pwd-input ">
+          <div className="login-pwd-input">
             <img src={Password_icon} />
             <input
               type="password"
@@ -108,8 +108,8 @@ const LoginModal = (props) => {
               onBlur={() => {
                 passwordHandler(
                   enteredPassword,
-                  "pwd-input",
-                  "pass-invalid",
+                  "login-pwd-input",
+                  "login-pass-invalid",
                   "input-error",
                   setPasswordValid
                 );
@@ -119,7 +119,7 @@ const LoginModal = (props) => {
               }}
             />
           </div>
-          <span className="pass-invalid">
+          <span className="login-pass-invalid">
             Password should have atleast 6 characters.
           </span>
           <span id="forgot-pwd">Forgot your password?</span>
