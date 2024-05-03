@@ -16,13 +16,14 @@
 }
 
 .top-cardContainer img {
-  width: 226.19px;
-  height: 192px;
+  width: 240px;
+  height: 145px;
   object-fit: cover;
+  overflow: hidden;
 }
 
 #top-cardName {
-  max-width: 50%;
+  max-width: 60%;
   display: inline-block;
   font-size: 10px;
   padding: 5px;
@@ -39,7 +40,7 @@
 }
 
 #top-cap {
-  width: 70%;
+  width: 90%;
   padding-left: 15px;
   font-size: 15px;
   font-weight: 500;

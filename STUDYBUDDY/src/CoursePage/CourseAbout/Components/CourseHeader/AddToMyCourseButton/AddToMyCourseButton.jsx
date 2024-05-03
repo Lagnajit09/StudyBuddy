@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "./AddToMyCourseButton.css";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { addCourse, removeCourse } from "./editCourse";
+import { useLocation } from "react-router-dom";
 
 function AddToMyCourseButton() {
   // State to manage the button style
+  const { state } = useLocation();
   const [buttonText, setButtonText] = useState("Add to my course");
   const [buttonStyle, setButtonStyle] = useState({
     width: buttonText === "Added" ? "25%" : "35%",
@@ -35,6 +38,12 @@ function AddToMyCourseButton() {
       fontSize: "18px",
       cursor: "pointer",
     });
+
+    //if button text is Add-to-my-course then upload to database
+    if (buttonText === "Add to my course") addCourse(state.course[state.index]);
+
+    //if button text is Added then remove the course from database
+    if (buttonText === "Added") removeCourse(state.course[state.index]);
 
     // Update button text
     setButtonText((prev) =>

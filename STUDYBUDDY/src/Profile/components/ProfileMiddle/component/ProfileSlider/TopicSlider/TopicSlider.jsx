@@ -1,25 +1,46 @@
-import React, { useState } from "react";
-import { course_name } from "../coursepageSlider2";
+import React, { useEffect, useState } from "react";
 import CourseCard from "../TopicSlider/CourseCard/CourseCard";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import "./TopicSlider.css";
-import { cardClasses } from "@mui/material";
-
-const createCard = (index) => (
-  <CourseCard
-    key={course_name[index].id}
-    img={course_name[index].img}
-    c_name={course_name[index].c_name}
-    cap={course_name[index].cap}
-    c_dest={course_name[index].c_dest}
-    cap_color={course_name[index].cap_color}
-    from="profile"
-  />
-);
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  recommendedCoursesAtom,
+  userCoursesAtom,
+} from "../../../../../../store/profileStore/profileStore";
+import { generateRecommendations } from "../../generateReccomendations";
 
 const TopicSlider = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const userCourses = useRecoilValue(userCoursesAtom);
+  const [recommendedCourses, setRecommendedCourses] = useRecoilState(
+    recommendedCoursesAtom
+  );
+
+  useEffect(() => {
+    generateRecommendations(userCourses, setRecommendedCourses);
+  }, [userCourses, setRecommendedCourses]);
+
+  console.log(recommendedCourses);
+
+  const createCard = (index) => {
+    if (recommendedCourses.length === 0) return null; // Check if recommendedCourses is empty
+    if (index < 0 || index >= recommendedCourses.length) return null; // Check if index is out of bounds
+
+    return (
+      <CourseCard
+        key={recommendedCourses[index].id}
+        img={recommendedCourses[index].img}
+        c_name={recommendedCourses[index].c_name}
+        cap={recommendedCourses[index].cap}
+        c_dest={recommendedCourses[index].c_dest}
+        cap_color={recommendedCourses[index].cap_color}
+        course={recommendedCourses}
+        index={index}
+        from="profile"
+      />
+    );
+  };
 
   let style = {};
 
@@ -27,7 +48,8 @@ const TopicSlider = (props) => {
     style = {
       slider2Container: {
         height: "215px",
-        width: "85%",
+        width: "74.4%",
+        margin: "0px 95px 50px",
         // margin: "0 auto 45px",
       },
 
@@ -59,13 +81,13 @@ const TopicSlider = (props) => {
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex >= course_name.length - 4 ? 0 : prevIndex + 4
+      prevIndex >= recommendedCourses.length - 4 ? 0 : prevIndex + 4
     );
   };
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex <= 0 ? course_name.length - 4 : prevIndex - 4
+      prevIndex <= 0 ? recommendedCourses.length - 4 : prevIndex - 4
     );
   };
 

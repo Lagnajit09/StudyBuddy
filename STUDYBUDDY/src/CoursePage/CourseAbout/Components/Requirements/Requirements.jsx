@@ -11,7 +11,7 @@ function Requirements({ requirements }) {
     <div className="requirements">
       <span className="requirements-span1">Requirements</span>
       <ul className="requirements-list">
-        {requirements.split("\n").map((item, index) => {
+        {requirements?.split("\n").map((item, index) => {
           return <li key={index}>{formatText(item)}</li>;
         })}
       </ul>

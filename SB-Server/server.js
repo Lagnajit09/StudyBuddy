@@ -5,6 +5,7 @@ const app = express();
 const server = http.createServer(app);
 const connectDb = require("./connect-db");
 const profileRouter = require("./User/Profile-Controller");
+const courseRouter = require("./Courses/course-router");
 const noteRouter = require("./router");
 const chatRouter = require("./Chatroom/chat");
 const communityRouter = require("./Chatroom/community");
@@ -40,6 +41,7 @@ app.route("/signup").post(validate(signupSchema), auth.signup); //route to signu
 app.route("/login").post(auth.login); //route to handle login page
 
 app.use("/user", profileRouter);
+app.use("/user-course", courseRouter);
 app.use("/courses", geminiRouter);
 app.use("/note", noteRouter);
 app.use("/chatroom/chat", chatRouter);

@@ -4,7 +4,7 @@ import clock from "../../../assets/Profile-Icons/ProfileMiddleIcon/ClockIcon.svg
 import bookIcon from "../../../assets/Profile-Icons/ProfileMiddleIcon/BookIcon.svg";
 import bellIcon from "../../../assets/Profile-Icons/ProfileMiddleIcon/BellIcon.svg";
 import { useState, useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   openAddEvent,
   openCalendarEvent,
@@ -12,14 +12,17 @@ import {
   openCalendarAtom,
   defSTime,
   defETime,
+  userCoursesAtom,
 } from "../../../store/profileStore/profileStore";
 import Card from "./component/Card/Card";
-import { my_course_name } from "./component/content-list";
+// import { my_course_name } from "./component/content-list";
 import TopicSlider from "./component/ProfileSlider/TopicSlider/TopicSlider";
 import { getCurrentDate, defDateHandler } from "../../helperfunction";
 import { createEvent } from "../ProfileMiddle/component/createEvent.js";
 
 const ProfileMiddle = () => {
+  const my_course_name = useRecoilValue(userCoursesAtom);
+  console.log(my_course_name);
   const [openRight, setOpenRight] = useRecoilState(openCalendarEvent);
   const [showForm, setShowForm] = useRecoilState(openAddEvent);
   const [seeAll, setSeeAll] = useState(false);
@@ -73,13 +76,15 @@ const ProfileMiddle = () => {
 
   const createCard = (index) => (
     <Card
-      key={my_course_name[index].id}
-      img={my_course_name[index].img}
-      c_name={my_course_name[index].c_name}
-      cap={my_course_name[index].cap}
-      c_dest={my_course_name[index].c_dest}
-      cap_color={my_course_name[index].cap_color}
-      cap_bcolor={my_course_name[index].cap_bcolor}
+      key={my_course_name[index]?.id}
+      img={my_course_name[index]?.img}
+      c_name={my_course_name[index]?.c_name}
+      cap={my_course_name[index]?.cap}
+      c_dest={my_course_name[index]?.c_dest}
+      cap_color={my_course_name[index]?.cap_color}
+      cap_bcolor={my_course_name[index]?.cap_bcolor}
+      course={my_course_name}
+      index={index}
     />
   );
 
@@ -184,15 +189,15 @@ const ProfileMiddle = () => {
               )}
             </span>
             <div className="card-list">
-              {newArr[0].map((item) => {
-                return createCard(item.id - 1);
+              {newArr[0]?.map((item, index) => {
+                return createCard(index);
               })}
 
               {seeAll && (
                 <div className="card-list-all">
-                  {newArr.slice(1, newArr.length).map((item) => {
-                    return item.map((obj) => {
-                      return createCard(obj.id - 1);
+                  {newArr.slice(1, newArr.length).map((item, indexP) => {
+                    return item.map((obj, index) => {
+                      return createCard(index + 4 * (indexP + 1));
                     });
                   })}
                 </div>

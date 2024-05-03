@@ -1,4 +1,4 @@
-.cardContainer {
+.profile-cardContainer {
   width: 286px;
   height: 246px;
   display: flex;
@@ -15,10 +15,11 @@
   width: 286px;
   height: 174px;
   object-fit: cover;
+  overflow: hidden;
 }
 
 #cardName {
-  max-width: 50%;
+  max-width: 60%;
   display: inline-block;
   font-size: 10px;
   padding: 5px;
@@ -35,7 +36,7 @@
 }
 
 #cap {
-  width: 70%;
+  width: 90%;
   padding-left: 15px;
   font-size: 15px;
   font-weight: 500;

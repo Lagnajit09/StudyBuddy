@@ -16,7 +16,7 @@
 .slider2Container {
   height: 260px;
   width: 83.5%;
-  overflow:hidden;
+  overflow: hidden;
   margin: 0 auto 50px;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .topicWrapper3 {
-  width: 100%;
+  width: 100vw;
   height: 100%;
   display: flex;
   justify-content: first baseline;
