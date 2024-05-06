@@ -1,50 +1,46 @@
 //THIS FILE CONTAINS THE FOLDER SCHEMA
 
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema=mongoose.Schema;
 
 const folderSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   created_by: {
     type: Schema.Types.ObjectId,
-    ref: "User", // Assuming you have a User model
-    required: true,
+    ref: 'User', // Assuming you have a User model
+    required: true
   },
   deleted: {
     type: Boolean,
-    default: false,
+    default: false
   },
-  notes: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Note", // Assuming you have a Note model
-    },
-  ],
+  notes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Note' // Assuming you have a Note model
+  }],
   archived: {
     type: Boolean,
-    default: false,
+    default: false
   },
   topic_id: {
     type: Schema.Types.ObjectId,
-    ref: "Topic",
+    ref: 'Topic'
   },
   deletedAt: {
     type: Date,
-    default: null,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  color: {
-    type: String,
-    default: "#D9D9D9",
-  },
+    default: null
+  }
 });
 
-const Folder = mongoose.model("Folder", folderSchema);
+
+
+
+
+ 
+
+const Folder = mongoose.model('Folder', folderSchema);
 
 module.exports = Folder;

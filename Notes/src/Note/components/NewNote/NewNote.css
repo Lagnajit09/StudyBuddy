@@ -2,15 +2,14 @@
 .createNote {
     display: flex;
     flex-direction: column;
-    width: 95px;
-    height: 90px;
+    width: 8%;
+    height: 30%;
     border: 1px dashed rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     gap: 10px;
     justify-content: center;
     align-items: center;
     padding: 10px;
-    cursor: pointer;
   }
   
   .createNote span {

@@ -15,7 +15,9 @@
   gap: 10px;
 }
 
-.notes-div {
+.notes-div,
+.trash-div,
+.calendar-div {
   display: flex;
   align-items: center;
   width: 100%;
@@ -27,99 +29,104 @@
   align-items: center;
   width: 100%;
   flex-direction: column;
-  /* height: 4.4%; */
-  transition: all 0.35s ease;
+	/* height: 4.4%; */
+	transition: all 0.35s ease;
 }
 
-.archive-wrapper {
+.archive-wrapper{
   display: flex;
   align-items: center;
   width: 100%;
   flex-direction: column;
-  /* height: 4.2%; */
-  transition: all 0.35s ease;
+	/* height: 4.2%; */
+	transition: all 0.35s ease;
 }
 
-.trash-wrapper {
+.trash-wrapper{
   display: flex;
   align-items: center;
   width: 100%;
   flex-direction: column;
-  transition: all 0.35s ease;
+	transition: all 0.35s ease;
 }
 
 .topics-div,
 .archive-div,
-.trash-div {
+.trash-div{
   display: flex;
   align-items: center;
   width: 100%;
+	gap:10px;
 }
 
 .a-folder,
 .a-notes,
 .t-folder,
-.t-notes {
+.t-notes{
   margin-left: 24%;
   display: flex;
-  align-items: center;
+	align-items: center;
   width: 100%;
   gap: 5px;
   cursor: pointer;
   padding: 5px;
-  font-size: 13px;
+	font-size: 13px;
 }
 
 .a-folder:hover,
 .a-notes:hover,
 .t-folder:hover,
-.t-notes:hover {
-  background-color: #f5f8ff;
+.t-notes:hover{
+  background-color: #F5F8FF;
 }
 
 .dropbtn,
 .a-dropbtn,
-.trash-dropbtn {
+.trash-dropbtn{
   height: 10px;
   width: 12px;
-  cursor: pointer;
+	cursor: pointer;
 }
 
-.notes-span {
+.notes-span,
+.topics-span,
+.calendar-span {
   display: flex;
-  /* height: 100%; */
-  font-size: 15px;
-  cursor: pointer;
+  height: 100%;
+	font-size: 15px;
 }
 
-.topics-span {
-  margin-right: 51%;
-  margin-left: 5%;
-  font-size: 15px;
-  cursor: pointer;
+.topics-span{
+  margin-right: 50%;
+	font-size: 15px;
 }
 
-.archive-span {
-  margin-right: 46.5%;
-  margin-left: 5%;
-  font-size: 15px;
-  cursor: pointer;
+.archive-span{
+  margin-right: 46%;
+	font-size: 15px;
 }
 
-.trash-span {
-  margin-right: 53.5%;
-  margin-left: 5%;
-  font-size: 15px;
-  cursor: pointer;
+.trash-span{
+    margin-right: 53%;
 }
 
-.topics-list,
-.archive-list,
-.trash-list {
+.topics-list
+{
   display: flex;
   width: 100%;
   align-items: flex-start;
   flex-direction: column;
+  gap: 3.7px; 
+  overflow: hidden;
+}
+
+.archive-list,
+.trash-list{
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  flex-direction: column;
+  /* gap: 6px;  */
   overflow: hidden;
 }
 
@@ -130,40 +137,40 @@
 .Cloud-topics {
   margin-left: 24%;
   display: flex;
-  align-items: center;
+	align-items: center;
   width: 100%;
   gap: 5px;
   cursor: pointer;
   padding: 5px;
-  font-size: 13px;
+	font-size: 13px;
 }
 
-.Math-topics {
+.Math-topics{
   margin-left: 24%;
   display: flex;
-  align-items: center;
+	align-items: center;
   width: 100%;
   gap: 5px;
   cursor: pointer;
   padding: 5px;
-  height: 10%;
-  font-size: 13px;
+	height: 10%;
+	font-size: 13px;
 }
 
 .Bio-topics img,
 .Phy-topics img,
 .Chem-topics img,
 .IT-topics img,
-.Cloud-topics img {
-  height: 100%;
-  width: 10%;
-  /* height: 20px;
+.Cloud-topics img{
+    height: 100%;
+    width: 10%;
+    /* height: 20px;
     width: 20px; */
 }
 
-.Math-topics img {
-  height: 100%;
-  width: 10%;
+.Math-topics img{
+    height:  100%;
+    width:  10%;
 }
 
 .Bio-topics:hover,
@@ -171,6 +178,7 @@
 .Chem-topics:hover,
 .Math-topics:hover,
 .IT-topics:hover,
-.Cloud-topics:hover {
-  background-color: #f5f8ff;
+.Cloud-topics:hover{
+    background-color: #F5F8FF;
 }
+
