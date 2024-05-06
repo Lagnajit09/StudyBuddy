@@ -23,7 +23,7 @@ const TopicSlider = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const arr = useMemo(() => {
-    return state.course;
+    return state.related ? state.related : state.course;
   }, [state]);
 
   let style = {};

@@ -10,6 +10,7 @@ import { authUserAtom } from "../../store/authAtom";
 import { useRecoilValue } from "recoil";
 import NavBar from "../../NavBar/NavBar";
 import SearchBar from "../../NavBar/SearchBar/SearchBar";
+import { BASE_URL } from "../../config";
 
 function CourseAboutPage() {
   const authUser = useRecoilValue(authUserAtom);
@@ -34,7 +35,10 @@ function CourseAboutPage() {
       try {
         setLoading(true); // Set loading to true when fetching starts
         const response = await fetch(
-          `http://localhost:3000/courses/about/${state.course[state.index].cap}`
+          `${BASE_URL}/courses/about/${state.course[state.index].cap}`,
+          {
+            Authorization: `Bearer ${authUser.token}`,
+          }
         );
         const data = await response.json();
         console.log(data);

@@ -1,9 +1,12 @@
-const { User, Message } = require("./chatroomDB");
+const { Message } = require("./chatroomDB");
+const User = require("../User/userModel");
 const express = require("express");
 const { ObjectId } = require("mongodb");
+const { ChromeLauncher } = require("puppeteer");
 const chatRouter = express.Router();
+const middleware = require("../middleware");
 
-chatRouter.post("/addUser", async (req, res) => {
+chatRouter.post("/addUser", middleware.authenticate, async (req, res) => {
   // const { firstName, lastName, email, profile_pic } = req.body;
   // try {
   //   const newUser = new User({
@@ -20,67 +23,106 @@ chatRouter.post("/addUser", async (req, res) => {
   // }
 });
 
-chatRouter.get("/allUsers", async (req, res) => {
+chatRouter.get("/allUsers", middleware.authenticate, async (req, res) => {
   const users = await User.find();
   res.json({ id: users.map((user) => user._id) });
 });
 
-chatRouter.get("/one-user/:id", async (req, res) => {
-  const _id = new ObjectId(req.params.id);
-  const user = await User.findOne({ _id });
-  res.json({
-    id: user._id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    profile_pic: user.profile_pic,
-  });
-});
+chatRouter.get(
+  "/one-user/:userId/:id",
+  middleware.authenticate,
+  async (req, res) => {
+    try {
+      const user = await User.findById({ _id: req.params.id });
+      res.json({
+        id: user._id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        profile_pic: user.profile_pic,
+        bio: user.bio,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        error,
+      });
+    }
+  }
+);
 
-chatRouter.get("/:id", async (req, res) => {
-  const sender = req.params.id;
-  const senderId = new ObjectId(sender);
-  const receiverIds = await Message.distinct("receiverId", { senderId });
+chatRouter.get("/:userId", middleware.authenticate, async (req, res) => {
+  const userId = req.params.userId;
 
-  // Find last message for each receiverId
-  const lastMessages = await Promise.all(
-    receiverIds.map(async (receiverId) => {
-      const lastMessage = await Message.findOne({
-        senderId,
-        receiverId,
+  try {
+    // Find distinct receiverIds where the current user is the sender
+    const receiverIdsSentByUser = await Message.distinct("receiverId", {
+      senderId: userId,
+    });
+
+    // Find distinct senderIds where the current user is the receiver
+    const senderIdsReceivedByUser = await Message.distinct("senderId", {
+      receiverId: userId,
+    });
+
+    // Merge arrays and convert them to unique strings, then convert back to ObjectIds
+    const uniqueChatParticipantIds = Array.from(
+      new Set([
+        ...receiverIdsSentByUser.map((id) => id.toString()),
+        ...senderIdsReceivedByUser.map((id) => id.toString()),
+      ])
+    ).map((id) => new ObjectId(id));
+
+    console.log(uniqueChatParticipantIds);
+
+    // Find last message for each participant
+    const lastMessages = await Promise.all(
+      uniqueChatParticipantIds.map(async (participantId) => {
+        const lastMessage = await Message.findOne({
+          $or: [
+            { senderId: userId, receiverId: participantId },
+            { senderId: participantId, receiverId: userId },
+          ],
+        })
+          .sort({ timestamp: -1 })
+          .limit(1);
+        return { participantId, lastMessage };
       })
-        .sort({ timestamp: -1 })
-        .limit(1);
-      return { receiverId, lastMessage };
-    })
-  );
+    );
 
-  // Retrieve user details for each receiverId
-  const usersWithLastMessages = await Promise.all(
-    lastMessages.map(async (item) => {
-      const user = await User.findById(item.receiverId);
-      return {
-        chatUser: {
-          id: user._id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          profile_pic: user.profile_pic,
-        },
-        lastMessage: item.lastMessage.content,
-        lastMsgTime: item.lastMessage.timestamp,
-      };
-    })
-  );
+    // Retrieve user details for each participant
+    const usersWithLastMessages = await Promise.all(
+      lastMessages.map(async (item) => {
+        const user = await User.findById(item.participantId);
+        return {
+          chatUser: {
+            id: user._id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            profile_pic: user.profile_pic,
+            bio: user.bio,
+          },
+          lastMessage: item.lastMessage.content,
+          lastMsgTime: item.lastMessage.timestamp,
+        };
+      })
+    );
 
-  const sortedData = usersWithLastMessages.sort(
-    (a, b) => b.lastMsgTime - a.lastMsgTime
-  );
+    // Sort the results by lastMsgTime
+    const sortedData = usersWithLastMessages.sort(
+      (a, b) => b.lastMsgTime - a.lastMsgTime
+    );
 
-  res.json(sortedData);
+    res.json(sortedData);
+  } catch (error) {
+    res.status(500).json({
+      error,
+    });
+  }
 });
 
-chatRouter.post("/current-chat", async (req, res) => {
+chatRouter.post("/current-chat", middleware.authenticate, async (req, res) => {
   const { currentChatId, loggedInUserId } = req.body;
   const currentChatMessages = await Message.find({
     $or: [
@@ -99,7 +141,7 @@ chatRouter.post("/current-chat", async (req, res) => {
 });
 
 //Send a message to an user
-chatRouter.post("/", async (req, res) => {
+chatRouter.post("/", middleware.authenticate, async (req, res) => {
   const { senderId, receiverId, content } = req.body;
   const sender = new ObjectId(senderId);
   const receiver = new ObjectId(receiverId);

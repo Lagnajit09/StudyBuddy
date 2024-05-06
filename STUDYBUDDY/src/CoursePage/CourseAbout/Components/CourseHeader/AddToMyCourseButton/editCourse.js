@@ -1,6 +1,4 @@
 import { BASE_URL } from "../../../../../config";
-const userId = localStorage.getItem("userId");
-const token = localStorage.getItem("token");
 
 const bgcolor = [
   "linear-gradient(180deg, rgba(255,255,255,1) 71%, rgba(231,136,149,1) 100%)",
@@ -11,7 +9,7 @@ const bgcolor = [
   "linear-gradient(180deg, rgba(255,255,255,1) 71%, rgba(57,184,212,1) 100%)",
 ];
 
-export const addCourse = async (course) => {
+export const addCourse = async (course, userId, token) => {
   let cap_bcolor;
   if (course.c_name === "Physics") {
     cap_bcolor = bgcolor[2];
@@ -59,7 +57,7 @@ export const addCourse = async (course) => {
   }
 };
 
-export const removeCourse = async (course) => {
+export const removeCourse = async (course, userId, token) => {
   const data = { userId, cap: course.cap };
 
   try {

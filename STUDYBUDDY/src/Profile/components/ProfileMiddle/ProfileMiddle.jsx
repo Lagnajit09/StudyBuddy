@@ -13,6 +13,7 @@ import {
   defSTime,
   defETime,
   userCoursesAtom,
+  recommendedCoursesAtom,
 } from "../../../store/profileStore/profileStore";
 import Card from "./component/Card/Card";
 // import { my_course_name } from "./component/content-list";
@@ -22,7 +23,7 @@ import { createEvent } from "../ProfileMiddle/component/createEvent.js";
 
 const ProfileMiddle = () => {
   const my_course_name = useRecoilValue(userCoursesAtom);
-  console.log(my_course_name);
+  const recommendedCourses = useRecoilValue(recommendedCoursesAtom);
   const [openRight, setOpenRight] = useRecoilState(openCalendarEvent);
   const [showForm, setShowForm] = useRecoilState(openAddEvent);
   const [seeAll, setSeeAll] = useState(false);
@@ -84,6 +85,7 @@ const ProfileMiddle = () => {
       cap_color={my_course_name[index]?.cap_color}
       cap_bcolor={my_course_name[index]?.cap_bcolor}
       course={my_course_name}
+      related_courses={recommendedCourses}
       index={index}
     />
   );

@@ -7,8 +7,11 @@ const Card = (props) => {
   const truncatedCap = props.cap.slice(0, 20);
 
   const updatedArr = useMemo(() => {
-    return props.course.filter((course, index) => index < 8 && course);
-  }, [props.course]);
+    if (!props.related_courses) return null;
+    return props.related_courses.filter((course, index) => index < 8 && course);
+  }, [props.related_courses]);
+
+  console.log(updatedArr);
 
   return (
     <div
@@ -16,7 +19,12 @@ const Card = (props) => {
       style={{ background: props.cap_bcolor }}
       onClick={() => {
         navigate("/courses/about", {
-          state: { course: updatedArr, index: props.index },
+          state: {
+            course: props.course,
+            index: props.index,
+            added: true,
+            related: updatedArr,
+          },
         });
       }}
     >
