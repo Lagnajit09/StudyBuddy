@@ -1,0 +1,51 @@
+.navbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: white;
+    padding: 10px;
+    height: 5%;
+}
+
+.navbar .buttons{
+    width: 11%;
+    height: 100%;    
+}
+
+.buttons button{
+    background-color: white;
+}
+
+.navbar h2{
+    background-color: white;    
+}
+.buttons{
+    display: flex;
+    background-color: white;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+.navbar p{
+    cursor: pointer;
+    background-color: white;
+}
+
+.navbar p:hover{
+    text-decoration: underline;
+}
+
+.buttons button{
+    font-size: 1rem;
+    padding: 5px;
+    width: 47%;
+    font-weight: 500;
+    border:none;
+    cursor: pointer;
+}
+
+#signup{
+    border: solid 1px;
+    border-radius: 15px;  
+}
+

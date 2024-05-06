@@ -1,0 +1,77 @@
+.card-folder {
+  flex: 0 0 calc(25% - 20px);
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 50px;
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px 10px 10px 10px;
+  -moz-border-radius: 10px 10px 10px 10px;
+  -webkit-border-radius: 10px 10px 10px 10px;
+  position: relative;
+}
+
+.card-folder-icons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.three-dots-hor {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.three-dots-hor img {
+  width: 23px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.card-folder-desc {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.card-folder-desc h6 {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 10px;
+}
+
+.folder-rename {
+  background-color: inherit;
+  border: none;
+  outline: none;
+  color: #000000;
+  font-weight: 550;
+}
+
+.arrow-icon-folder {
+  position: absolute;
+  top: -10%;
+  left: -4.5%;
+}
+
+.tooltip {
+  position: absolute;
+  top: 3%;
+  left: -5%;
+  width: 15%;
+  z-index: 5;
+  padding: 2px 3px;
+  background-color: rgba(56, 56, 56, 0.75);
+  color: white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltip-text {
+  font-size: 10px;
+}
