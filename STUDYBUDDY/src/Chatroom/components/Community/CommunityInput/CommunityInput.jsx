@@ -27,24 +27,22 @@ const CommunityInput = (props) => {
   const [sendClicked, setSendClicked] = useState(false);
   const wrapperRef = useRef(null);
 
-  console.log(newCommunityMessages);
-
   useEffect(() => {
     const handleIncomingMessage = (data) => {
-      console.log(data);
-      console.log(newCommunityMessages);
-      setNewCommunityMessages((prev) => [...prev, data.data]);
+      if (currentCommunity._id === data.data.community) {
+        setNewCommunityMessages((prev) => [...prev, data.data]);
+      }
     };
     socket.on("community:message", handleIncomingMessage);
 
     return () => {
       socket.off("community:message", handleIncomingMessage);
     };
-  }, [setNewCommunityMessages]);
+  }, [setNewCommunityMessages, currentCommunity]);
 
   useEffect(() => {
     setNewCommunityMessages([]);
-  }, [currentCommunity._id]);
+  }, [currentCommunity]);
 
   useEffect(() => {
     function handleClickOutside(event) {

@@ -74,7 +74,13 @@ const Chatroom = () => {
   return (
     <div className="chatroom">
       <NavBar>
-        <h2>Study Buddy.</h2>
+        <h2
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Study Buddy.
+        </h2>
         <p>Courses</p>
         <SearchBar className="searchWidth" placeholder="Search Chat Room" />
         <p>Chat Room</p>

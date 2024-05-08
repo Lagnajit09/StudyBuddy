@@ -47,7 +47,7 @@ const CoursePage2 = () => {
           />
           <p
             onClick={() => {
-              navigate("/chatroom");
+              navigate("/chatroom/community");
             }}
           >
             Chat Room

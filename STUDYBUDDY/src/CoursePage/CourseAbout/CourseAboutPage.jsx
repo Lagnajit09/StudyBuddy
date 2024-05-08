@@ -80,7 +80,7 @@ function CourseAboutPage() {
           />
           <p
             onClick={() => {
-              navigate("/chatroom");
+              navigate("/chatroom/community");
             }}
           >
             Chat Room

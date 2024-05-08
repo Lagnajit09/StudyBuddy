@@ -68,7 +68,9 @@ function CoursePage1() {
           />
           <p
             onClick={() => {
-              authUser.user ? navigate("/chatroom") : toggleSignupModal();
+              authUser.user
+                ? navigate("/chatroom/community")
+                : toggleSignupModal();
             }}
           >
             Chat Room

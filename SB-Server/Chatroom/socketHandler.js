@@ -21,8 +21,8 @@ const handleSocketConnection = (io) => {
         });
       });
 
-      console.log(userSocketMap);
-      console.log(communitySocketMap);
+      // console.log(userSocketMap);
+      // console.log(communitySocketMap);
     });
 
     // Handle incoming messages
@@ -31,8 +31,6 @@ const handleSocketConnection = (io) => {
       const receiverSocket = userSocketMap.get(data.receiverId);
       const senderSocket = userSocketMap.get(data.senderId);
       // send the message to the receiver's socket
-      console.log("sender:" + senderSocket);
-      console.log("receiver:" + receiverSocket);
       io.to(senderSocket).emit("message", data);
       if (receiverSocket) {
         io.to(receiverSocket).emit("message", data);
@@ -105,8 +103,15 @@ const handleSocketConnection = (io) => {
     // Handle incoming community messages
     socket.on("community:message", (data) => {
       console.log("Received community message:", data);
-      // Broadcast the message to all connected clients
-      io.emit("community:message", data);
+
+      const communitySockets = communitySocketMap.get(data.data.community);
+
+      console.log("receivers: " + communitySockets);
+
+      communitySockets.forEach((socket) => {
+        // Broadcast the message to all connected clients
+        io.to(socket).emit("community:message", data);
+      });
     });
 
     socket.on("updateChatUsers", ({ recipientId, senderId }) => {
@@ -122,6 +127,22 @@ const handleSocketConnection = (io) => {
     // Handle disconnection
     socket.on("disconnect", () => {
       console.log("User disconnected");
+      // Remove user's socket from userSocketMap
+      for (let [userId, socketId] of userSocketMap.entries()) {
+        if (socketId === socket.id) {
+          userSocketMap.delete(userId);
+          break;
+        }
+      }
+      // Remove user's socket from communitySocketMap
+      for (let [communityId, sockets] of communitySocketMap.entries()) {
+        console.log(sockets);
+        if (sockets.includes(socket.id)) {
+          const index = sockets.indexOf(socket.id);
+          sockets.splice(index, 1);
+          break;
+        }
+      }
     });
   });
 };
