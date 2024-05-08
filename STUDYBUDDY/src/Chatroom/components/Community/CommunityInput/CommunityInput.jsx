@@ -41,10 +41,6 @@ const CommunityInput = (props) => {
   }, [setNewCommunityMessages, currentCommunity]);
 
   useEffect(() => {
-    setNewCommunityMessages([]);
-  }, [currentCommunity]);
-
-  useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setIsEmojiOpen(false);
