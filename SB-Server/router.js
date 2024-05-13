@@ -64,7 +64,7 @@ router.route("/movetotopic").post(middleware.authenticate, note.moveToTopic);
 
 //To Handle All Documents
 router.route("/addtopic").post(middleware.authenticate, addTopic);
-router.route("/viewtopics").post(middleware.authenticate, viewTopics);
+router.route("/viewtopics/:userId").get(middleware.authenticate, viewTopics);
 router
   .route("/viewfolderarchives")
   .get(middleware.authenticate, viewFolderArchive);

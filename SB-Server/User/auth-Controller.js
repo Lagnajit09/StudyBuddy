@@ -5,6 +5,8 @@ const bcrypt = require("bcryptjs");
 
 //SIGNUP FUNCTION
 exports.signup = async (req, res) => {
+  const topics = [];
+
   try {
     const { firstname, lastname, email, password, profile_pic } = req.body; //get data from frontend
 

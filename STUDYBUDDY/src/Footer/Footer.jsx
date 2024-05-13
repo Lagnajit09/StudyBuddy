@@ -5,9 +5,12 @@ import Instagram from "../assets/footer_imgs/Instagram.svg";
 import Linkedin from "../assets/footer_imgs/Linkedin.svg";
 import { useRecoilValue } from "recoil";
 import { authUserAtom } from "../store/authAtom";
+import { useNavigate } from "react-router-dom";
 
 const Footer = ({ toggleSignupModal }) => {
   const authUser = useRecoilValue(authUserAtom);
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="footer">
@@ -25,10 +28,18 @@ const Footer = ({ toggleSignupModal }) => {
         <div className="middle">
           <h2>Take a Tour</h2>
           <div className="features">
-            <h4>Courses</h4>
             <h4
               onClick={() => {
-                authUser.user ? navigate("/chatroom") : toggleSignupModal();
+                authUser.user ? navigate("/courses") : toggleSignupModal();
+              }}
+            >
+              Courses
+            </h4>
+            <h4
+              onClick={() => {
+                authUser.user
+                  ? navigate("/chatroom/community")
+                  : toggleSignupModal();
               }}
             >
               Chat Room

@@ -286,7 +286,7 @@ const addTopic = async function (req, res) {
 //10.    Function to View Topics
 const viewTopics = async function (req, res) {
   try {
-    const { userId } = req.body;
+    const { userId } = req.params;
     const topics = await Topic.find({ created_by: userId });
     return res.status(200).json({ topics }); //For topic Dropdown
   } catch (error) {

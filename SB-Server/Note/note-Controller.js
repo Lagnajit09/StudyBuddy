@@ -404,7 +404,7 @@ exports.moveToTopic = async (req, res) => {
     } else {
       const topic = await Topic.findById(topicId); //find the topic
       if (!topic) {
-        return res.status(404).json({ message: "Topic not found" });
+        return res.status(405).json({ message: "Topic not found" });
       } else {
         const existingNotes = await Note.find(
           {

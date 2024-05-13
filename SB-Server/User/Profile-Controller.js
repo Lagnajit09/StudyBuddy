@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const express = require("express");
 const profileRouter = express.Router();
 const middleware = require("../middleware");
+const Event = require("../Event/event-model");
+const { sendMail } = require("../Event/emailHandler");
 
 //route to fetch user details when page loads
 profileRouter.get("/:userId", middleware.authenticate, async (req, res) => {
@@ -117,6 +119,43 @@ profileRouter.delete("/delete", middleware.authenticate, async (req, res) => {
     return res.status(500).json({
       message: "Internal server error!",
       error,
+    });
+  }
+});
+
+profileRouter.post("/new-event", async (req, res) => {
+  const { title, start, end, date, userId } = req.body;
+
+  try {
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found!",
+      });
+    }
+    const event = await Event.create({
+      title,
+      date,
+      start,
+      end,
+      userId,
+    });
+
+    const response = await sendMail(user.email, user.username, {
+      title,
+      date,
+      start,
+      end,
+    });
+
+    res.json({
+      message: "Event created successfully!",
+      event,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error",
     });
   }
 });
