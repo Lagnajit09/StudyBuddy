@@ -9,7 +9,7 @@ const Move = (props) => {
       style={{ bottom: props.move === true ? "3%" : "-10%" }}
     >
       <span>Moved</span>
-      <IoIosCheckmarkCircle style={{ fontSize: "17", color: "#ffffff" }} />
+      <IoIosCheckmarkCircle style={{ fontSize: "17", color: "#4CAF50" }} />
     </div>
   );
 };

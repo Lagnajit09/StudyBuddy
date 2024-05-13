@@ -3,7 +3,8 @@ import NavBar from "../NavBar/NavBar";
 import SearchBar from "../NavBar/SearchBar/SearchBar";
 import Avatar from "@mui/material/Avatar";
 import NoteLeft from "./components/NoteLeft/NoteLeft";
-import NoteRight from "./components/NotesRight/NoteRight";
+import NoteRight from "./components/NoteRight/NoteRight";
+import NoteNavBar from "./components/NoteNavBar/NoteNavBar";
 
 const Note = () => {
   return (
@@ -20,9 +21,10 @@ const Note = () => {
           sx={{ bgcolor: "#00A9FF", width: "30px", height: "30px" }}
         />
       </NavBar>
+      {/* <NoteNavBar /> */}
       <div className="notes">
         <NoteLeft />
-        <NoteRight/>
+        <NoteRight />
       </div>
     </>
   );

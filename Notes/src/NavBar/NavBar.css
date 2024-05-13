@@ -19,6 +19,7 @@
 .navbar h2{
     background-color: white;    
 }
+
 .buttons{
     display: flex;
     background-color: white;
@@ -26,6 +27,7 @@
     align-items: center;
     flex-direction: row;
 }
+
 .navbar p{
     cursor: pointer;
     background-color: white;

@@ -4,6 +4,7 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { authUserAtom } from "../../../NoteStore/AuthUser";
 import { folderUserAtom } from "../../../NoteStore/folderStore";
 import { noteUserAtom } from "../../../NoteStore/noteStore";
+import { topicAtom } from "../../../NoteStore/Topic";
 import { useLocation, useParams } from "react-router-dom";
 import CreateNote from "../CreateNote/CreateNote";
 import NoteSlider from "../NoteSlider/NoteSlider";
@@ -17,6 +18,16 @@ import TrashFolder from "../Trash/TrashFolder";
 import TrashNote from "../Trash/TrashNote";
 import ArchiveFolder from "../Archive/ArchiveFolder";
 import ArchiveNote from "../Archive/ArchiveNote";
+import TopicRight from "../TopicRight/TopicRight";
+
+const customOrder = [
+  "Biology",
+  "Physics",
+  "Chemistry",
+  "IT and Software",
+  "Mathematics",
+  "Cloud Computing",
+];
 
 const NoteRight = () => {
   const [newFolder, setNewFolder] = useState(false);
@@ -25,6 +36,7 @@ const NoteRight = () => {
   const authUser = useRecoilValue(authUserAtom);
   const [folderUser, setFolderUser] = useRecoilState(folderUserAtom);
   const [noteUser, setNoteUser] = useRecoilState(noteUserAtom);
+  const [topics, setTopics] = useRecoilState(topicAtom);
   const location = useLocation();
   const params = useParams();
 
@@ -56,6 +68,10 @@ const NoteRight = () => {
     return location.pathname.includes("/archive/note");
   }, [location]);
 
+  const topicPath = useMemo(() => {
+    return location.pathname.includes("/note/topic/");
+  }, [location]);
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
@@ -69,6 +85,26 @@ const NoteRight = () => {
       setNoteUser(data.notes);
     };
     fetchData();
+  }, [authUser, topics]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        `http://localhost:3000/note/viewtopics/${authUser._id}`
+      );
+      if (!response.ok) {
+        console.log("Network error");
+      }
+      const data = await response.json();
+
+      // Sort the topics array based on custom order
+      const updatedTopic = data.topics;
+      updatedTopic.sort((a, b) => {
+        return customOrder.indexOf(a.name) - customOrder.indexOf(b.name);
+      });
+      setTopics(updatedTopic);
+    };
+    fetchData();
   }, [authUser]);
 
   return (
@@ -80,17 +116,24 @@ const NoteRight = () => {
       {noteTrash && <TrashNote />}
       {folderArchive && <ArchiveFolder />}
       {noteArchive && <ArchiveNote />}
+      {topicPath && (
+        <TopicRight
+          setNewFolder={setNewFolder}
+          setAddToFolder={setAddToFolder}
+        />
+      )}
       {!notePath &&
         !folderPath &&
         !folderContent &&
         !folderTrash &&
         !noteTrash &&
         !folderArchive &&
-        !noteArchive && (
+        !noteArchive &&
+        !topicPath && (
           <>
             {folderUser.length < 1 ? (
               <CreateNote
-                heading="Recent Folders"
+                heading="Recent Folder"
                 icon="true"
                 caption="New Folder"
                 setNewFolder={setNewFolder}
@@ -104,7 +147,7 @@ const NoteRight = () => {
             )}
             {noteUser.length < 1 ? (
               <CreateNote
-                heading="Recent Notes"
+                heading="Recent Note"
                 icon="false"
                 caption="New Note"
               />

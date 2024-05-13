@@ -15,15 +15,6 @@ import ColourDropdown from "../ColourDropdown/ColourDropdown";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { PiFolder } from "react-icons/pi";
 
-const topicDropdown = [
-  "Biology",
-  "Physics",
-  "Chemistry",
-  "IT and Software",
-  "Mathematics",
-  "Cloud Computing",
-];
-
 const colours = [
   "#79B2D9",
   "#63B4B8",
@@ -342,12 +333,12 @@ const Folders = ({ card, index }) => {
           {showTopicDropDown && isOpen[index] && (
             <TopicDropdown
               from="folder"
-              arr={topicDropdown}
               heading="Folder Topic"
               setOptDropDown={setOptDropDown}
               length={cards1.length}
               setIsOpen={setIsOpen}
               setTopicDropDown={setTopicDropDown}
+              card={card}
             />
           )}
           {showColourDropDown && isOpenColour[index] && (

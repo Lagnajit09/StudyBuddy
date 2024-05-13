@@ -18,14 +18,7 @@ import ColourDropdown from "../ColourDropdown/ColourDropdown";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { PiFolder } from "react-icons/pi";
 
-const topicDropdown = [
-  "Biology",
-  "Physics",
-  "Chemistry",
-  "IT and Software",
-  "Mathematics",
-  "Cloud Computing",
-];
+
 
 const colours = [
   "#79B2D9",
@@ -75,7 +68,6 @@ const Notes = ({ card, index, setAddToFolder }) => {
   );
   const [showTopicDropDown, setTopicDropDown] = useState(false);
   const [isOpen, setIsOpen] = useState(Array(cards2.length).fill(false));
-
   const [showColourDropDown, setColourDropDown] = useState(false);
   const [isOpenColour, setIsOpenColour] = useState(
     Array(cards2.length).fill(false)
@@ -257,6 +249,7 @@ const Notes = ({ card, index, setAddToFolder }) => {
   };
 
   const handleAdd = (cardsIndex) => {
+    console.log("Note");
     setAddToFolder(cardsIndex);
     setOptDropDown(Array(cards2.length).fill(false));
   };
@@ -382,12 +375,12 @@ const Notes = ({ card, index, setAddToFolder }) => {
         {showTopicDropDown && isOpen[index] && (
           <TopicDropdown
             from="note"
-            arr={topicDropdown}
             heading="Note Topic"
             setOptDropDown={setOptDropDown}
             length={cards2.length}
             setIsOpen={setIsOpen}
             setTopicDropDown={setTopicDropDown}
+            card={card}
           />
         )}
       </div>

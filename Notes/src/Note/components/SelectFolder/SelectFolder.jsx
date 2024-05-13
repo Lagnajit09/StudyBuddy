@@ -7,6 +7,7 @@ import { noteUserAtom } from "../../../NoteStore/noteStore";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 const SelectFolder = (props) => {
+  console.log("Folder");
   const authUser = useRecoilValue(authUserAtom);
   const [folderUser, setFolderUser] = useRecoilState(folderUserAtom);
   const [noteUser, setNoteUser] = useRecoilState(noteUserAtom);

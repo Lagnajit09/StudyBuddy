@@ -3,10 +3,24 @@ import "./CreateNote.css";
 import NewNote from "../NewNote/NewNote";
 
 const CreateNote = (props) => {
+  let style = {};
+  if (props.icon === "false") {
+    style = {
+      noteHeading: {
+        height: "60%",
+        marginTop: "30px",
+      },
+    };
+  }
+
   return (
-    <div className="noteHeading">
+    <div className="noteHeading" style={style.noteHeading}>
       <span>{props.heading}</span>
-      <NewNote icon="true" caption={props.caption} />
+      <NewNote
+        icon={props.icon}
+        caption={props.caption}
+        setNewFolder={props.setNewFolder}
+      />
     </div>
   );
 };
