@@ -76,20 +76,24 @@ const TopicRight = (props) => {
         <AddToTopic />
       ) : (
         <>
-          <NoteSlider
-            from="topic"
-            heading={`${topic.name} Folder`}
-            useFolderCards="true"
-            topicFolders={topicFolders}
-            setNewFolder={props.setNewFolder}
-          />
-          <NoteSlider
-            from="topic"
-            heading={`${topic.name} Note`}
-            useFolderCards="false"
-            topicNotes={topicNotes}
-            setAddToFolder={props.setAddToFolder}
-          />
+          {topicFolders.length > 0 && (
+            <NoteSlider
+              from="topic"
+              heading={`${topic.name} Folder`}
+              useFolderCards="true"
+              topicFolders={topicFolders}
+              setNewFolder={props.setNewFolder}
+            />
+          )}
+          {topicNotes.length > 0 && (
+            <NoteSlider
+              from="topic"
+              heading={`${topic.name} Note`}
+              useFolderCards="false"
+              topicNotes={topicNotes}
+              setAddToFolder={props.setAddToFolder}
+            />
+          )}
         </>
       )}
     </div>

@@ -176,6 +176,10 @@ const Notes = ({ card, index, setAddToFolder }) => {
   };
 
   const handleDelete = async () => {
+    const updatedNotes = trashNote.filter(
+      (note) => note._id !== card._id
+    );
+    setTrashNote(updatedNotes);
     const response = await fetch(
       "http://localhost:3000/note/deletenotepermanently",
       {
