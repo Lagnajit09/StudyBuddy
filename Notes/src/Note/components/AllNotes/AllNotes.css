@@ -1,0 +1,11 @@
+.all-notes {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 40px auto;
+}
+
+.all-notes .note {
+  width: 23.5%;
+}
