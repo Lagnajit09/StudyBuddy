@@ -9,8 +9,6 @@ import {
   newPasswordHandler,
   phNoHandler,
   nameHandler,
-  getCurrentDate,
-  defDateHandler,
 } from "../../../helperfunction";
 import { RiEdit2Line } from "react-icons/ri";
 import {
@@ -30,6 +28,7 @@ import { authUserAtom } from "../../../../store/authAtom";
 import { updateUser } from "./updateUser";
 import { deleteAccountHandler } from "../../../../userAuthHandlers/authHandler";
 import { useNavigate } from "react-router-dom";
+import { createEvent } from "../../../components/ProfileMiddle/component/createEvent";
 
 const colours = [
   "#00A9FF",
@@ -50,6 +49,9 @@ const SettingsMiddle = () => {
   const [showForm, setShowForm] = useRecoilState(openAddEvent);
   const [inputStartTime, setInputStartTime] = useRecoilState(defSTime);
   const [inputEndTime, setInputEndTime] = useRecoilState(defETime);
+  const [selectedDate, setSelectedDate] = useRecoilState(defDate);
+  const [title, setTitle] = useState("");
+  const [noti, setNoti] = useState(false);
   const [showDel, setShowDel] = useState(false);
   const [showUpdatePop, setUpdatePop] = useState(false);
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -615,20 +617,22 @@ const SettingsMiddle = () => {
                   type="text"
                   placeholder="Add Title"
                   className="addTitle"
+                  value={title}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                  }}
                 />
                 <div className="time-div">
                   <img src={clock} style={{ cursor: "pointer" }} />
-
-                  <label htmlFor="eventdate" id="def-date">
-                    {getCurrentDate()}
-                  </label>
-
                   <input
                     type="date"
                     id="eventdate"
-                    onClick={() => {
-                      console.log("first");
-                      defDateHandler(event);
+                    value={selectedDate}
+                    onChange={(event) => {
+                      setSelectedDate(event.target.value);
+                      console.log(event.target.value);
+                      // setSelectedDate(!selectedDate);
+                      // defDateHandler(event,"def-date","eventdate",selectedDate);
                     }}
                   />
 
@@ -641,11 +645,10 @@ const SettingsMiddle = () => {
                     // }}
                     onChange={(event) => {
                       setInputStartTime(event.target.value);
+                      console.log(event.target.value);
                     }}
                     className="starttime-input"
                   />
-
-                  {/* <div className="starttime-dropdown"></div> */}
 
                   <input
                     type="time"
@@ -659,8 +662,6 @@ const SettingsMiddle = () => {
                     }}
                     className="endtime-input"
                   />
-
-                  {/* <div className="endtime-dropdown"></div> */}
                 </div>
                 <div className="checkbox-div">
                   <input
@@ -682,12 +683,26 @@ const SettingsMiddle = () => {
                 </div>
                 <div className="add-noti">
                   <img src={bellIcon} style={{ cursor: "pointer" }} />
-                  <span className="add-noti-span">Add Notification</span>
+                  <span
+                    className="add-noti-span"
+                    onClick={() => {
+                      setNoti(!noti);
+                    }}
+                  >
+                    {noti ? "Added" : "Add Notification"}
+                  </span>
                 </div>
                 <div className="save-btn">
                   <button
                     onClick={() => {
                       setShowForm(!showForm);
+                      createEvent(
+                        title,
+                        selectedDate,
+                        inputStartTime,
+                        inputEndTime,
+                        noti
+                      );
                     }}
                   >
                     Save

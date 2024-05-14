@@ -17,7 +17,7 @@ oauth2Client.setCredentials({
   refresh_token: REFRESH_TOKEN,
 });
 
-async function sendMail(user, event) {
+async function sendMail(email, username, event) {
   try {
     const accessToken = await oauth2Client.getAccessToken();
     const transport = nodemailer.createTransport({
@@ -34,7 +34,7 @@ async function sendMail(user, event) {
 
     const mailOptions = {
       from: "StudyBuddy <web.studybuddy@gmail.com>",
-      to: user,
+      to: email,
       subject: "🗓️ Your Event Details 🗒️",
       text: "Here are the details of your scheduled event:",
       html: `
@@ -44,10 +44,10 @@ async function sendMail(user, event) {
             <hr style="border: none; border-top: 1px solid #dddddd;">
             <p style="color: #555555;">Dear StudyBuddy User,</p>
             <p style="color: #555555;">We're excited to remind you about your upcoming event:</p>
-            <p style="color: #555555;"><strong>Title:</strong> Your Event Title</p>
-            <p style="color: #555555;"><strong>Date:</strong> May 15, 2024</p>
-            <p style="color: #555555;"><strong>Start Time:</strong> 10:00 AM</p>
-            <p style="color: #555555;"><strong>End Time:</strong> 12:00 PM</p>
+            <p style="color: #555555;"><strong>Title:</strong> ${event.title}</p>
+            <p style="color: #555555;"><strong>Date:</strong> ${event.date}</p>
+            <p style="color: #555555;"><strong>Start Time:</strong> ${event.start}</p>
+            <p style="color: #555555;"><strong>End Time:</strong> ${event.end}</p>
             <p style="color: #555555;">This event is scheduled in your StudyBuddy account.</p>
             <p style="color: #555555;">We hope you have a productive and enjoyable time!</p>
             <p style="color: #555555;">Best regards,<br>StudyBuddy Team</p>

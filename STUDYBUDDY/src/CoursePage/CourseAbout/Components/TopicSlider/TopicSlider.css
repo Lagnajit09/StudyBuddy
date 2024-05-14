@@ -43,8 +43,8 @@
   gap: 38.5px;
 }
 
-.prevSlideButton,
-.nextSlideButton {
+.cpA-prevSlideButton,
+.cpA-nextSlideButton {
   position: absolute;
   top: 37%;
   height: 40px;
@@ -60,15 +60,15 @@
   cursor: pointer;
 }
 
-.prevSlideButton {
-  left: 7%;
+.cpA-prevSlideButton {
+  left: 7.3%;
 }
 
-.nextSlideButton {
-  right: 7.5%;
+.cpA-nextSlideButton {
+  right: 7.3%;
 }
 
-.prevSlideButton:hover,
-.nextSlideButton:hover {
+.cpA-prevSlideButton:hover,
+.cpA-nextSlideButton:hover {
   background-color: #006ea4;
 }

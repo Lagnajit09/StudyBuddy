@@ -91,7 +91,7 @@ const TopicSlider = (props) => {
         </div>
         <button
           onClick={prevSlide}
-          className="prevSlideButton"
+          className="cpA-prevSlideButton"
           disabled={currentIndex >= 8 ? true : false}
           style={style.prevSlideButton}
         >
@@ -99,7 +99,7 @@ const TopicSlider = (props) => {
         </button>
         <button
           onClick={nextSlide}
-          className="nextSlideButton"
+          className="cpA-nextSlideButton"
           style={style.nextSlideButton}
         >
           <KeyboardArrowRightRoundedIcon style={{ fontSize: "40" }} />

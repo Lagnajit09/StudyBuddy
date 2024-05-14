@@ -12,7 +12,10 @@ import {
   confirmPasswordHandler,
   nameHandler,
 } from "../userAuthHandlers/validation";
-import { signupHandler } from "../userAuthHandlers/authHandler";
+import {
+  googleAuthenticate,
+  signupHandler,
+} from "../userAuthHandlers/authHandler";
 
 const SignupModal = (props) => {
   const [authUser, setAuthUser] = useRecoilState(authUserAtom);
@@ -54,7 +57,7 @@ const SignupModal = (props) => {
               }}
             />
           </button>
-          <button className="social-btn">
+          <button className="social-btn" onClick={googleAuthenticate}>
             <FaGoogle
               style={{
                 backgroundColor: "transparent",

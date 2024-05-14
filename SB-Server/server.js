@@ -4,6 +4,7 @@ const http = require("http");
 const app = express();
 const server = http.createServer(app);
 const connectDb = require("./connect-db");
+const oAuthRouter = require("./User/oAuth");
 const profileRouter = require("./User/Profile-Controller");
 const courseRouter = require("./Courses/course-router");
 const noteRouter = require("./router");
@@ -39,7 +40,7 @@ const io = require("socket.io")(server, {
 //To handle User
 app.route("/signup").post(validate(signupSchema), auth.signup); //route to signup page //Validation to be added
 app.route("/login").post(auth.login); //route to handle login page
-
+app.use("/", oAuthRouter);
 app.use("/user", profileRouter);
 app.use("/user-course", courseRouter);
 app.use("/courses", geminiRouter);

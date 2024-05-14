@@ -97,38 +97,38 @@ cron.schedule("0 0 */15 * *", async () => {
   //run the below every 15 days at midnight
   try {
     res.json("Executed.");
-    // const fifteenDaysAgo = new Date(); //store todays date
-    // fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15); //set the date to 15 days earlier
+    const fifteenDaysAgo = new Date(); //store todays date
+    fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15); //set the date to 15 days earlier
 
-    // const folders = await Folder.find({
-    //   deleted: true,
-    //   deletedAt: { $lt: fifteenDaysAgo },
-    // }); // array of folders whose deletedAt has a date less than 15 day earlier's date
-    // for (const folder of folders) {
-    //   //loop over the array of folders
-    //   await deleteFolderDependencies(folder); //delete the folder dependencies
-    //   await Folder.deleteOne({ _id: folder._id }); //delete the folder from DB
-    //   console.log("Deleted folder from trash bin: " + folder._id); //Notify If needed
-    // }
+    const folders = await Folder.find({
+      deleted: true,
+      deletedAt: { $lt: fifteenDaysAgo },
+    }); // array of folders whose deletedAt has a date less than 15 day earlier's date
+    for (const folder of folders) {
+      //loop over the array of folders
+      await deleteFolderDependencies(folder); //delete the folder dependencies
+      await Folder.deleteOne({ _id: folder._id }); //delete the folder from DB
+      console.log("Deleted folder from trash bin: " + folder._id); //Notify If needed
+    }
 
-    // const notes = await Note.find({
-    //   deleted: true,
-    //   deletedAt: { $lt: fifteenDaysAgo },
-    // });
-    // for (const note of notes) {
-    //   await deleteNoteDependencies(note);
-    //   await Note.deleteOne({ _id: note._id });
-    //   console.log("Deleted note from trash bin: " + note._id); //Notify If needed
-    // }
+    const notes = await Note.find({
+      deleted: true,
+      deletedAt: { $lt: fifteenDaysAgo },
+    });
+    for (const note of notes) {
+      await deleteNoteDependencies(note);
+      await Note.deleteOne({ _id: note._id });
+      console.log("Deleted note from trash bin: " + note._id); //Notify If needed
+    }
   } catch (error) {
     console.error("Error deleting folders from trash bin:", error);
   }
 });
 
 //5.    Function to view Archives
-const viewFolderArchive = async function (req, res) {
+const viewFoldersArchive = async function (req, res) {
   try {
-    const { userId } = req.body;
+    const { userId } = req.params;
     const folders = await Folder.find({
       deleted: false,
       archived: true,
@@ -140,9 +140,9 @@ const viewFolderArchive = async function (req, res) {
   }
 };
 
-const viewNoteArchive = async function (req, res) {
+const viewNotesArchive = async function (req, res) {
   try {
-    const { userId } = req.body;
+    const { userId } = req.params;
     const folders = await Folder.find({
       deleted: false,
       archived: true,
@@ -164,7 +164,7 @@ const viewNoteArchive = async function (req, res) {
 //6.    Function to view Trashbin
 const viewFoldersTrash = async function (req, res) {
   try {
-    const { userId } = req.body;
+    const { userId } = req.params;
     const folders = await Folder.find({ deleted: true, created_by: userId }); //get folders which are deletd
     //IMPORTANT: If a note from a folder gets deletd first and then the folder gets deletd, then the note will automatically move to that folder
     return res.status(200).json({ folders: folders });
@@ -175,7 +175,7 @@ const viewFoldersTrash = async function (req, res) {
 
 const viewNotesTrash = async function (req, res) {
   try {
-    const { userId } = req.body;
+    const { userId } = req.params;
     const folders = await Folder.find({ deleted: true, created_by: userId }); //get folders which are deletd
     const existingfolders = folders.filter((folder) => folder._id.toString());
     const notes = await Note.find({
@@ -236,7 +236,7 @@ const viewAllDocsinTopic = async function (req, res) {
       deleted: false,
       archived: false,
       topic_id: topicId,
-      folder_is: null,
+      folder_id: null,
       created_by: userId,
     }); //get all notes in thic topic whcih are not deleted or archived and also dont exist in any folder
     const showNotes = await sortNotes(notes); //sort the notes
@@ -313,8 +313,8 @@ module.exports = {
   deleteFolderDependencies,
   deleteNoteDependencies,
   deleteNotesInFolder,
-  viewNoteArchive,
-  viewFolderArchive,
+  viewFoldersArchive,
+  viewNotesArchive,
   viewAllDocs,
   viewFoldersTrash,
   viewNotesTrash,

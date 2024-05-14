@@ -86,16 +86,20 @@ function CoursePage1() {
       </NavBar>
       <Platform />
       <div className="coursepage-text">
-        <span id="c-text1">All the best courses in one place</span>
+        <span id="c-text1">
+          Discover endless learning with diverse subjects
+        </span>
         <span id="c-text2">
-          Over 10 crore learners trust us for online and offline coaching.
+          Explore a world of knowledge across all subjects, tailored for every
+          learner.
         </span>
       </div>
       <Topic toggleSignupModal={toggleSignupModal} />
       <div className="coursepage-text">
         <span id="c-text1">All the best courses in one place</span>
         <span id="c-text2">
-          Over 10 crore learners trust us for online and offline coaching.
+          Unlock your potential with thousands of courses from top platforms,
+          trusted by millions.
         </span>
       </div>
       <CourseDest />

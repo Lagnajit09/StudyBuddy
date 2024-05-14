@@ -247,11 +247,15 @@ exports.moveToTopic = async (req, res) => {
         if (existingFolders.length > 0) {
           //If match exists
           return res.status(400).json({
-            message: "Note with the same name already exists in the topic",
+            message: "Folder with the same name already exists in the topic",
           });
         }
 
         topic.folders.push(folderId); //push folderid to the topic's folders array
+        folder.topic_id = topicId;
+        await folder.save();
+        await topic.save();
+
         const notes = await Note.find({ _id: { $in: folder.notes } }); //Find notes in the folder
         for (const note of notes) {
           //For all the notes in the folder

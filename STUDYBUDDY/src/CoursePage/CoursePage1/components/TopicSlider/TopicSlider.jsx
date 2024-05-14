@@ -31,11 +31,9 @@ const TopicSlider = (props) => {
         width: "89.3%",
         margin: "0 auto",
       },
-
       courseCap: {
         margin: "33px 0 20px 68px",
       },
-
       prevSlideButton: {
         top: "48%",
         left: "4%",
@@ -92,7 +90,7 @@ const TopicSlider = (props) => {
         </div>
         <button
           onClick={prevSlide}
-          className="prevSlideButton"
+          className="cp1-prevSlideButton"
           disabled={currentIndex >= 8 ? true : false}
           style={style.prevSlideButton}
         >
@@ -100,7 +98,7 @@ const TopicSlider = (props) => {
         </button>
         <button
           onClick={nextSlide}
-          className="nextSlideButton"
+          className="cp1-nextSlideButton"
           style={style.nextSlideButton}
         >
           <KeyboardArrowRightRoundedIcon style={{ fontSize: "40" }} />

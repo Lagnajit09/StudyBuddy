@@ -13,6 +13,7 @@ import {
   newCommunityMsgAtom,
 } from "../../../../store//chatroomStore/communityStore";
 import { BASE_URL } from "../../../../config";
+import { FaCheck } from "react-icons/fa6";
 
 const CommunityInput = (props) => {
   const sender = useRecoilValue(authUserAtom);

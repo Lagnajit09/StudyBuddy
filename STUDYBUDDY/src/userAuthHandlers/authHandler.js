@@ -168,3 +168,12 @@ export const deleteAccountHandler = async (
     console.log("Failed to delete: " + error);
   }
 };
+
+export const googleAuthenticate = async () => {
+  // try {
+  //   // Redirect the user to OAuth provider (Google) from your React client app
+  //   window.location.href = `${BASE_URL}/auth/google`; // Replace with your server URL
+  // } catch (error) {
+  //   console.error("Login error:", error);
+  // }
+};

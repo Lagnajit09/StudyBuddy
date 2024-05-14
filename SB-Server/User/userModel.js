@@ -6,6 +6,12 @@ const jwt = require("jsonwebtoken");
 const Topic = require(".././Topic/topicModel");
 
 const Schema = mongoose.Schema;
+
+// const federatedCredentialsSchema = new mongoose.Schema({
+//   provider: { type: String, required: true, default: null },
+//   subject: { type: String, required: true, unique: true, default: null },
+// });
+
 //User Model Schema
 const userSchema = new mongoose.Schema({
   firstname: {

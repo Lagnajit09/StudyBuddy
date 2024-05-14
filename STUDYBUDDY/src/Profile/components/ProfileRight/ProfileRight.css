@@ -121,31 +121,21 @@
   cursor: pointer;
 }
 
-.schedule-item1,
-.schedule-item2 {
+.schedule-item {
   display: flex;
   align-items: center;
+  justify-content: space-evenly;
   width: 88%;
   border-radius: 15px;
   gap: 20px;
   padding: 4% 2% 4% 3%;
 }
 
-.schedule-item1 {
-  background: rgb(99, 180, 184);
+.schedule-item {
   background: linear-gradient(
     90deg,
     rgba(99, 180, 184, 1) 35%,
     rgba(213, 247, 249, 1) 100%
-  );
-}
-
-.schedule-item2 {
-  background: rgb(161, 151, 252);
-  background: linear-gradient(
-    90deg,
-    rgba(161, 151, 252, 1) 35%,
-    rgba(234, 233, 250, 1) 100%
   );
 }
 
@@ -189,10 +179,10 @@
 
 .arrow {
   display: flex;
-  height: 70%;
-  width: 9%;
+  height: 25px;
+  width: 25px;
   cursor: pointer;
-  border-radius: 20px;
+  border-radius: 50%;
   background-color: #ffffff;
 }
 

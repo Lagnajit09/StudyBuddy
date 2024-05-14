@@ -16,6 +16,8 @@ import Profile from "./Profile/Profile";
 import Settings from "./Profile/Settings/Settings";
 import HelpCenter from "./Profile/HelpCenter/HelpCenter";
 import Chatroom from "./Chatroom/Chatroom";
+import Note from "./Note/Note";
+import TipTap from "./Note/components/Editor/TipTap";
 import { BASE_URL } from "./config";
 
 const App = () => {
@@ -54,6 +56,19 @@ const App = () => {
       <Route path="/chatroom/chat/:userId" element={<Chatroom />} />
       <Route path="/chatroom/community" element={<Chatroom />} />
       <Route path="/chatroom/community/:id" element={<Chatroom />} />
+
+      {/* NOTE ROUTES */}
+      <Route path="/note" element={<Note />}></Route>
+      <Route path="/note/folders" element={<Note />}></Route>
+      <Route path="/note/notes" element={<Note />}></Route>
+      <Route path="/note/:folderid" element={<Note />}></Route>
+      <Route path="/note/new" element={<TipTap />}></Route>
+      <Route path="/note/content/:noteid" element={<TipTap />}></Route>
+      <Route path="/note/trash/folder" element={<Note />}></Route>
+      <Route path="/note/trash/note" element={<Note />}></Route>
+      <Route path="/note/archive/folder" element={<Note />}></Route>
+      <Route path="/note/archive/note" element={<Note />}></Route>
+      <Route path="/note/topic/:topicid" element={<Note />}></Route>
     </Routes>
   );
 };

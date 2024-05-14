@@ -14,10 +14,10 @@
 }
 
 .slider2Container {
-  height: 260px;
+  height: 346px;
   width: 83.5%;
   overflow: hidden;
-  margin: 0 auto 50px;
+  margin: 0 auto 100px;
 }
 
 .slider2Wrapper {
@@ -32,12 +32,12 @@
   width: 100vw;
   height: 100%;
   display: flex;
-  justify-content: first baseline;
+  justify-content:first baseline;
   gap: 38.5px;
 }
 
-.prevSlideButton,
-.nextSlideButton {
+.cp2-prevSlideButton,
+.cp2-nextSlideButton {
   position: absolute;
   top: 37%;
   height: 40px;
@@ -53,15 +53,15 @@
   cursor: pointer;
 }
 
-.prevSlideButton {
-  left: 7%;
+.cp2-prevSlideButton {
+  left: 7.3%;
 }
 
-.nextSlideButton {
-  right: 7.5%;
+.cp2-nextSlideButton {
+  right: 7.3%;
 }
 
-.prevSlideButton:hover,
-.nextSlideButton:hover {
+.cp2-prevSlideButton:hover,
+.cp2-nextSlideButton:hover {
   background-color: #006ea4;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import "./HelpcenterMiddle.css";
 import clock from "../../../assets/Profile-Icons/ProfileMiddleIcon/ClockIcon.svg";
@@ -14,13 +14,15 @@ import {
 } from "../../../store/profileStore/profileStore";
 import ProfileRight from "../../../Profile/components/ProfileRight/ProfileRight";
 import HSearch from "../../../assets/Profile-Icons/HelpCenterIcon/HelpSearchIcon.svg";
-import { getCurrentDate, defDateHandler } from "../../helperfunction";
+import { createEvent } from "../../components/ProfileMiddle/component/createEvent";
 
 const HelpcenterMiddle = () => {
   const [clicked, setClicked] = useRecoilState(openCalendarAtom);
   const [openRight, setOpenRight] = useRecoilState(openCalendarEvent);
   const [showForm, setShowForm] = useRecoilState(openAddEvent);
   const [selectedDate, setSelectedDate] = useRecoilState(defDate);
+  const [title, setTitle] = useState("");
+  const [noti, setNoti] = useState(false);
   const [inputStartTime, setInputStartTime] = useRecoilState(defSTime);
   const [inputEndTime, setInputEndTime] = useRecoilState(defETime);
   console.log(showForm);
@@ -61,20 +63,22 @@ const HelpcenterMiddle = () => {
                   type="text"
                   placeholder="Add Title"
                   className="addTitle"
+                  value={title}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                  }}
                 />
                 <div className="time-div">
                   <img src={clock} style={{ cursor: "pointer" }} />
-
-                  <label htmlFor="eventdate" id="def-date">
-                    {getCurrentDate()}
-                  </label>
-
                   <input
                     type="date"
                     id="eventdate"
-                    onClick={() => {
-                      console.log("first");
-                      defDateHandler(event);
+                    value={selectedDate}
+                    onChange={(event) => {
+                      setSelectedDate(event.target.value);
+                      console.log(event.target.value);
+                      // setSelectedDate(!selectedDate);
+                      // defDateHandler(event,"def-date","eventdate",selectedDate);
                     }}
                   />
 
@@ -87,11 +91,10 @@ const HelpcenterMiddle = () => {
                     // }}
                     onChange={(event) => {
                       setInputStartTime(event.target.value);
+                      console.log(event.target.value);
                     }}
                     className="starttime-input"
                   />
-
-                  {/* <div className="starttime-dropdown"></div> */}
 
                   <input
                     type="time"
@@ -105,8 +108,6 @@ const HelpcenterMiddle = () => {
                     }}
                     className="endtime-input"
                   />
-
-                  {/* <div className="endtime-dropdown"></div> */}
                 </div>
                 <div className="checkbox-div">
                   <input
@@ -128,12 +129,26 @@ const HelpcenterMiddle = () => {
                 </div>
                 <div className="add-noti">
                   <img src={bellIcon} style={{ cursor: "pointer" }} />
-                  <span className="add-noti-span">Add Notification</span>
+                  <span
+                    className="add-noti-span"
+                    onClick={() => {
+                      setNoti(!noti);
+                    }}
+                  >
+                    {noti ? "Added" : "Add Notification"}
+                  </span>
                 </div>
                 <div className="save-btn">
                   <button
                     onClick={() => {
                       setShowForm(!showForm);
+                      createEvent(
+                        title,
+                        selectedDate,
+                        inputStartTime,
+                        inputEndTime,
+                        noti
+                      );
                     }}
                   >
                     Save

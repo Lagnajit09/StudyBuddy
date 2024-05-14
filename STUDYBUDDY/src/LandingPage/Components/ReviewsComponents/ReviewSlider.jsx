@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from "react";
 
 function ReviewSlider({ slides }) {
   const sliderTrackRef = useRef(null);
@@ -23,13 +23,13 @@ function ReviewSlider({ slides }) {
   }, [slides]);
 
   return (
-    <div className="slider-container">
+    <div className="slider-container-review">
       <div
         className="slider-track"
         ref={sliderTrackRef}
         style={{
           transform: `translateX(${position}px)`,
-          transition: 'transform 0.5s ease-in-out',
+          transition: "transform 0.5s ease-in-out",
           width: `${slides.length * 100}%`, // Adjust width to accommodate all slides
         }}
       >

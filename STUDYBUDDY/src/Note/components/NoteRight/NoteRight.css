@@ -1,0 +1,7 @@
+.noteRight {
+  width: 83.5%;
+  /* height: 100%; */
+  display: flex;
+  flex-direction: column;
+  background-color: #F7F8FC;
+}

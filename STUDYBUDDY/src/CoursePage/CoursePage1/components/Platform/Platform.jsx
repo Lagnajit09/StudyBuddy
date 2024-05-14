@@ -24,7 +24,7 @@ const Platform = () => {
     );
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
     }, 5000);

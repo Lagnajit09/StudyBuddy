@@ -7,19 +7,23 @@ const eventSchema = new mongoose.Schema({
     required: true,
   },
   date: {
-    type: Date,
+    type: String,
+    required: true,
     default: Date.now,
   },
   start: {
-    type: Date,
+    type: String,
+    required: true,
     default: Date.now,
   },
   end: {
-    type: Date,
+    type: String,
+    required: true,
     default: Date.now,
   },
   userId: {
     type: Schema.Types.ObjectId,
+    required: true,
     ref: "User",
   },
 });

@@ -4,20 +4,22 @@ export const openCalendarAtom = atom({
   default: false,
 });
 
-// export const PrStyle = atom({
-//   key: "PrStyle",
-//   default: false,
-// });
+function getCurrentDate() {
+  const now = new Date(); // Get the current date and time
+  // Extract day, month, and year from the current date
+  const day = now.getDate();
+  const month = now.getMonth() + 1; // Months are zero-based, so add 1
+  const year = now.getFullYear();
+  // Format the day and month as 2-digit strings (e.g., '02' instead of '2')
+  const formattedDay = String(day).padStart(2, "0");
+  const formattedMonth = String(month).padStart(2, "0");
+  // Combine the formatted day, month, and year into a date string
+  const currentDate = `${year}-${formattedMonth}-${formattedDay}`;
+  // Return the current date
+  return currentDate;
+}
 
-// export const SetStyle = atom({
-//   key: "SetStyle",
-//   default: false,
-// });
-
-// export const HeStyle = atom({
-//   key: "HeStyle",
-//   default: false,
-// });
+var d = getCurrentDate();
 
 export const openAddEvent = atom({
   key: "openAddEvent",
@@ -31,7 +33,7 @@ export const openCalendarEvent = atom({
 
 export const defDate = atom({
   key: "defDate",
-  default: false,
+  default: d,
 });
 
 export const defSTime = atom({
@@ -81,5 +83,10 @@ export const userCoursesAtom = atom({
 
 export const recommendedCoursesAtom = atom({
   key: "recommendedCoursesAtom",
+  default: [],
+});
+
+export const userEventsAtom = atom({
+  key: "userEventsAtom",
   default: [],
 });

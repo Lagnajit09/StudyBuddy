@@ -124,7 +124,7 @@ profileRouter.delete("/delete", middleware.authenticate, async (req, res) => {
 });
 
 profileRouter.post("/new-event", async (req, res) => {
-  const { title, start, end, date, userId } = req.body;
+  const { title, start, end, date, notif, userId } = req.body;
 
   try {
     const user = await User.findOne({ _id: userId });
@@ -142,12 +142,14 @@ profileRouter.post("/new-event", async (req, res) => {
       userId,
     });
 
-    const response = await sendMail(user.email, user.username, {
-      title,
-      date,
-      start,
-      end,
-    });
+    if (notif) {
+      const response = await sendMail(user.email, user.username, {
+        title,
+        date,
+        start,
+        end,
+      });
+    }
 
     res.json({
       message: "Event created successfully!",
@@ -156,8 +158,26 @@ profileRouter.post("/new-event", async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Internal server error",
+      error,
     });
   }
 });
+
+profileRouter.get(
+  "/events/:userId",
+  middleware.authenticate,
+  async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+      const events = await Event.find({ userId });
+      res.json({ events });
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal server error!",
+      });
+    }
+  }
+);
 
 module.exports = profileRouter;

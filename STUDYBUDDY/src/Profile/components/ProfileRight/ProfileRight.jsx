@@ -3,21 +3,34 @@ import OpenCloseIcon from "../../../assets/Profile-Icons/ProfileRightIcon/OpenCl
 import AddIcon from "@mui/icons-material/Add";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SearchIcon from "@mui/icons-material/Search";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MyCalender from "./components/Calendar/MyCalender";
 import Bio from "../../../assets/Profile-Icons/ProfileRightIcon/Biology.svg";
 import Chem from "../../../assets/Profile-Icons/ProfileRightIcon/Chemistry.svg";
 import Arrow from "../../../assets/Profile-Icons/ProfileRightIcon/arrow.svg";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   openCalendarAtom,
   openAddEvent,
+  userEventsAtom,
 } from "../../../store/profileStore/profileStore";
+import { authUserAtom } from "../../../store/authAtom";
+import { BASE_URL } from "../../../config";
+
+const eventColors = [
+  "linear-gradient(90deg,rgba(99, 180, 184, 1) 35%,rgba(213, 247, 249, 1) 100%)",
+  "linear-gradient(90deg, rgba(161,151,252,1) 35%, rgba(255,255,255,1) 100%)",
+  "linear-gradient(90deg, rgba(255,210,143,1) 35%, rgba(255,255,255,1) 100%)",
+  "linear-gradient(90deg, rgba(231,136,149,1) 35%, rgba(255,255,255,1) 100%)",
+  "linear-gradient(90deg, rgba(57,184,212,1) 35%, rgba(255,255,255,1) 100%)",
+  "linear-gradient(90deg, rgba(121,178,217,1) 35%, rgba(255,255,255,1) 100%)",
+];
 
 const ProfileRight = (props) => {
+  const authUser = useRecoilValue(authUserAtom);
+  const [userEvents, setUserEvents] = useRecoilState(userEventsAtom);
   const [clicked, setClicked] = useRecoilState(openCalendarAtom);
   const [scheduleList, setScheduleList] = useState(false);
-  // const [notificationList, setNotificationList] = useState(false);
   const [searchBar, setSearchBar] = useState(false);
   const [showForm, setShowForm] = useRecoilState(openAddEvent);
 
@@ -32,45 +45,6 @@ const ProfileRight = (props) => {
         .classList.remove("modi-calender-div");
     }
   }, [scheduleList]);
-
-  //   useEffect(() => {
-  //     if (notificationList) {
-  //       document
-  //         .getElementsByClassName("calender-div")[0]
-  //         .classList.add("modi-calender-div");
-  //       document
-  //         .getElementsByClassName("schedule-list")[0]
-  //         .classList.add("modi-calender-div");
-  //       document
-  //         .getElementsByClassName("more-schedule")[0]
-  //         .classList.add("modi-calender-div");
-  //       document
-  //         .getElementsByClassName("m-schedule-span")[0]
-  //         .classList.add("modi-calender-div");
-  // console.log(document.getElementsByClassName("schedule-span")[0].innerHTML)
-  //       // document.getElementsByClassName("schedule-span")[0].textContent =
-  //       //   {<img src='/src/assets/Icons/ProfileRightIcon/arrow.svg' class='s-arrow' style='display: block;'>}Notification;
-  //       // document.getElementsByClassName("schedule-span")[0].innerHTML =
-  //       // "<img src='/src/assets/Icons/ProfileRightIcon/arrow.svg' class='s-arrow' style='display: block;'>Notification";
-  //     } else {
-  //       document
-  //         .getElementsByClassName("calender-div")[0]
-  //         .classList.remove("modi-calender-div");
-  //       document
-  //         .getElementsByClassName("schedule-list")[0]
-  //         .classList.remove("modi-calender-div");
-  //       document
-  //         .getElementsByClassName("more-schedule")[0]
-  //         .classList.remove("modi-calender-div");
-  //       document
-  //         .getElementsByClassName("m-schedule-span")[0]
-  //         .classList.remove("modi-calender-div");
-  //       // document.getElementsByClassName("schedule-span")[0].textContent =
-  //       //   "<img src='/src/assets/Icons/ProfileRightIcon/arrow.svg' class='s-arrow' style='display: block;'>Schedule";
-  //       // document.getElementsByClassName("schedule-span")[0].innerHTML =
-  //       // "<img src='/src/assets/Icons/ProfileRightIcon/arrow.svg' class='s-arrow' style='display: block;'>Schedule";
-  //     }
-  //   }, [notificationList]);
 
   useEffect(() => {
     if (searchBar) {
@@ -90,6 +64,41 @@ const ProfileRight = (props) => {
         .classList.remove("s-bar-sIcon");
     }
   }, [searchBar, scheduleList]);
+
+  useEffect(() => {
+    const fetchAllEvents = async () => {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+
+      const response = await fetch(`${BASE_URL}/user/events/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.log("Network error!");
+      }
+
+      const data = await response.json();
+
+      setUserEvents(data.events);
+    };
+
+    fetchAllEvents();
+  }, [authUser]);
+
+  // const index = useMemo(() => {
+  //   return Math.floor(Math.random() * 6);
+  // }, []);
+
+  const events = useMemo(() => {
+    if (scheduleList) {
+      return userEvents;
+    } else {
+      return [userEvents[0], userEvents[1]];
+    }
+  }, [scheduleList, userEvents]);
 
   return (
     <div className="profileRight-container">
@@ -121,14 +130,6 @@ const ProfileRight = (props) => {
             style={{ display: searchBar ? "flex" : "none" }}
           />
 
-          {/* <NotificationsNoneIcon
-            className="N-icon-btn"
-            style={{ display: scheduleList || searchBar ? "none" : "block" }}
-            onClick={() => {
-              setNotificationList(!notificationList);
-            }}
-          /> */}
-
           <AddIcon
             className="A-icon-btn"
             style={{ display: scheduleList ? "none" : "block" }}
@@ -142,81 +143,73 @@ const ProfileRight = (props) => {
           <MyCalender />
         </div>
 
-        <div className="schedule-div">
-          <span className="schedule-span">
-            <img
-              src={Arrow}
-              className="s-arrow"
-              onClick={() => {
-                scheduleList && setScheduleList(!scheduleList);
-              }}
-              style={{
-                display: scheduleList ? "block" : "none",
-              }}
-            />
-            Schedule
-          </span>
+        {userEvents.length > 0 && (
+          <div className="schedule-div">
+            <span className="schedule-span">
+              <img
+                src={Arrow}
+                className="s-arrow"
+                onClick={() => {
+                  scheduleList && setScheduleList(!scheduleList);
+                }}
+                style={{
+                  display: scheduleList ? "block" : "none",
+                }}
+              />
+              Schedule
+            </span>
 
-          <div className="schedule-list">
-            <div className="schedule-item1">
-              <img src={Bio} className="topic-icon1" />
-              <div className="schedule-detail">
-                <span className="s-name">Botany Course</span>
-                <span className="s-time">11:00am - 12:00 pm</span>
-              </div>
-              <img className="arrow" src={OpenCloseIcon} />
-            </div>
+            <div className="schedule-list">
+              {events.map((uevent, i) => {
+                return (
+                  <div
+                    className={`schedule-item`}
+                    style={{
+                      background: eventColors[i],
+                    }}
+                  >
+                    <div className="schedule-detail">
+                      <span className="s-name">{uevent.title}</span>
+                      <span className="s-time">{`${uevent.start} - ${uevent.end}`}</span>
+                    </div>
+                    <img className="arrow" src={OpenCloseIcon} />
+                  </div>
+                );
+              })}
 
-            <div className="schedule-item2">
+              {/* <div className="schedule-item2">
               <img src={Chem} className="topic-icon2" />
               <div className="schedule-detail">
                 <span className="s-name">Chemistry Course</span>
                 <span className="s-time">11:00am - 12:00 pm</span>
               </div>
               <img className="arrow" src={OpenCloseIcon} />
+            </div> */}
             </div>
-            {/* {scheduleList && (
-              <>
-                <div className="schedule-item2">
-                  <img src={Chem} className="topic-icon2" />
-                  <div className="schedule-detail">
-                    <span className="s-name">Chemistry Course</span>
-                    <span className="s-time">11:00am - 12:00 pm</span>
-                  </div>
-                  <img className="arrow" src={OpenCloseIcon} />
-                </div>
-                <div className="schedule-item1">
-                  <img src={Bio} className="topic-icon1" />
-                  <div className="schedule-detail">
-                    <span className="s-name">Botany Course</span>
-                    <span className="s-time">11:00am - 12:00 pm</span>
-                  </div>
-                  <img className="arrow" src={OpenCloseIcon} />
-                </div>
-              </>
-            )} */}
           </div>
-        </div>
-        <div
-          className="more-schedule"
-          style={{ display: scheduleList ? "none" : "flex" }}
-        >
-          <span
-            className="m-schedule-span"
-            onClick={() => {
-              setScheduleList(!scheduleList);
-            }}
+        )}
+        {userEvents?.length > 0 && (
+          <div
+            className="more-schedule"
+            style={{ display: scheduleList ? "none" : "flex" }}
           >
-            See More Schedule
-          </span>
-          <img
-            src={Arrow}
-            className="ms-arrow"
-            onClick={() => {
-              setScheduleList(!scheduleList);
-            }}
-          />
-        </div>
+            <span
+              className="m-schedule-span"
+              onClick={() => {
+                setScheduleList(!scheduleList);
+              }}
+            >
+              See All Schedule
+            </span>
+            <img
+              src={Arrow}
+              className="ms-arrow"
+              onClick={() => {
+                setScheduleList(!scheduleList);
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

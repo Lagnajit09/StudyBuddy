@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   width: 83.5%;
-  height: 90.5vh;
+  height: 100%;
   position: relative;
   overflow-x: hidden;
 }
@@ -273,6 +273,7 @@ box-shadow: 1px 1px 4px 0px rgba(0,169,255,0.2);
 
 .ae-overlay {
   background-color: rgba(0, 0, 0, 0.2);
+  top: 0;
 }
 
 .modal-container {
@@ -304,7 +305,6 @@ box-shadow: 1px 1px 4px 0px rgba(0,169,255,0.2);
   border-bottom: rgba(0, 0, 0, 0.39) solid 1px;
   border-radius: 1px;
   outline: none;
-  cursor: pointer;
 }
 
 .time-div {

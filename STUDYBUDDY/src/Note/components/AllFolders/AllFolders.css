@@ -1,0 +1,11 @@
+.all-folders {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 40px auto;
+}
+
+.all-folders .folder {
+  width: 23.5%;
+}

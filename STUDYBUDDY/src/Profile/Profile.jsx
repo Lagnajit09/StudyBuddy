@@ -45,8 +45,6 @@ const Profile = () => {
     fetchUserCourses();
   }, []);
 
-  console.log(userCourses);
-
   return (
     <>
       <NavBar>

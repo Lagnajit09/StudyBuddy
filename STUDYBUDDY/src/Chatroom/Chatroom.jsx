@@ -81,10 +81,28 @@ const Chatroom = () => {
         >
           Study Buddy.
         </h2>
-        <p>Courses</p>
+        <p
+          onClick={() => {
+            navigate("/courses");
+          }}
+        >
+          Courses
+        </p>
         <SearchBar className="searchWidth" placeholder="Search Chat Room" />
-        <p>Chat Room</p>
-        <p>Notes</p>
+        <p
+          onClick={() => {
+            navigate("/chatroom/community");
+          }}
+        >
+          Chat Room
+        </p>
+        <p
+          onClick={() => {
+            navigate("/note");
+          }}
+        >
+          Notes
+        </p>
       </NavBar>
       {openChat && !openCommunity && <Chat />}
       {!openChat && openCommunity && <Community />}

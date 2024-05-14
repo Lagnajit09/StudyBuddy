@@ -14,14 +14,16 @@ import {
   defETime,
   userCoursesAtom,
   recommendedCoursesAtom,
+  userEventsAtom,
 } from "../../../store/profileStore/profileStore";
 import Card from "./component/Card/Card";
 // import { my_course_name } from "./component/content-list";
 import TopicSlider from "./component/ProfileSlider/TopicSlider/TopicSlider";
-import { getCurrentDate, defDateHandler } from "../../helperfunction";
 import { createEvent } from "../ProfileMiddle/component/createEvent.js";
+import { useNavigate } from "react-router-dom";
 
 const ProfileMiddle = () => {
+  const navigate = useNavigate();
   const my_course_name = useRecoilValue(userCoursesAtom);
   const recommendedCourses = useRecoilValue(recommendedCoursesAtom);
   const [openRight, setOpenRight] = useRecoilState(openCalendarEvent);
@@ -29,51 +31,11 @@ const ProfileMiddle = () => {
   const [seeAll, setSeeAll] = useState(false);
   const [selectedDate, setSelectedDate] = useRecoilState(defDate);
   const [clicked, setClicked] = useRecoilState(openCalendarAtom);
-  // const [selectedStartTime, setSelectedStartTime] = useState(false);
-  // const [selectedEndTime, setSelectedEndTime] = useState(false);
   const [inputStartTime, setInputStartTime] = useRecoilState(defSTime);
   const [inputEndTime, setInputEndTime] = useRecoilState(defETime);
-  // (new Date(Date.now()).getHours() == "0"
-  //     ? "00"
-  //     : new Date(Date.now()).getHours()) +
-  //     ":" +
-  //     (new Date(Date.now()).getMinutes() == "0"
-  //       ? "00"
-  //       : new Date(Date.now()).getMinutes() ||
-  //         new Date(Date.now()).getMinutes() < 10
-  //       ? "0" + new Date(Date.now()).getMinutes()
-  //       : new Date(Date.now()).getMinutes())
-  // new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
-  //(new Date(Date.now()).getMinutes()=='0'?"00":new Date(Date.now()).getMinutes() || (new Date(Date.now()).getMinutes()<10?'0'+new Date(Date.now()).getMinutes():new Date(Date.now()).getMinutes()) )
-
-  // const startTimeHandler = () => {
-  //   console.log(selectedStartTime);
-  //   setSelectedStartTime(!selectedStartTime);
-  //   console.log(selectedStartTime);
-  //   if (!selectedStartTime) {
-  //     document.getElementsByClassName("starttime-dropdown")[0].style.display =
-  //       "flex";
-  //     // document.getElementsByClassName("endtime-dropdown")[0].style.display = "none";
-  //   } else {
-  //     document.getElementsByClassName("starttime-dropdown")[0].style.display =
-  //       "none";
-  //     // document.getElementsByClassName("endtime-dropdown")[0].style.display="flex";
-  //   }
-  // };
-
-  // const endTimeHandler = () => {
-  //   setSelectedEndTime(!selectedEndTime);
-  //   if (!selectedEndTime) {
-  //     document.getElementsByClassName("endtime-dropdown")[0].style.display =
-  //       "flex";
-  //     console.log("endTime");
-  //     // document.getElementsByClassName("starttime-dropdown")[0].style.display="none";
-  //   } else {
-  //     document.getElementsByClassName("endtime-dropdown")[0].style.display =
-  //       "none";
-  //     // document.getElementsByClassName("starttime-dropdown")[0].style.display = "flex";
-  //   }
-  // };
+  const [title, setTitle] = useState("");
+  const [noti, setNoti] = useState(false);
+  const [userEvents, setUserEvents] = useRecoilState(userEventsAtom);
 
   const createCard = (index) => (
     <Card
@@ -97,78 +59,6 @@ const ProfileMiddle = () => {
     newArr.push(row);
   }
 
-  // const getCurrentTime = () => {
-  //   console.log("fu start");
-  //   const now = new Date(); // Get the current date and time
-
-  //   // Extract hours and minutes from the current date and time
-  //   const hours = now.getHours();
-  //   const minutes = now.getMinutes();
-
-  //   // Format the hours and minutes into a 2-digit format (e.g., '02' instead of '2')
-  //   const formattedHours = String(hours).padStart(2, "0");
-  //   const formattedMinutes = String(minutes).padStart(2, "0");
-
-  //   // Combine the formatted hours and minutes into a time string
-  //   const currentTime = `${formattedHours}:${formattedMinutes}`;
-  //   console.log("fu end");
-  //   // Return the current time
-  //   return currentTime;
-  // };
-
-  // function generateTimeOptions(targetclass) {
-  //   const selectElement = document.getElementsByClassName(targetclass)[0];
-  //   selectElement.innerHTML = "";
-  //   console.log("fu");
-  //   // Start time is 00:00
-  //   let hours = 0;
-  //   let minutes = 0;
-
-  //   // Step in minutes (30 minutes)
-  //   const step = 30;
-
-  //   while (hours < 24) {
-  //     // Format hours and minutes into HH:MM format
-  //     const formattedHours = String(hours).padStart(2, "0");
-  //     const formattedMinutes = String(minutes).padStart(2, "0");
-  //     const timeString = `${formattedHours}:${formattedMinutes}`;
-
-  //     // Create an option element
-  //     const option = document.createElement("span");
-  //     option.value = timeString;
-  //     option.textContent = timeString;
-  //     option.className = "time-option";
-  //     option.onclick = () => {
-  //       getTimeVal(option.innerHTML, targetclass);
-  //     };
-
-  //     // Add the option to the select element
-  //     selectElement.appendChild(option);
-
-  //     // Increment time by 30 minutes
-  //     minutes += step;
-
-  //     // If minutes reach 60, increment the hours and reset minutes
-  //     if (minutes >= 60) {
-  //       minutes = 0;
-  //       hours++;
-  //     }
-  //   }
-  //   return;
-  // }
-
-  // const getTimeVal = (val, tClass) => {
-  //   if (tClass == "starttime-dropdown") {
-  //     setInputStartTime(val);
-  //     document.getElementsByClassName("starttime-dropdown")[0].style.display =
-  //       "none";
-  //   } else {
-  //     setInputEndTime(val);
-  //     document.getElementsByClassName("endtime-dropdown")[0].style.display =
-  //       "none";
-  //   }
-  // };
-
   return (
     <>
       <div className="profile-middle">
@@ -179,6 +69,16 @@ const ProfileMiddle = () => {
           <div className="pm-top">
             <span className="pm-top-span">
               My courses
+              {my_course_name.length == 0 && (
+                <div
+                  className="no-courses"
+                  onClick={() => {
+                    navigate("/courses");
+                  }}
+                >
+                  <span className="no-courses-span">Discover Courses!</span>
+                </div>
+              )}
               {my_course_name.length > 4 && (
                 <button
                   className="seeAll-btn"
@@ -230,20 +130,22 @@ const ProfileMiddle = () => {
                   type="text"
                   placeholder="Add Title"
                   className="addTitle"
+                  value={title}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                  }}
                 />
                 <div className="time-div">
                   <img src={clock} style={{ cursor: "pointer" }} />
-
-                  <label htmlFor="eventdate" id="def-date">
-                    {getCurrentDate()}
-                  </label>
-
                   <input
                     type="date"
                     id="eventdate"
-                    onClick={(event) => {
-                      console.log("first");
-                      defDateHandler(event);
+                    value={selectedDate}
+                    onChange={(event) => {
+                      setSelectedDate(event.target.value);
+                      console.log(event.target.value);
+                      // setSelectedDate(!selectedDate);
+                      // defDateHandler(event,"def-date","eventdate",selectedDate);
                     }}
                   />
 
@@ -256,6 +158,7 @@ const ProfileMiddle = () => {
                     // }}
                     onChange={(event) => {
                       setInputStartTime(event.target.value);
+                      console.log(event.target.value);
                     }}
                     className="starttime-input"
                   />
@@ -293,19 +196,28 @@ const ProfileMiddle = () => {
                 </div>
                 <div className="add-noti">
                   <img src={bellIcon} style={{ cursor: "pointer" }} />
-                  <span className="add-noti-span">Add Notification</span>
+                  <span
+                    className="add-noti-span"
+                    onClick={() => {
+                      setNoti(!noti);
+                    }}
+                  >
+                    {noti ? "Added" : "Add Notification"}
+                  </span>
                 </div>
                 <div className="save-btn">
                   <button
                     onClick={() => {
                       setShowForm(!showForm);
-                      createEvent({
-                        title: "Kichi gote",
-                        date: "2022-05-10",
-                        start: "10:00",
-                        end: "12:00",
-                        user: "robin007hill@gmail.com",
-                      });
+                      createEvent(
+                        title,
+                        selectedDate,
+                        inputStartTime,
+                        inputEndTime,
+                        noti,
+                        userEvents,
+                        setUserEvents
+                      );
                     }}
                   >
                     Save

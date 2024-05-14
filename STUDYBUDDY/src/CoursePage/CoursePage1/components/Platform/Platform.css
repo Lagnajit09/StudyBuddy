@@ -41,12 +41,10 @@
 }
 
 .next-button {
-  right: 130.5px;
+  right: 137px;
 }
 
 .prev-button:hover,
 .next-button:hover {
   background-color: #006ea4;
 }
-
-

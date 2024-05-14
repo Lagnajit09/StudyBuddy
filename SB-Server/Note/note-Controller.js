@@ -225,7 +225,7 @@ exports.deleteNote = async (req, res) => {
       await note.save();
     }
     return res.status(200).json({
-      message: "Note deleted and added to thrashbin",
+      message: "Note deleted and added to trashbin",
     });
   } catch (error) {
     console.error(error);
@@ -404,7 +404,7 @@ exports.moveToTopic = async (req, res) => {
     } else {
       const topic = await Topic.findById(topicId); //find the topic
       if (!topic) {
-        return res.status(405).json({ message: "Topic not found" });
+        return res.status(404).json({ message: "Topic not found" });
       } else {
         const existingNotes = await Note.find(
           {

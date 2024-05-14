@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   width: 83.5%;
-  height: 90.5vh;
+  height: 100%;
   position: relative;
   overflow-x: hidden;
 }
@@ -42,12 +42,10 @@
   height: 90.5vh;
 }
 
-.ae-overlay{
-  min-height: 100vh;
-}
-
 .ae-overlay {
   background-color: rgba(0, 0, 0, 0.2);
+  height: 100vh !important;
+  top: 0;
 }
 
 .modal-container {
@@ -56,7 +54,7 @@
   top: 15%;
   width: 35%;
   height: 65%;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -79,7 +77,6 @@
   border-bottom: rgba(0, 0, 0, 0.39) solid 1px;
   border-radius: 1px;
   outline: none;
-  cursor: pointer;
 }
 
 .time-div {
@@ -98,15 +95,15 @@
   cursor: pointer;
 }
 
-#def-date {
+/* #def-date {
   display: flex;
   position: absolute;
   z-index: 3;
   left: 16% !important;
-  padding: 0 1% 0 1.5%;
+  padding: 0.5% 2% 0.5% 2% !important;
   font-size: 14px;
   background-color: #ffffff;
-}
+} */
 
 .starttime-input, 
 .endtime-input {
@@ -271,9 +268,12 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .pm-top-span {
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   width: 85%;
   font-size: 24px;
   padding: 1% 0 2% 0;
+  background-color: none;
+  margin-top: 1%;
 }
 
 .seeAll-btn {
@@ -282,11 +282,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   border: none;
   outline: none;
   border-radius: 5px;
-  margin-right: 13.2%;
+  margin-right: 13%;
   font-size: 14px;
   padding: 0 1.5%;
   cursor: pointer;
   transform: translateY(40%);
+}
+
+.no-courses{
+  display: flex;
+  width: 227px;
+  height: 190px;  
+  align-items: center;
+  border: black 1px  dashed;
+  border-radius: 20px;
+  margin-top: 2%;
+}
+
+.no-courses-span{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  cursor: pointer;
+  font-size: 18px;
 }
 
 .card-list {

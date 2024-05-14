@@ -9,6 +9,7 @@ import {
 } from "../../../../store/chatroomStore/communityStore";
 import { RiEdit2Line } from "react-icons/ri";
 import { BASE_URL } from "../../../../config";
+import { FaCheck } from "react-icons/fa6";
 
 const community_colors = [
   "#63B4B8",
@@ -167,7 +168,7 @@ const NewCommunity = (props) => {
           }
           disabled={!communityName || !communityDesc ? true : false}
         >
-          <FaArrowLeft
+          <FaCheck
             style={{
               backgroundColor: "white",
               borderRadius: "50%",

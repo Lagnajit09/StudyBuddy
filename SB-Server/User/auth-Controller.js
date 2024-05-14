@@ -49,6 +49,8 @@ exports.login = async (req, res) => {
     const { email, password } = req.body; //get data from the login page
     const userExist = await User.findOne({ email }); //check if user already esist in DB
 
+    console.log(userExist);
+
     if (!userExist) {
       //if doesnt exist
       return res.status(404).json("Email doesn't exist!"); //email id not found
