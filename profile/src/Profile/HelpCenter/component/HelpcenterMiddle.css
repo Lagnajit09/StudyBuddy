@@ -1,0 +1,257 @@
+.helpcentermiddle{
+    display: flex;
+    align-items: center;
+    width: 83.5vw;
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  .helpcenterMiddle-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: #fbfcfe;
+  }
+
+  .helpcenter-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hc-span1{
+    font-size: 42px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5%;
+  }
+
+  .hc-span2{
+    font-size: 18px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 7%;
+  }
+
+  .hc-span3{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:rgba(238, 239, 241, 1);
+    width: 40%;
+    padding: 1.5% 4%;
+    border-radius: 30px;
+    
+    margin-bottom: 8%;
+  }
+
+  .h-search{
+    border: none;
+    outline: none;
+    background-color: transparent;
+    width: 90%;
+    height: 100%;
+  }
+
+  .h-search-icon{
+    height: 70%;
+    cursor: pointer;
+  }
+
+  .helpcenter-bottom{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .helpcenterMiddle-extra{
+    display: flex;
+    width: 24%;
+    height: 100%;
+    background: rgb(231, 241, 251);
+    background: linear-gradient(
+      90deg,
+      rgba(231, 241, 251, 0.8) 35%,
+      rgba(255, 255, 255, 0.8) 100%
+    );
+    position: fixed;
+    right: -24%;
+    z-index: 1;
+    transition: all 0.6s ease;
+  }
+
+  
+.Add-Event-modal,
+.ae-overlay {
+  display: flex;
+  position: fixed;
+  /* top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0; */
+  width: 83.5%;
+  height: 90.5vh;
+}
+
+.ae-overlay {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.modal-container {
+  position: relative;
+  left: 20%;
+  top: 15%;
+  width: 35%;
+  height: 65%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  transition: all 0.45s ease;
+}
+
+.ae-modal-content {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 80%;
+  height: 100%;
+}
+
+.addTitle {
+  width: 100%;
+  border: none;
+  border-bottom: rgba(0, 0, 0, 0.39) solid 1px;
+  border-radius: 1px;
+  outline: none;
+  cursor: pointer;
+}
+
+.time-div {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  outline: none;
+}
+
+#eventdate {
+  width: 33%;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+#def-date {
+  display: flex;
+  position: absolute;
+  z-index: 3;
+  left: 17%;
+  padding: 0 1% 0 1.5%;
+  font-size: 14px;
+  background-color: #ffffff;
+}
+
+.starttime-input, 
+.endtime-input {
+    /* width: 20.8%; */
+    border: none;
+    outline: none;
+    cursor: pointer;
+    
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  /* Hide the picker */
+  opacity: 0;
+  /* color: #00a9ff; */
+  
+}
+
+.checkbox-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+#check-i {
+  cursor: pointer;
+}
+
+.checkbox-span {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.select-event {
+  display: flex;
+  align-items: center;
+  padding: 2.5%;
+  margin-left: 10%;
+  background-color: rgba(0, 0, 0, 0.075);
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  color: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
+
+.add-course,
+.add-noti {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 14px;
+  height: 10%;
+  width: 100%;
+}
+
+.add-course-span {
+  font-size: 14px;
+  color: white;
+  background-color: #00a9ff;
+  padding: 2%;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.add-noti-span {
+  font-size: 14px;
+  padding: 2%;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.075);
+  color: rgba(0, 0, 0, 0.8);
+  border-radius: 2px;
+}
+
+.save-btn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.save-btn button {
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  background-color: #00a9ff;
+  padding: 2% 7%;
+  color: white;
+  cursor: pointer;
+}
+
+.addTitle:placeholder-shown {
+  font-size: 18px;
+}

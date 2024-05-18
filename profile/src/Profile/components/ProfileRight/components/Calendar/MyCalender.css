@@ -1,0 +1,57 @@
+
+.custom-calendar .rbc-month-row,
+.custom-calendar .rbc-header,
+.custom-calendar .rbc-day-bg,
+.custom-calendar .rbc-date-cell {
+  border: none; 
+}
+
+.rbc-off-range-bg {
+    background-color: #ffffff;
+}
+
+.custom-calendar .rbc-month-view{
+    border:none;
+    overflow: hidden;
+}
+
+.custom-calendar .rbc-month-row{
+    justify-content: center;
+}
+
+.rbc-month-header {
+  margin-bottom: 3px;
+}
+
+.custom-calendar .rbc-date-cell {
+  text-align: center; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-calendar .rbc-date-cell * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.calender-btn{
+  cursor: pointer;
+} 
+
+.rbc-button-link  {
+  display: flex;
+  margin-left: 20% ;
+}
+
+.custom-calendar .rbc-today {
+  background-color: #00A9FF; 
+  font-weight: bold; /* Make the date bold */
+  border-radius: 50%; /* Add border radius for rounded corners */  
+  flex: 1 0 0%;
+  height: 35px;
+  margin-top: 1%;
+  width: 10px;
+  -webkit-box-flex: 1;
+}
+
