@@ -96,7 +96,9 @@ const ProfileRight = (props) => {
     if (scheduleList) {
       return userEvents;
     } else {
-      return [userEvents[0], userEvents[1]];
+      if (userEvents.length > 2) {
+        return [userEvents[0], userEvents[1]];
+      } else return userEvents;
     }
   }, [scheduleList, userEvents]);
 
@@ -169,8 +171,8 @@ const ProfileRight = (props) => {
                     }}
                   >
                     <div className="schedule-detail">
-                      <span className="s-name">{uevent.title}</span>
-                      <span className="s-time">{`${uevent.start} - ${uevent.end}`}</span>
+                      <span className="s-name">{uevent?.title}</span>
+                      <span className="s-time">{`${uevent?.start} - ${uevent?.end}`}</span>
                     </div>
                     <img className="arrow" src={OpenCloseIcon} />
                   </div>

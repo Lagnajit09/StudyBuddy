@@ -5,22 +5,22 @@ import { useNavigate } from "react-router-dom";
 
 const communities = [
   {
-    id: "",
+    id: "6643bb927d750cf9737806a6",
     name: "Developers Villa",
     color: "#A197FC",
   },
   {
-    id: "",
+    id: "6643bc877d750cf9737806df",
     name: "Physics Why?",
     color: "#63B4B8",
   },
   {
-    id: "",
+    id: "664438bed6206b837e551fb4",
     name: "Chemical Lords",
     color: "#FFD28F",
   },
   {
-    id: "",
+    id: "66443884d6206b837e551fa6",
     name: "Maths mafia!",
     color: "#E78895",
   },

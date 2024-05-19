@@ -22,7 +22,7 @@ const Note = () => {
   }
 
   return (
-    <>
+    <div style={{ backgroundColor: "#F7F8FC" }}>
       <NavBar>
         <h2
           onClick={() => {
@@ -59,7 +59,7 @@ const Note = () => {
         <NoteLeft />
         <NoteRight />
       </div>
-    </>
+    </div>
   );
 };
 
