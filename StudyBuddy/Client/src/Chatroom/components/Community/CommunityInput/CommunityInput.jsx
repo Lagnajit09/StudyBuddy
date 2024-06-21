@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./CommunityInput.css";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { authUserAtom } from "../../../../store/authAtom";
-import socket from "../../../../store/chatroomStore/socket";
 import EmojiPicker from "emoji-picker-react";
 import smileyEmoji from "../../../../assets/chatroom_imgs/emojiPicker.svg";
 import attachment from "../../../../assets/chatroom_imgs/attachment.svg";
@@ -12,14 +11,14 @@ import {
   joinedCommunitiesAtom,
   newCommunityMsgAtom,
 } from "../../../../store//chatroomStore/communityStore";
-import { BASE_URL } from "../../../../config";
-import { FaCheck } from "react-icons/fa6";
+import { collection, query, where, orderBy, onSnapshot, addDoc } from 'firebase/firestore';
+import { db } from "../../../../firebase";
+
 
 const CommunityInput = (props) => {
   const sender = useRecoilValue(authUserAtom);
   const currentCommunity = useRecoilValue(currentCommunityAtom);
-  const [newCommunityMessages, setNewCommunityMessages] =
-    useRecoilState(newCommunityMsgAtom);
+  const setNewCommunityMessages = useSetRecoilState(newCommunityMsgAtom);
   const [joinedCommunities, setJoinedCommunities] = useRecoilState(
     joinedCommunitiesAtom
   );
@@ -28,18 +27,6 @@ const CommunityInput = (props) => {
   const [sendClicked, setSendClicked] = useState(false);
   const wrapperRef = useRef(null);
 
-  useEffect(() => {
-    const handleIncomingMessage = (data) => {
-      if (currentCommunity._id === data.data.community) {
-        setNewCommunityMessages((prev) => [...prev, data.data]);
-      }
-    };
-    socket.on("community:message", handleIncomingMessage);
-
-    return () => {
-      socket.off("community:message", handleIncomingMessage);
-    };
-  }, [setNewCommunityMessages, currentCommunity]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -59,8 +46,30 @@ const CommunityInput = (props) => {
     }
   }, [sendClicked]);
 
-  const postCommunityMessages = () => {
-    const apiUrl = `${BASE_URL}/chatroom/community/send-message`;
+  useEffect(() => {
+    if (currentCommunity) {
+      const messagesRef = collection(db, 'communityMessages');
+      const q = query(messagesRef,
+        where('community', '==', currentCommunity._id)
+      );
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const msgs = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        msgs.sort((a, b) => a.createdAt - b.createdAt);
+        setNewCommunityMessages(msgs);
+      }, (error) => {
+        console.error("Error fetching community messages:", error);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [currentCommunity, setNewCommunityMessages]);
+
+  const postCommunityMessages = async () => {
     const data = {
       userId: sender.userId,
       sender: sender.userId,
@@ -68,30 +77,14 @@ const CommunityInput = (props) => {
       content: message,
       createdAt: Date.now(),
     };
-    console.log(data);
-    socket.emit("community:message", {
-      data,
-    });
-    fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${sender.token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+
+    try {
+      await addDoc(collection(db, 'communityMessages'), data);
+      console.log("Message sent");
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+
     updateLastMessage();
     setSendClicked(false);
     setMessage("");
@@ -119,21 +112,13 @@ const CommunityInput = (props) => {
     setJoinedCommunities(updatedCommunities);
   };
 
-  const handleEmojiPicker = () => {
-    setIsEmojiOpen(!isEmojiOpen);
-  };
+  const handleEmojiPicker = () => {  setIsEmojiOpen(!isEmojiOpen);  };
 
-  const emojiClickHandler = (emoji) => {
-    setMessage((prev) => prev + emoji.emoji);
-  };
+  const emojiClickHandler = (emoji) => {  setMessage((prev) => prev + emoji.emoji);  };
 
-  const handleKeyPress = (e) => {
-    e.key === "Enter" ? sendMessage() : null;
-  };
+  const handleKeyPress = (e) => {  e.key === "Enter" ? sendMessage() : null;  };
 
-  const sendMessage = () => {
-    setSendClicked(true);
-  };
+  const sendMessage = () => {  setSendClicked(true);  };
 
   const handleAttachFiles = () => {};
 

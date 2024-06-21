@@ -44,6 +44,7 @@ const CoursePage2 = () => {
           <SearchBar
             className="searchWidth"
             width={authUser.user ? "700px" : "510px"}
+            placeholder="Search Courses"
           />
           <p
             onClick={() => {

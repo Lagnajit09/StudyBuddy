@@ -27,7 +27,7 @@ const HelpCenter = () => {
         >
           Courses
         </p>
-        <SearchBar className="searchWidth" />
+        <SearchBar className="searchWidth" placeholder="Search Courses" />
         <p
           onClick={() => {
             navigate("/chatroom/community");

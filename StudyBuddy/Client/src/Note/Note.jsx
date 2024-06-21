@@ -38,7 +38,7 @@ const Note = () => {
         >
           Courses
         </p>
-        <SearchBar className="searchWidth" placeholder="Search Chat Room" />
+        <SearchBar className="searchWidth" placeholder="Search Notes" />
         <p
           onClick={() => {
             navigate("/chatroom/community");

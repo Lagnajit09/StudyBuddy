@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CommunityDetails.css";
 import CloseIcon from "@mui/icons-material/Close";
@@ -9,7 +9,6 @@ import {
   communityMemberDetailsAtom,
   currentCommunityAtom,
   joinedCommunitiesAtom,
-  newCommunityMsgAtom,
 } from "../../../../store/chatroomStore/communityStore";
 import { authUserAtom } from "../../../../store/authAtom";
 import { FaArrowLeft } from "react-icons/fa";
@@ -31,7 +30,6 @@ const CommunityDetails = (props) => {
   const [showMembers, setShowMembers] = useState(false);
   const [copiedVisible, setCopiedVisible] = useState(false);
   const [showDeleteMenu, setShowDeleteMenu] = useState(false);
-  const [newMessage, setNewMessage] = useRecoilState(newCommunityMsgAtom);
 
   const style = {
     height: "0%",

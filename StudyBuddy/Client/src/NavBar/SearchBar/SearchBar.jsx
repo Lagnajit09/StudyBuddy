@@ -9,7 +9,7 @@ const SearchBar = (props) => {
           className={`nosubmit ${props.className}`}
           style={{ width: props.width }}
           type="text"
-          placeholder="Search Chat Room"
+          placeholder={props.placeholder}
         />
       </form>
     </div>

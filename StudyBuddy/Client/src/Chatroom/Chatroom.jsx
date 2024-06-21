@@ -61,7 +61,7 @@ const Chatroom = () => {
         throw new Error("Request failed");
       }
       fetchedData = await response.json();
-      console.log(fetchedData);
+      // console.log(fetchedData);
       setChatUsers(fetchedData);
     } catch (error) {
       console.error("Error:", error);
