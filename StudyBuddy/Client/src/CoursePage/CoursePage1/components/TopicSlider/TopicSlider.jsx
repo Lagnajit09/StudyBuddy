@@ -81,12 +81,6 @@ const TopicSlider = (props) => {
             {createCard(6, props.arr, props.toggleSignupModal)}
             {createCard(7, props.arr, props.toggleSignupModal)}
           </div>
-          <div className="topicWrapper3">
-            {createCard(8, props.arr, props.toggleSignupModal)}
-            {createCard(9, props.arr, props.toggleSignupModal)}
-            {createCard(10, props.arr, props.toggleSignupModal)}
-            {createCard(11, props.arr, props.toggleSignupModal)}
-          </div>
         </div>
         <button
           onClick={prevSlide}

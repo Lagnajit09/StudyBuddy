@@ -1,5 +1,5 @@
 const { Community, CommunityMsg } = require("./chatroomDB");
-const { User } = require("../User/userModel");
+const user = require("../User/userModel");
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const communityRouter = express.Router();
@@ -69,7 +69,7 @@ communityRouter.get(
     const userId = req.params.userId;
     try {
       const communities = await Community.find({
-        members: new ObjectId(userId),
+        members: userId,
       })
         .populate("members", "firstname lastname email profile_pic bio")
         .exec();

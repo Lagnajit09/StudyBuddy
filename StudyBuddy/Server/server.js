@@ -34,9 +34,7 @@ connectDb().then(() => {
 //socket-io cors configuration
 const io = require("socket.io")(server, {
   cors: {
-    origin: [
-      "https://studybuddy-c33cs64o8-lagnajit-moharanas-projects.vercel.app",
-    ],
+    origin: ["https://studybuddy-52816.web.app", "http://localhost:5173", "*"],
     methods: ["GET", "POST"],
     credentials: true,
   },

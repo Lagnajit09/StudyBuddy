@@ -13,6 +13,7 @@ const HelpCenter = () => {
     <>
       <NavBar>
         <h2
+          style={{cursor: 'pointer'}}
           onClick={() => {
             navigate("/");
           }}

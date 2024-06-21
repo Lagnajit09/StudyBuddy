@@ -11,6 +11,8 @@ import ChatMessage from "../ChatMessage/ChatMessage";
 import ChatUserDetails from "../ChatUserDetails/ChatUserDetails";
 import ChatHeader from "../ChatHeader/ChatHeader";
 import { BASE_URL } from "../../../../config";
+import { collection, deleteDoc, onSnapshot, query, where } from "firebase/firestore";
+import { db } from "../../../../firebase";
 
 const ChatRight = () => {
   const currentChat = useRecoilValue(currentChatAtom);
@@ -39,7 +41,7 @@ const ChatRight = () => {
       }
       fetchedCurrentChatMessage = await response.json();
       setChatMessages(fetchedCurrentChatMessage);
-      console.log(fetchedCurrentChatMessage);
+      // console.log(fetchedCurrentChatMessage);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -48,6 +50,30 @@ const ChatRight = () => {
   useEffect(() => {
     fetchCurrentChatMessages();
   }, [currentChat, authUser]);
+
+  console.log(currentChat)
+
+  // useEffect(() => {
+  //   return () => {
+  //     // Clean up previous chat messages when receiver changes
+  //     if (currentChat.id !== null) {
+  //       const prevChatId = [authUser.userId, currentChat.id].sort().join('_');
+  //       const messagesRef = collection(db, 'privateMessages');
+  //       const q = query(
+  //         messagesRef,
+  //         where('chatId', '==', prevChatId)
+  //       );
+
+  //       onSnapshot(q, (snapshot) => {
+  //         snapshot.forEach((doc) => {
+  //           deleteDoc(doc.ref);
+  //         });
+  //       }, (error) => {
+  //         console.error("Error deleting messages:", error);
+  //       });
+  //     }
+  //   };
+  // }, [authUser.userId, currentChat.id]);
 
   return (
     <div className="chatright">

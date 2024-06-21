@@ -73,7 +73,7 @@ chatRouter.get("/:userId", middleware.authenticate, async (req, res) => {
       ])
     ).map((id) => new ObjectId(id));
 
-    console.log(uniqueChatParticipantIds);
+    // console.log(uniqueChatParticipantIds);
 
     // Find last message for each participant
     const lastMessages = await Promise.all(

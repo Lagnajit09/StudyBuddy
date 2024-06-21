@@ -10,6 +10,7 @@ import Chat from "./components/Chat/Chat";
 import Community from "./components/Community/Community";
 import "./Chatroom.css";
 import { BASE_URL } from "../config";
+import { FaCode } from "react-icons/fa6";
 
 const Chatroom = () => {
   const setChatUsers = useSetRecoilState(chatUsersAtom);
@@ -104,6 +105,10 @@ const Chatroom = () => {
           Notes
         </p>
       </NavBar>
+      {/* <div className="maintainance-chatroom">
+        <FaCode style={{ width: "25px", height: "25px" }} />
+        <span>The chatroom is currently under maintainance.</span>
+      </div> */}
       {openChat && !openCommunity && <Chat />}
       {!openChat && openCommunity && <Community />}
     </div>

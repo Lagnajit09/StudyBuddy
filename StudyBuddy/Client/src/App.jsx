@@ -52,11 +52,11 @@ const App = () => {
       <Route path="/profile" element={<Profile />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/help" element={<HelpCenter />} />
-      <Route path="/chatroom/chat" element={<Chatroom />} />
+      {/* CHATROOM ROUTES */}
+      <Route path="/chatroom/chat" element={<Chatroom />} /> */
       <Route path="/chatroom/chat/:userId" element={<Chatroom />} />
       <Route path="/chatroom/community" element={<Chatroom />} />
       <Route path="/chatroom/community/:id" element={<Chatroom />} />
-
       {/* NOTE ROUTES */}
       <Route path="/note" element={<Note />}></Route>
       <Route path="/note/folders" element={<Note />}></Route>

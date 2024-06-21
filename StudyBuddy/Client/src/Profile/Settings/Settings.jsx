@@ -14,6 +14,7 @@ const Settings = () => {
     <>
       <NavBar>
         <h2
+          style={{cursor: 'pointer'}}
           onClick={() => {
             navigate("/");
           }}

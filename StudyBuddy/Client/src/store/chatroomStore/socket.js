@@ -1,12 +1,13 @@
 import io from "socket.io-client";
 
-const socket = io("https://studybuddy-iota.vercel.app", {
+const socket = io("http://localhost:3000", {
   withCredentials: true,
-  transports: ["websocket"], // Explicitly specify the transport to use, recommended for socket.io
   cors: {
     origin: "*", // Allow requests from any origin
     methods: ["GET", "POST"], // Allow GET and POST requests
   },
 });
+
+// const socket = 12;
 
 export default socket;
