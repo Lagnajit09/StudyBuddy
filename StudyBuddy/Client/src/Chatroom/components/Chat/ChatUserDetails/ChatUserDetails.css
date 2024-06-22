@@ -107,6 +107,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 }
 .fileIcon{
     background-color: #63B4B8;

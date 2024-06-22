@@ -61,10 +61,11 @@ const ChatUsers = () => {
 
   function truncateString(msg, maxLength) {
     if(msg.type === 'doc') return 'File'
-    if (msg.content.length <= maxLength) {
-      return msg.content;
+    console.log(msg)
+    if (msg?.content.length <= maxLength) {
+      return msg?.content;
     } else {
-      return msg.content.slice(0, maxLength) + "...";
+      return msg?.content.slice(0, maxLength) + "...";
     }
   }
 
@@ -140,11 +141,11 @@ const ChatUsers = () => {
               }}
               onContextMenu={(e) => handleRightClick(e, user.chatUser.id)}
             >
-              {showOpts === user.chatUser.id && (
+              {/* {showOpts === user.chatUser.id && (
                 <div className="delete-chat" ref={chatListRef} onClick={(e) => deleteChat(e, user.chatUser.id, index)}>
                   <p>Delete chat</p>
                 </div>
-              )}
+              )} */}
               <Avatar
                 src={user.chatUser.firstname}
                 alt={user.chatUser.firstname}

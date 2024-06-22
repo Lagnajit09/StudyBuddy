@@ -170,7 +170,10 @@ const ChatInput = (props) => {
     const updatedUsers = [
       {
         chatUser: receiver,
-        lastMessage: message,
+        lastMessage: {
+          type: file ? 'doc' : 'msg',
+          content: message
+        },
         lastMsgTime: Date.now()
       },
       ...chatUsers
@@ -190,7 +193,10 @@ const ChatInput = (props) => {
     let updatedUsers = [...chatUsers];
     updatedUsers[userIndex] = {
         ...updatedUsers[userIndex],
-        lastMessage: message,
+        lastMessage: {
+          type: file ? 'doc' : 'msg',
+          content: message
+        },
         lastMsgTime: Date.now(),
     };
 
@@ -285,8 +291,6 @@ const ChatInput = (props) => {
           console.error("Error sending message:", error);
         }
 
-        console.log('first')
-
         fetch(apiUrl, {
           method: "POST",
           headers: {
@@ -307,10 +311,14 @@ const ChatInput = (props) => {
           .catch((error) => {
             console.error("Error:", error);
           });
+
+          updateLastMessage(receiver.id);
+
           setFile(null)
           setPreview('')
           setProgress(0)
           setUrl('')
+          setSendClicked(false)
         });
       }
     );

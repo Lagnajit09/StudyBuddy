@@ -17,6 +17,16 @@ const AllFiles = ({docs, setViewAllMedia, setViewAllFiles}) => {
         }
       };
 
+      const downloadFile = (url, name) => {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        a.target = '_blank'
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
   return (
     <div 
         style={{
@@ -25,6 +35,7 @@ const AllFiles = ({docs, setViewAllMedia, setViewAllFiles}) => {
             position: 'absolute',
             zIndex: '20',
             backgroundColor: 'white',
+            overflowY: 'scroll'
         }}
     >
     <div 
@@ -63,7 +74,7 @@ const AllFiles = ({docs, setViewAllMedia, setViewAllFiles}) => {
     >
         {
             docs.map((item) => (
-                <div className="userFile">
+                <div className="userFile" onClick={()=>downloadFile(item?.file.url, item?.file.name)}>
                     <div className="fileIcon">
                         <DescriptionIcon style={{ width: "25px", height: "25px" }} />
                     </div>

@@ -191,6 +191,8 @@ const CommunityInput = (props) => {
             console.error("Error sending message:", error);
           }
 
+          setSendClicked(false);
+
           setFile(null)
           setPreview('')
           setProgress(0)

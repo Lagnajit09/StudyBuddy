@@ -42,6 +42,16 @@ const ChatUserDetails = (props) => {
     }
   };
 
+  const downloadFile = (url, name) => {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    a.target = '_blank'
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
   return (
     <div
       className="chatUser-details"
@@ -81,12 +91,12 @@ const ChatUserDetails = (props) => {
         <h4>About</h4>
         <p>{currentChat.bio}</p>
       </div>
-      <div className="chatUser-mCommunity">
+      {/* <div className="chatUser-mCommunity">
         <h4>Mutual Community</h4>
         <button className="chatUser-details-button">
           <KeyboardArrowRightIcon style={{ width: "25px", height: "25px" }} />
         </button>
-      </div>
+      </div> */}
       <div className="chatUser-media">
         <div className="chatUser-media-h">
           <p>Uploaded Media</p>
@@ -107,7 +117,8 @@ const ChatUserDetails = (props) => {
             <img
              src={item?.file.url} 
              alt={item?.file.name} 
-             style={{width: '50px', height:'50px', objectFit: 'contain', border: '1px solid gray', borderRadius: '4px'}} 
+             style={{width: '50px', height:'50px', objectFit: 'contain', border: '1px solid gray', borderRadius: '4px', cursor:'pointer'}} 
+             onClick={()=>downloadFile(item?.file.url, item?.file.name)}
             />
           ))
         }
@@ -117,7 +128,7 @@ const ChatUserDetails = (props) => {
       <div className="chatUser-files">
         <div className="chatUser-media-h">
           <p>Uploaded Files</p>
-          {files.length > 3 &&
+          {files.length > 4 &&
             <span 
               onClick={() => {
                 setViewAllMedia(false); 
@@ -131,7 +142,7 @@ const ChatUserDetails = (props) => {
         <div className="chatUser-files-m">
         {
           files.map((item) => (
-            <div className="userFile">
+            <div className="userFile" onClick={()=>downloadFile(item?.file.url, item?.file.name)}>
               <div className="fileIcon">
                 <DescriptionIcon style={{ width: "25px", height: "25px" }} />
               </div>
