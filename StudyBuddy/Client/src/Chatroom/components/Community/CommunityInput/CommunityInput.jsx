@@ -7,18 +7,19 @@ import smileyEmoji from "../../../../assets/chatroom_imgs/emojiPicker.svg";
 import attachment from "../../../../assets/chatroom_imgs/attachment.svg";
 import { FiSend } from "react-icons/fi";
 import {
+  communityMessagesAtom,
   currentCommunityAtom,
   joinedCommunitiesAtom,
-  newCommunityMsgAtom,
 } from "../../../../store//chatroomStore/communityStore";
-import { collection, query, where, orderBy, onSnapshot, addDoc } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, addDoc } from 'firebase/firestore';
 import { db } from "../../../../firebase";
 
 
 const CommunityInput = (props) => {
   const sender = useRecoilValue(authUserAtom);
   const currentCommunity = useRecoilValue(currentCommunityAtom);
-  const setNewCommunityMessages = useSetRecoilState(newCommunityMsgAtom);
+  const setCommunityMessages =
+    useSetRecoilState(communityMessagesAtom);
   const [joinedCommunities, setJoinedCommunities] = useRecoilState(
     joinedCommunitiesAtom
   );
@@ -60,14 +61,14 @@ const CommunityInput = (props) => {
         }));
 
         msgs.sort((a, b) => a.createdAt - b.createdAt);
-        setNewCommunityMessages(msgs);
+        setCommunityMessages(msgs);
       }, (error) => {
         console.error("Error fetching community messages:", error);
       });
 
       return () => unsubscribe();
     }
-  }, [currentCommunity, setNewCommunityMessages]);
+  }, [currentCommunity, setCommunityMessages]);
 
   const postCommunityMessages = async () => {
     const data = {

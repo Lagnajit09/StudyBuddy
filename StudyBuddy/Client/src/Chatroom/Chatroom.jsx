@@ -3,14 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { chatUsersAtom } from "../store/chatroomStore/chatStore";
 import { authUserAtom } from "../store/authAtom";
-import socket from "../store/chatroomStore/socket";
 import NavBar from "../NavBar/NavBar";
 import SearchBar from "../NavBar/SearchBar/SearchBar";
 import Chat from "./components/Chat/Chat";
 import Community from "./components/Community/Community";
 import "./Chatroom.css";
 import { BASE_URL } from "../config";
-import { FaCode } from "react-icons/fa6";
 
 const Chatroom = () => {
   const setChatUsers = useSetRecoilState(chatUsersAtom);
@@ -27,11 +25,6 @@ const Chatroom = () => {
     }, [authUser]);
     return;
   }
-
-  useEffect(() => {
-    const userId = authUser.userId;
-    socket.emit("userId", { userId, joinedCommunities: [] });
-  }, []);
 
   useEffect(() => {
     if (location.pathname.includes("/community")) {

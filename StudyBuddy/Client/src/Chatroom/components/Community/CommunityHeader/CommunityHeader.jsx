@@ -8,11 +8,11 @@ import {
   communityMemberDetailsAtom,
   currentCommunityAtom,
   joinedCommunitiesAtom,
-  newCommunityMsgAtom,
 } from "../../../../store/chatroomStore/communityStore";
 import { authUserAtom } from "../../../../store/authAtom";
 import { BASE_URL } from "../../../../config";
-import socket from "../../../../store/chatroomStore/socket";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../../../firebase";
 
 const CommunityHeader = ({
   setDetailsBtnClicked,
@@ -26,7 +26,6 @@ const CommunityHeader = ({
   );
   const authUser = useRecoilValue(authUserAtom);
   const [member, setMember] = useRecoilState(communityMemberDetailsAtom);
-  const [newMessage, setNewMessage] = useRecoilState(newCommunityMsgAtom);
 
   useEffect(() => {
     if (member.firstname) {
@@ -34,85 +33,6 @@ const CommunityHeader = ({
     }
   }, [member]);
 
-  console.log(currentCommunity);
-
-  useEffect(() => {
-    const updateCommunity = ({ user, communityId, action }) => {
-      const updatedCommunityIndex = joinedCommunities.findIndex((community) => {
-        return community._id === communityId;
-      });
-
-      if (updatedCommunityIndex === -1) {
-        // Community not found
-        return;
-      }
-
-      const updatedCommunity = { ...joinedCommunities[updatedCommunityIndex] };
-      let adminMessage = {};
-
-      if (action === "join") {
-        updatedCommunity.members = [...updatedCommunity.members, user];
-        adminMessage = {
-          userId: authUser.userId,
-          content: `${user.firstname} ${user.lastname}, Welcome to ${updatedCommunity.name}!`,
-          sender: "6638c9ad872de350a4481e17",
-          community: updatedCommunity._id,
-          adminMsg: true,
-          createdAt: Date.now(),
-        };
-      } else if (action === "leave") {
-        updatedCommunity.members = updatedCommunity.members.filter(
-          (member) => member._id !== user._id
-        );
-        adminMessage = {
-          userId: authUser.userId,
-          content: `${user.firstname} ${user.lastname} left!`,
-          sender: "6638c9ad872de350a4481e17",
-          community: updatedCommunity._id,
-          adminMsg: true,
-          createdAt: Date.now(),
-        };
-      }
-
-      // Replace the updated community in the array
-      const updatedCommunities = [...joinedCommunities];
-      updatedCommunities[updatedCommunityIndex] = updatedCommunity;
-
-      setJoinedCommunities(updatedCommunities);
-
-      if (currentCommunity._id === communityId) {
-        setCurrentCommunity(updatedCommunity);
-      }
-
-      postAdminMessage(adminMessage);
-    };
-
-    socket.on("communityUpdate", updateCommunity);
-
-    return () => {
-      socket.off("communityUpdate", updateCommunity);
-    };
-  }, [joinedCommunities, currentCommunity]);
-
-  const postAdminMessage = async (data) => {
-    const apiUrl = `${BASE_URL}/chatroom/community/send-message`;
-
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${authUser.token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      return;
-    }
-
-    const json = await response.json();
-    console.log(json);
-  };
 
   const isAMember = useMemo(() => {
     const arr = currentCommunity.members.map(
@@ -121,8 +41,24 @@ const CommunityHeader = ({
     return arr.includes(true);
   }, [currentCommunity]);
 
-  const joinCommunity = () => {
+  const joinCommunity = async () => {
     updateDbJoin();
+
+    const data = {
+      userId: '6638c9ad872de350a4481e17',
+      sender: '6638c9ad872de350a4481e17',
+      community: currentCommunity._id,
+      content: `${authUser.user.firstname} ${authUser.user.lastname}, Welcome to the community!`,
+      createdAt: Date.now(),
+      adminMsg: true
+    };
+
+    try {
+      await addDoc(collection(db, 'communityMessages'), data);
+      console.log("Message sent");
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
 
     const newMember = {
       _id: authUser.userId,
@@ -132,15 +68,6 @@ const CommunityHeader = ({
       profile_pic: authUser.user.profile_pic,
       bio: authUser.user.bio,
     };
-
-    socket.emit("joinCommunity", {
-      user: newMember,
-      communityId: currentCommunity._id,
-    });
-    socket.emit("userJoinedCommunity", {
-      user: newMember,
-      communityId: currentCommunity._id,
-    });
 
     setCurrentCommunity((prev) => {
       return {

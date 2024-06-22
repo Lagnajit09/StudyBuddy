@@ -8,7 +8,6 @@ import {
   currentChatAtom,
   newMessageAtom,
 } from "../../../../store/chatroomStore/chatStore";
-import socket from "../../../../store/chatroomStore/socket";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { BASE_URL } from "../../../../config";
 import { authUserAtom } from "../../../../store/authAtom";
@@ -20,42 +19,6 @@ const ChatUsers = () => {
   const [chatUsers, setChatUsers] = useRecoilState(chatUsersAtom);
   const [newMessages, setNewMessages] = useRecoilState(newMessageAtom);
   const [currentChat, setCurrentChat] = useRecoilState(currentChatAtom);
-
-  useEffect(() => {
-    socket.on("chatUsersUpdated", (receiverId) => {
-      // Update chat users list for recipient
-      const fetchSenderDetails = async () => {
-        try {
-          console.log(authUser);
-
-          const response = await fetch(
-            `${BASE_URL}/chatroom/chat/one-user/${authUser.userId}/${receiverId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${authUser.token}`,
-              },
-            }
-          );
-          if (!response.ok) {
-            console.log("Error while fetching!");
-          }
-          const data = await response.json();
-          const dataChatUser = { chatUser: data };
-          const exists = chatUsers.some(
-            (user) => user.chatUser.email === dataChatUser.chatUser.email
-          );
-          !exists ? setChatUsers((prev) => [dataChatUser, ...prev]) : null;
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      fetchSenderDetails();
-    });
-
-    return () => {
-      socket.off("chatUsersUpdated");
-    };
-  }, [chatUsers, setChatUsers]);
 
   const userId = useMemo(() => {
     return params.userId;

@@ -115,7 +115,7 @@ const JoinedCommunity = () => {
                   />
                   <div className="joined-com-right">
                     <h3>{community.name}</h3>
-                    <p>{truncateString(community.lastMessage || "", 30)}</p>
+                    <p>{truncateString(community.description || "", 30)}</p>
                   </div>
                 </div>
               </Link>

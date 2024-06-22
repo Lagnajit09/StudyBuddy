@@ -16,7 +16,8 @@ import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FiTrash } from "react-icons/fi";
 import { BASE_URL } from "../../../../config";
-import socket from "../../../../store/chatroomStore/socket";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../../../firebase";
 
 const CommunityDetails = (props) => {
   const navigate = useNavigate();
@@ -59,17 +60,28 @@ const CommunityDetails = (props) => {
     //update database
     await updateDbLeave();
 
+    const data = {
+      userId: '6638c9ad872de350a4481e17',
+      sender: '6638c9ad872de350a4481e17',
+      community: currentCommunity._id,
+      content: `${authUser.user.firstname} ${authUser.user.lastname} left!`,
+      createdAt: Date.now(),
+      adminMsg: true
+    };
+
+    try {
+      await addDoc(collection(db, 'communityMessages'), data);
+      console.log("Message sent");
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+
     const userIndex = currentCommunity.members.findIndex(
       (member) => member._id === authUser.userId
     );
     const communityIndex = joinedCommunities.findIndex(
       (community) => community._id === currentCommunity._id
     );
-
-    socket.emit("leaveCommunity", {
-      user: currentCommunity.members[userIndex],
-      communityId: currentCommunity._id,
-    });
 
     if (userIndex !== -1) {
       const updatedMembers = [
