@@ -12,8 +12,10 @@ import {
   joinedCommunitiesAtom,
 } from "../../../../store//chatroomStore/communityStore";
 import { collection, query, where, onSnapshot, addDoc } from 'firebase/firestore';
-import { db } from "../../../../firebase";
-
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { db, storage } from "../../../../firebase";
+import MediaInput from "../MediaInput/MediaInput";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const CommunityInput = (props) => {
   const sender = useRecoilValue(authUserAtom);
@@ -25,6 +27,10 @@ const CommunityInput = (props) => {
   );
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [file, setFile] = useState(null)
+  const [progress, setProgress] = useState(0);
+  const [url, setUrl] = useState("");
+  const [preview, setPreview] = useState("");
   const [sendClicked, setSendClicked] = useState(false);
   const wrapperRef = useRef(null);
 
@@ -71,12 +77,20 @@ const CommunityInput = (props) => {
   }, [currentCommunity, setCommunityMessages]);
 
   const postCommunityMessages = async () => {
+    if(!message) return;
     const data = {
       userId: sender.userId,
       sender: sender.userId,
       community: currentCommunity._id,
       content: message,
       createdAt: Date.now(),
+      type: 'msg',
+      file: {
+        name: '',
+        url: '',
+        size: '',
+        type: ''
+      }
     };
 
     try {
@@ -119,17 +133,83 @@ const CommunityInput = (props) => {
 
   const handleKeyPress = (e) => {  e.key === "Enter" ? sendMessage() : null;  };
 
-  const sendMessage = () => {  setSendClicked(true);  };
+  const sendMessage = () => {  
+    if(!message && !file) return;
+    setSendClicked(true);  
+    if(file) handleUpload()
+  };
 
-  const handleAttachFiles = () => {};
+  const handleAttachFiles = (e) => {
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
+      setFile(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUpload = () => {
+    if (!file) return;
+
+    const storageRef = ref(storage, `files/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(progress);
+      },
+      (error) => {
+        console.error("Upload failed:", error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+          setUrl(downloadURL);
+          console.log("File available at:", downloadURL);
+
+          const data = {
+            userId: sender.userId,
+            sender: sender.userId,
+            community: currentCommunity._id,
+            content: message,
+            createdAt: Date.now(),
+            type: 'doc',
+            file: {
+              name: file.name,
+              url: downloadURL,
+              size: file.size,
+              type: file.type
+            }
+          };
+      
+          try {
+            await addDoc(collection(db, 'communityMessages'), data);
+            console.log("Message sent");
+          } catch (error) {
+            console.error("Error sending message:", error);
+          }
+
+          setFile(null)
+          setPreview('')
+          setProgress(0)
+          setUrl('')
+
+        });
+      }
+    );
+  };
+
 
   return (
     <div>
-      <div className="send-message">
+      <div className="send-message" style={{position: 'relative'}}>
         <div
           className="msg-input"
           style={props.open ? { width: "83%" } : { width: "60%" }}
         >
+          {file && <MediaInput file={file} preview={preview} setFile={setFile} setPreview={setPreview} />}
           <span ref={wrapperRef}>
             <EmojiPicker
               open={isEmojiOpen}
@@ -170,7 +250,6 @@ const CommunityInput = (props) => {
               <img
                 src={attachment}
                 alt="Attach-files"
-                onClick={handleAttachFiles}
                 style={{
                   cursor: "pointer",
                   marginTop: "5px",
@@ -179,13 +258,22 @@ const CommunityInput = (props) => {
                 }}
               />
             </label>
-            <input type="file" id="attachFiles" style={{ display: "none" }} />
+            <input
+             type="file" 
+             id="attachFiles" 
+             style={{ display: "none" }} 
+             onChange={handleAttachFiles} 
+             accept=".jpg, .jpeg, .png, .gif, .bmp, .webp, .tiff, .svg, .pdf, .doc, .docx, .odt, .txt, .rtf, .csv, .xls, .xlsx, .ppt, .pptx, .css, .html, .json, .js, .jsx, .xml, .md, .yaml, .yml, .ts, .tsx, .java, .cpp, .c, .py, .scss, .env"
+            />
           </div>
         </div>
         <button>
+        {
+          progress ? <CircularProgress /> :
           <div className="send-btn" onClick={sendMessage}>
-            <FiSend style={{ fontSize: "17px" }} />
+            <FiSend style={{ fontSize: "17px" }} /> 
           </div>
+        }
         </button>
       </div>
     </div>

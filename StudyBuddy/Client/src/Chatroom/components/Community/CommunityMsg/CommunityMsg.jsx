@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { authUserAtom } from "../../../../store/authAtom";
 import {
@@ -8,7 +8,6 @@ import {
 } from "../../../../store/chatroomStore/communityStore";
 import "./CommunityMsg.css";
 import Message from "./Message/Message";
-import { CleaningServices } from "@mui/icons-material";
 
 const CommunityMsg = ({ msg_height }) => {
   const authUser = useRecoilValue(authUserAtom);
@@ -31,8 +30,10 @@ const CommunityMsg = ({ msg_height }) => {
     const senderDetails = currentCommunity.members.find((member) => {
       return member?._id === message?.sender;
     });
-    console.log(senderDetails);
+    // console.log(senderDetails);
     return {
+      file: message?.file,
+      type: message?.type,
       message: message?.content,
       sender: senderDetails,
       adminMsg: message?.adminMsg || false,
@@ -40,9 +41,9 @@ const CommunityMsg = ({ msg_height }) => {
     };
   });
 
-  console.log(mergedMessages);
-  console.log(currentCommunity);
-  console.log(mergedArray);
+  // console.log(mergedMessages);
+  // console.log(currentCommunity);
+  // console.log(mergedArray);
 
   return (
     <div
