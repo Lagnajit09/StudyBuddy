@@ -3,10 +3,23 @@
     align-items: center;
     gap: 10px;
     padding: 13px 13px 13px 21px;
+    position: relative;
 }
 .chatUser:hover{
     background-color: #00aaff0d !important;
     cursor: pointer;
+}
+
+.chatUser .delete-chat{
+    position: absolute;
+    z-index: 20;
+    bottom: 0;
+    right: 0;
+    background-color: #00aaff0d;
+    padding: 3px 6px;
+    font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid lightblue;
 }
 
 .chatUserDetails h3{

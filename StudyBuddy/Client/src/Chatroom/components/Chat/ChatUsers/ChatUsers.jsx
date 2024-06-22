@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ChatUsers.css";
 import { Avatar } from "@mui/material";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import {
+  chatMessageAtom,
   chatUsersAtom,
   currentChatAtom,
   newMessageAtom,
@@ -17,8 +18,11 @@ const ChatUsers = () => {
   const navigate = useNavigate();
   const authUser = useRecoilValue(authUserAtom);
   const [chatUsers, setChatUsers] = useRecoilState(chatUsersAtom);
-  const [newMessages, setNewMessages] = useRecoilState(newMessageAtom);
+  const setNewMessages = useSetRecoilState(newMessageAtom);
+  const setMessages = useSetRecoilState(chatMessageAtom)
   const [currentChat, setCurrentChat] = useRecoilState(currentChatAtom);
+  const [showOpts, setShowOpts] = useState(false)
+  const chatListRef = useRef(null);
 
   const userId = useMemo(() => {
     return params.userId;
@@ -55,12 +59,60 @@ const ChatUsers = () => {
     setCurrentChat(chatWithUser);
   };
 
-  function truncateString(str, maxLength) {
-    if (str.length <= maxLength) {
-      return str;
+  function truncateString(msg, maxLength) {
+    if(msg.type === 'doc') return 'File'
+    if (msg.content.length <= maxLength) {
+      return msg.content;
     } else {
-      return str.slice(0, maxLength) + "...";
+      return msg.content.slice(0, maxLength) + "...";
     }
+  }
+
+  const handleRightClick = (e, chatUserId) => {
+    e.preventDefault();
+    setShowOpts(chatUserId);
+  };
+
+  const handleClickOutside = (event) => {
+    if (chatListRef.current && !chatListRef.current.contains(event.target)) {
+      setShowOpts(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+
+  const deleteChat = async (event, userId, index) => {
+    event.stopPropagation()
+    const updatedChatUsers = chatUsers.filter((user) => user.chatUser.id !== userId)
+    setChatUsers(updatedChatUsers)
+
+    try {
+      await fetch(
+        `${BASE_URL}/chatroom/chat/${userId}/${authUser.userId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${authUser.token}`,
+          },
+          body: JSON.stringify({userId:authUser.userId})
+        }
+      );
+
+    } catch (error) {
+      console.error(error)
+    }
+    
+    if(currentChat.id === userId){
+      setCurrentChat({})
+      setMessages([])
+      navigate(`/chatroom/chat`)
+    } 
   }
 
   return (
@@ -86,7 +138,13 @@ const ChatUsers = () => {
                     ? "3px solid #00A9FF"
                     : null,
               }}
+              onContextMenu={(e) => handleRightClick(e, user.chatUser.id)}
             >
+              {showOpts === user.chatUser.id && (
+                <div className="delete-chat" ref={chatListRef} onClick={(e) => deleteChat(e, user.chatUser.id, index)}>
+                  <p>Delete chat</p>
+                </div>
+              )}
               <Avatar
                 src={user.chatUser.firstname}
                 alt={user.chatUser.firstname}
@@ -98,7 +156,7 @@ const ChatUsers = () => {
               />
               <div className="chatUserDetails">
                 <h3>{`${user.chatUser.firstname} ${user.chatUser.lastname}`}</h3>
-                <p>{truncateString(user.lastMessage || "", 30)}</p>
+                <p>{truncateString(user.lastMessage || {}, 30)}</p>
               </div>
             </div>
           ))}

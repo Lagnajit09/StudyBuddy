@@ -2,26 +2,8 @@ const { Message } = require("./chatroomDB");
 const User = require("../User/userModel");
 const express = require("express");
 const { ObjectId } = require("mongodb");
-const { ChromeLauncher } = require("puppeteer");
 const chatRouter = express.Router();
 const middleware = require("../middleware");
-
-chatRouter.post("/addUser", middleware.authenticate, async (req, res) => {
-  // const { firstName, lastName, email, profile_pic } = req.body;
-  // try {
-  //   const newUser = new User({
-  //     firstName,
-  //     lastName,
-  //     email,
-  //     password: "1234",
-  //     profile_pic,
-  //   });
-  //   await newUser.save();
-  //   res.json(newUser);
-  // } catch (error) {
-  //   console.log("Error:" + error);
-  // }
-});
 
 chatRouter.get("/allUsers", middleware.authenticate, async (req, res) => {
   const users = await User.find();
@@ -103,7 +85,7 @@ chatRouter.get("/:userId", middleware.authenticate, async (req, res) => {
             profile_pic: user.profile_pic,
             bio: user.bio,
           },
-          lastMessage: item.lastMessage.content,
+          lastMessage: item.lastMessage,
           lastMsgTime: item.lastMessage.timestamp,
         };
       })
@@ -136,13 +118,15 @@ chatRouter.post("/current-chat", middleware.authenticate, async (req, res) => {
       receiverId: current.receiverId,
       content: current.content,
       timestamp: current.timestamp,
+      type: current.type,
+      file: current.file
     }))
   );
 });
 
 //Send a message to an user
 chatRouter.post("/", middleware.authenticate, async (req, res) => {
-  const { senderId, receiverId, content } = req.body;
+  const { senderId, receiverId, content, type, file } = req.body;
   const sender = new ObjectId(senderId);
   const receiver = new ObjectId(receiverId);
   try {
@@ -150,6 +134,8 @@ chatRouter.post("/", middleware.authenticate, async (req, res) => {
       senderId: sender,
       receiverId: receiver,
       content,
+      type,
+      file
     });
     await sentMessage.save();
     res.json(sentMessage);
@@ -158,18 +144,22 @@ chatRouter.post("/", middleware.authenticate, async (req, res) => {
   }
 });
 
-//Delete an user
-chatRouter.delete("/delete", async (req, res) => {
-  const { content } = req.body;
+
+// Delete a chat
+chatRouter.delete('/:id/:userId', middleware.authenticate, async (req, res) => {
+  const {id, userId} = req.params;
+
   try {
-    await Message.deleteMany({ content });
-    // {
-    //   $or: [{ senderId: id }, { receiverId: id }],
-    // }
-    res.json({ message: "Deleted successfully!" });
+    await Message.deleteMany({
+      $or: [
+        { senderId: userId, receiverId: id },
+        { senderId: id, receiverId: userId }
+      ]
+    });
+    res.status(200).send({ message: 'Messages deleted successfully' });
   } catch (error) {
-    res.json({ error });
+    res.status(500).send({ error: 'An error occurred while deleting messages' });
   }
-});
+})
 
 module.exports = chatRouter;

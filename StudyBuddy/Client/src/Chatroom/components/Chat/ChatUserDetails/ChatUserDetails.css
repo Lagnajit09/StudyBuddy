@@ -92,7 +92,7 @@
 .chatUser-media-m{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 10px;
     margin-top: 15px;
 }
 .chatUser-files-m{
@@ -101,7 +101,7 @@
     justify-content: space-between;
     margin-top: 15px;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 .userFile{
     display: flex;

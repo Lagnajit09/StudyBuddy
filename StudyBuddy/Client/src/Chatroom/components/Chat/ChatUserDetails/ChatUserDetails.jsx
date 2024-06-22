@@ -1,23 +1,58 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import "./ChatUserDetails.css";
 import CloseIcon from "@mui/icons-material/Close";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { Avatar } from "@mui/material";
-import UserImg1 from "../../../../assets/chatroom_imgs/user-image-1.svg";
-import UserImg2 from "../../../../assets/chatroom_imgs/user-image-2.svg";
-import UserImg3 from "../../../../assets/chatroom_imgs/user-image-3.svg";
-import UserImg4 from "../../../../assets/chatroom_imgs/user-image-4.svg";
 import DescriptionIcon from "@mui/icons-material/Description";
-import { currentChatAtom } from "../../../../store/chatroomStore/chatStore";
+import { chatMessageAtom, currentChatAtom, newMessageAtom } from "../../../../store/chatroomStore/chatStore";
 import { useRecoilValue } from "recoil";
+import AllMedia from "./AllMedia";
+import AllFiles from "./AllFiles";
 
 const ChatUserDetails = (props) => {
   const currentChat = useRecoilValue(currentChatAtom);
+  const messages = useRecoilValue(chatMessageAtom)
+  const newMessages = useRecoilValue(newMessageAtom)
+  const [viewAllMedia, setViewAllMedia] = useState(false)
+  const [viewAllFiles, setViewAllFiles] = useState(false)
+
+  const media = useMemo(() => {
+    let newArr = messages.filter((msg) => msg.file.type.startsWith('image/'))
+    newArr = [...newArr, ...newMessages.filter((msg) => msg.file.type.startsWith('image/'))]
+    return newArr
+  }, [messages, newMessages])
+
+  const files = useMemo(() => {
+    let newArr = messages.filter((msg) => (msg.type === 'doc' && !msg.file.type.startsWith('image/')))
+    newArr = [...newArr, ...newMessages.filter((msg) => (msg.type === 'doc' && !msg.file.type.startsWith('image/')))]
+    return newArr
+  }, [messages, newMessages])
+
+  const fileName = (name) => (
+    (name.split('.')[0].length > 10 ? `${name.split('.')[0].slice(0,10)}...` : name.split('.')[0]) + `.${name.split('.')[1]}`
+  )
+
+  const formatFileSize = (size) => {
+    if (size < 1024) {
+      return `${size} bytes`;
+    } else if (size < 1048576) {
+      return `${(size / 1024).toFixed(2)} KB`;
+    } else {
+      return `${(size / 1048576).toFixed(2)} MB`;
+    }
+  };
+
   return (
     <div
       className="chatUser-details"
       style={props.open ? { right: "0" } : null}
     >
+      {viewAllMedia && !viewAllFiles && 
+          <AllMedia docs={media} setViewAllMedia={setViewAllMedia} setViewAllFiles={setViewAllFiles} />
+      }
+      {!viewAllMedia && viewAllFiles && 
+          <AllFiles docs={files} setViewAllMedia={setViewAllMedia} setViewAllFiles={setViewAllFiles} />
+      }
       <div className="chatUser-header">
         <h3>Details</h3>
         <button
@@ -55,39 +90,58 @@ const ChatUserDetails = (props) => {
       <div className="chatUser-media">
         <div className="chatUser-media-h">
           <p>Uploaded Media</p>
-          <span>View all</span>
+          {media.length > 5 &&
+            <span 
+              onClick={() => {
+                setViewAllMedia(true); 
+                setViewAllFiles(false);
+              }}
+            >
+              View all
+            </span>
+          }
         </div>
         <div className="chatUser-media-m">
-          <img src={UserImg1} alt="" />
-          <img src={UserImg2} alt="" />
-          <img src={UserImg3} alt="" />
-          <img src={UserImg4} alt="" />
+        {
+          media.map((item) => (
+            <img
+             src={item?.file.url} 
+             alt={item?.file.name} 
+             style={{width: '50px', height:'50px', objectFit: 'contain', border: '1px solid gray', borderRadius: '4px'}} 
+            />
+          ))
+        }
+          
         </div>
       </div>
       <div className="chatUser-files">
         <div className="chatUser-media-h">
           <p>Uploaded Files</p>
-          <span>View all</span>
+          {files.length > 3 &&
+            <span 
+              onClick={() => {
+                setViewAllMedia(false); 
+                setViewAllFiles(true);
+              }}
+            >
+              View all
+            </span>
+          }
         </div>
         <div className="chatUser-files-m">
-          <div className="userFile">
-            <div className="fileIcon">
-              <DescriptionIcon style={{ width: "25px", height: "25px" }} />
+        {
+          files.map((item) => (
+            <div className="userFile">
+              <div className="fileIcon">
+                <DescriptionIcon style={{ width: "25px", height: "25px" }} />
+              </div>
+              <div className="chatUser-fileDetails">
+                <p>{fileName(item?.file.name)}</p>
+                <span>{formatFileSize(item?.file.size)}</span>
+              </div>
             </div>
-            <div className="chatUser-fileDetails">
-              <p>Physics.pdf</p>
-              <span>2.6mb</span>
-            </div>
-          </div>
-          <div className="userFile">
-            <div className="fileIcon">
-              <DescriptionIcon style={{ width: "25px", height: "25px" }} />
-            </div>
-            <div className="chatUser-fileDetails">
-              <p>Physics.pdf</p>
-              <span>2.6mb</span>
-            </div>
-          </div>
+          ))
+        } 
         </div>
       </div>
     </div>

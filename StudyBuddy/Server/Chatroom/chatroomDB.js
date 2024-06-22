@@ -1,5 +1,12 @@
 const mongoose = require("mongoose");
 
+const docMsgSchema = new mongoose.Schema({
+  name: {type: String},
+  url: {type: String},
+  size: {type: String},
+  type: {type: String},
+})
+
 const messageSchema = new mongoose.Schema({
   senderId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -11,8 +18,10 @@ const messageSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  content: { type: String, required: true },
+  content: { type: String },
   timestamp: { type: Date, default: Date.now },
+  type: {type: String},
+  file: docMsgSchema
 });
 
 const communitySchema = new mongoose.Schema({
