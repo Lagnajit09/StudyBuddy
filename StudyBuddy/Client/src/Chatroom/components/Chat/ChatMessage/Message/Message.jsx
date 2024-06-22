@@ -1,6 +1,7 @@
 import React from "react";
 import "./Message.css";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import File from "../../../File";
 
 const Message = ({ message, styleMessage, styleMsgL, msgText, showIcon }) => {
   function getTimeWithAMPM(timestamp) {
@@ -34,9 +35,14 @@ const Message = ({ message, styleMessage, styleMsgL, msgText, showIcon }) => {
                 {getTimeWithAMPM(message.timestamp)}
               </span>
               <div className="msg-bot">
+              {
+                message?.type === 'doc' ?
+                  <File file={message?.file}  />
+                :
                 <span className="message-text" style={msgText}>
-                  {message.content}
+                    {message?.content}
                 </span>
+              }
                 <div className="moreIcon">{showIcon && <MoreVertIcon />}</div>
               </div>
             </div>

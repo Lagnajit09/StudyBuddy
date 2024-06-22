@@ -1,0 +1,36 @@
+.Community-media{
+    position: absolute;
+    right: 0;
+    bottom: 45px;
+    padding: 10px;
+    border: 1px solid lightgray;
+    background: #f7f8fc;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 10px;
+    min-width: 20%;
+    min-height: 20vh;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-shadow: 0px 0px 5px -1px rgba(170,187,204,1);
+    -moz-box-shadow: 0px 0px 5px -1px rgba(170,187,204,1);
+    box-shadow: 0px 0px 5px -1px rgb(198, 213, 229);
+}
+
+.Community-media p {
+    color: gray;
+    font-size: 14px;
+}
+
+.Community-media .bot{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Community-media .close{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}

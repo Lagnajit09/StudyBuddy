@@ -14,7 +14,7 @@ import {
 import { collection, query, where, onSnapshot, addDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../../../../firebase";
-import MediaInput from "../MediaInput/MediaInput";
+import MediaInput from "../../MediaInput/MediaInput";
 import CircularProgress from '@mui/material/CircularProgress';
 
 const CommunityInput = (props) => {
